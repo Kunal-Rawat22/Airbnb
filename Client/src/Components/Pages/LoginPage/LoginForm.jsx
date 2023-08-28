@@ -1,18 +1,32 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginForm() {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
+
+  //Handling Email
   function handleEmail(event) {
     setUserInput((prevState) => ({
       ...prevState,
       email: event.target.value,
     }));
   }
-  function handleOnSubmit(event) {}
+
+  //Handling Submit
+  function handleOnSubmit(event) {
+    axios.get("/login", userInput);
+    event.preventDefault();
+    setUserInput({
+      email: "",
+      password: "",
+    });
+  }
+
+  //Hnadling Password
   function handlePassword(event) {
     setUserInput((prevState) => ({
       ...prevState,
@@ -36,6 +50,7 @@ export default function LoginForm() {
               id="PhoneNumber"
               className="focus:outline-none"
               onChange={handleEmail}
+              value={userInput.email}
               required={true}
             />
           </div>
@@ -46,6 +61,7 @@ export default function LoginForm() {
               id="password"
               className="focus:outline-none"
               onChange={handlePassword}
+              value={userInput.password}
               required={true}
             />
           </div>

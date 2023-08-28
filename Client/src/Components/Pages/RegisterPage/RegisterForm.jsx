@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,45 +11,61 @@ export default function RegisterForm() {
     gender: "",
     dob: Date,
   });
+
+  //Handling Name
   function handleName(event) {
     setUserInput((prevState) => ({
       ...prevState,
       userName: event.target.value,
     }));
   }
+  //Handling Mobile No.
   function handleMNo(event) {
     setUserInput((prevState) => ({
       ...prevState,
       mobileNo: event.target.value,
     }));
   }
+  //Handling Email
   function handleEmail(event) {
     setUserInput((prevState) => ({
       ...prevState,
       email: event.target.value,
     }));
   }
+  //Handling Password
   function handlePassword(event) {
     setUserInput((prevState) => ({
       ...prevState,
       password: event.target.value,
     }));
   }
-
+  //Handling Gender
   function handleGender(event) {
     setUserInput((prevState) => ({
       ...prevState,
       gender: event.target.value,
     }));
   }
+  //Handling DOB
   function handleDOB(event) {
     setUserInput((prevState) => ({
       ...prevState,
       dob: event.target.value,
     }));
   }
+  //Handling onSubmit
   function handleOnSubmit(event) {
-
+    axios.get("/register", userInput);
+    event.preventDefault();
+    setUserInput({
+      userName: "",
+      mobileNo: null,
+      email: "",
+      password: "",
+      gender: "",
+      dob: Date,
+    });
   }
   console.log(userInput);
   return (
@@ -69,6 +86,7 @@ export default function RegisterForm() {
                 className="focus:outline-none"
                 onChange={handleName}
                 required={true}
+                value={userInput.userName}
               />
             </div>
             <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
@@ -79,6 +97,7 @@ export default function RegisterForm() {
                 className="focus:outline-none"
                 onChange={handleMNo}
                 required={true}
+                value={userInput.mobileNo}
               />
             </div>
           </div>
@@ -90,6 +109,7 @@ export default function RegisterForm() {
                 id=""
                 className="focus:outline-none"
                 onChange={handleGender}
+                value={userInput.gender}
               >
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
@@ -104,6 +124,7 @@ export default function RegisterForm() {
                 className="focus:outline-none"
                 onChange={handleDOB}
                 required={true}
+                value={userInput.dob}
               />
             </div>
           </div>
@@ -114,6 +135,7 @@ export default function RegisterForm() {
               id="email"
               className="focus:outline-none"
               onChange={handleEmail}
+              value={userInput.email}
               required={true}
             />
           </div>
@@ -124,6 +146,7 @@ export default function RegisterForm() {
               id="password"
               className="focus:outline-none"
               onChange={handlePassword}
+              value={userInput.password}
               required={true}
             />
           </div>
