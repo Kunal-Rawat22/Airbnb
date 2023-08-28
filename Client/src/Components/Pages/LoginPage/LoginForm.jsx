@@ -29,7 +29,7 @@ export default function LoginForm() {
         </div>
         <div className=" space-y-1">
           {" "}
-          <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-1 text-sm text-slate-500 mt-6">
+          <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2  text-sm text-slate-500 mt-6">
             <label htmlFor="PhoneNumber">Email</label>
             <input
               type="email"
@@ -39,7 +39,7 @@ export default function LoginForm() {
               required={true}
             />
           </div>
-          <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-1 text-sm text-slate-500">
+          <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2  text-sm text-slate-500">
             <label htmlFor="PhoneNumber">Password</label>
             <input
               type="password"
