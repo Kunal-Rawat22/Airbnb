@@ -62,17 +62,25 @@ export default function RegisterForm() {
       await axios.post("/register", userInput);
       setUserInput({
         userName: "",
-        mobileNo: null,
+        mobileNo: "",
         email: "",
         password: "",
         gender: "",
         dob: Date,
       });
+      setRedirect(true);
       alert("You have successfully registered. You can log in now !!");
     } catch (e) {
+      setUserInput({
+        userName: "",
+        mobileNo: "",
+        email: "",
+        password: "",
+        gender: "",
+        dob: Date,
+      });
       alert("Registration Failed!! Try Again Later");
     }
-    setRedirect(true);
   }
   if (redirect === true) {
     <Navigate to={"/"} />;

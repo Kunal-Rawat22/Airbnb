@@ -6,8 +6,14 @@ const mongoose = require("mongoose");
 const User = require("./models/user");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
-app.use(express.json());
+const jwt = require("jsonwebtoken");
+const CookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
+const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 
+
+app.use(express.json());
+app.use(cookieParser())
 //Cors Connection
 app.use(
   cors({
@@ -54,6 +60,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
+//Login Route
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -61,7 +68,15 @@ app.post("/login", async (req, res) => {
     if (user) {
       const passOk = bcrypt.compareSync(password, user.password);
       if (passOk) {
-        res.status(200).json("Pass Ok");
+        jwt.sign(
+          { email: user.email, id: user._id },
+          jwtSecret,
+          {},
+          (err, token) => {
+            if (err) throw err;
+            res.cookie("token", token).status(200).json(user);
+          }
+        );
       } else {
         res.status(401).json("Pass Failed");
       }
@@ -70,10 +85,26 @@ app.post("/login", async (req, res) => {
     }
   } catch {}
 });
-app.get("/test", (req, res) => {
-  res.json("Test Okk");
+
+//Refresh Route
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token)
+  {
+    jwt.verify(token, jwtSecret, {},async (err, user) => {
+      if (err) throw err;
+      const { userName, mobileNo, email, gender, dob, _id } = await User.findById(user.id)
+      const userDoc = { userName, mobileNo, email, gender, dob, _id };
+      console.log(userDoc)
+      res.json(userDoc);
+    })
+  }
+  else
+  {
+    res.json(null);
+    }
 });
-app.post;
+
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });

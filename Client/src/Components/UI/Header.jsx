@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { UserContext } from "../../UserContext";
+import { useContext } from "react";
 
 export default function Header() {
+  const { user } = useContext(UserContext);
+
   return (
     <div>
       {" "}
@@ -27,13 +31,31 @@ export default function Header() {
             <i className="fa-solid fa-magnifying-glass text-white bg-pink-600 p-1 rounded-3xl px-2 hover:text-pink-800 text-base"></i>
           </div>
         </div>
-        <Link to={'/login'} className="border border-1 flex items-center space-x-4 p-2 rounded-3xl px-4 shadow-md text-lg cursor-pointer">
+        <Link
+          to={"/login"}
+          className="border border-1 flex items-center space-x-4 p-2 rounded-3xl px-4 shadow-md text-lg cursor-pointer"
+        >
           <div>
             <i className="fa-solid fa-bars "></i>
           </div>
-          <div>
-            <i className="fa-solid fa-user bg-slate-600 text-white p-1.5 rounded-full"></i>
-          </div>
+          {/* {!!user && (
+            
+          )} */}
+
+          {!user ? (
+            <>
+              <div>
+                <i className="fa-solid fa-user bg-slate-600 text-white p-1.5 rounded-full"></i>
+              </div>
+            </>
+          ) : (
+            <>
+              {console.log(user?.userName[0],'===')}
+              <div className=" bg-slate-600 text-white px-2 rounded-full">
+                {user?.userName[0]}
+              </div>
+            </>
+          )}
         </Link>
       </header>
       <hr />

@@ -1,13 +1,16 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../../../UserContext";
 
 export default function LoginForm() {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
-
+  const [redirect, setRedirect] = useState(false);
+  const { setUser } = useContext(UserContext);
+  
   //Handling Email
   function handleEmail(event) {
     setUserInput((prevState) => ({
@@ -20,13 +23,19 @@ export default function LoginForm() {
   async function handleOnSubmit(event) {
     event.preventDefault();
     try {
-      await axios.post("/login", userInput);
-      // setUserInput({
-      //   email: "",
-      //   password: "",
-      // });
+      const response = await axios.post("/login", userInput);
+      setUser(response.data);
+      setUserInput({
+        email: "",
+        password: "",
+      });
       alert("Login Successful");
+      setRedirect(true);
     } catch (e) {
+      setUserInput({
+        email: "",
+        password: "",
+      });
       alert("Login Failed");
     }
   }
@@ -39,6 +48,7 @@ export default function LoginForm() {
     }));
   }
   console.log(userInput);
+  if (redirect) return <Navigate to={"/"} />;
   return (
     <>
       <form onSubmit={handleOnSubmit} className="px-8 py-4 pt-8 flex flex-col">
