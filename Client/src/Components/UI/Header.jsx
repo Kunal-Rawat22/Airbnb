@@ -10,11 +10,10 @@ export default function Header() {
       {" "}
       <header className="flex justify-between p-4 items-center px-10">
         <div>
-          <Link href="" className="Logo text-2xl font-bold text-pink-600">
+          <Link to={'/'} className="Logo text-2xl font-bold text-pink-600">
             <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span>
           </Link>
         </div>
-
         <div className="flex border border-1 border-slate-200 shadow-xl p-3 px-5 rounded-full space-x-4 items-center">
           <div className="font-medium hover:font-bold cursor-pointer text-sm">
             Anywhere
@@ -32,29 +31,20 @@ export default function Header() {
           </div>
         </div>
         <Link
-          to={"/login"}
+          to={user?"/account/profile":"/login"}
           className="border border-1 flex items-center space-x-4 p-2 rounded-3xl px-4 shadow-md text-lg cursor-pointer"
         >
           <div>
             <i className="fa-solid fa-bars "></i>
           </div>
-          {/* {!!user && (
-            
-          )} */}
-
           {!user ? (
-            <>
               <div>
                 <i className="fa-solid fa-user bg-slate-600 text-white p-1.5 rounded-full"></i>
               </div>
-            </>
           ) : (
-            <>
-              {console.log(user?.userName[0],'===')}
               <div className=" bg-slate-600 text-white px-2 rounded-full">
                 {user?.userName[0]}
               </div>
-            </>
           )}
         </Link>
       </header>

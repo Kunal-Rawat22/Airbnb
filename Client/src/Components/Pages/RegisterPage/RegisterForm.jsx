@@ -68,7 +68,6 @@ export default function RegisterForm() {
         gender: "",
         dob: Date,
       });
-      setRedirect(true);
       alert("You have successfully registered. You can log in now !!");
     } catch (e) {
       setUserInput({
@@ -81,6 +80,7 @@ export default function RegisterForm() {
       });
       alert("Registration Failed!! Try Again Later");
     }
+    setRedirect(true);
   }
   if (redirect === true) {
     <Navigate to={"/"} />;

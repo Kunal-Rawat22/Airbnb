@@ -11,9 +11,8 @@ const CookieParser = require("cookie-parser");
 const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 
-
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 //Cors Connection
 app.use(
   cors({
@@ -86,25 +85,57 @@ app.post("/login", async (req, res) => {
   } catch {}
 });
 
+//Logout Route
+app.get("/logout", (req, res) => {
+  res.cookie("token", "").status(200).json("Logout Out");
+});
 //Refresh Route
 app.get("/profile", (req, res) => {
   const { token } = req.cookies;
-  if (token)
-  {
-    jwt.verify(token, jwtSecret, {},async (err, user) => {
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
-      const { userName, mobileNo, email, gender, dob, _id } = await User.findById(user.id)
-      const userDoc = { userName, mobileNo, email, gender, dob, _id };
-      console.log(userDoc)
+      const { userName, mobileNo, email, gender, dob, _id } =
+        await User.findById(user.id);
+      var year = dob.getFullYear();
+      var month = dob.getMonth() + 1; // Adding 1 because months are zero-based
+      var day = dob.getDate();
+      let date = `${year}-${month}-${day}`;
+      const userDoc = {
+        userName,
+        mobileNo,
+        email,
+        gender,
+        dob: date,
+        _id,
+      };
+      console.log(userDoc);
       res.json(userDoc);
-    })
-  }
-  else
-  {
+    });
+  } else {
     res.json(null);
-    }
+  }
 });
 
+//Update User
+app.put("/updateProfile", (req, res) => {
+  const { token } = req.cookies;
+  const updatedData = req.body;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        User.findByIdAndUpdate(user.id, updatedData).then((updatedUser) => {
+          if (updatedUser) res.status(200).json(updatedUser);
+        });
+      } catch (e) {
+        res.status(422).json(err);
+      }
+    });
+  } else {
+    res.json(null);
+  }
+});
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
