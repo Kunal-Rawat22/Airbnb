@@ -17,13 +17,18 @@ export default function LoginForm() {
   }
 
   //Handling Submit
-  function handleOnSubmit(event) {
-    axios.get("/login", userInput);
+  async function handleOnSubmit(event) {
     event.preventDefault();
-    setUserInput({
-      email: "",
-      password: "",
-    });
+    try {
+      await axios.post("/login", userInput);
+      // setUserInput({
+      //   email: "",
+      //   password: "",
+      // });
+      alert("Login Successful");
+    } catch (e) {
+      alert("Login Failed");
+    }
   }
 
   //Hnadling Password

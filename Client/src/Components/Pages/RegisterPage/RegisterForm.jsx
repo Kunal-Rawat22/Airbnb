@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function RegisterForm() {
   const [userInput, setUserInput] = useState({
@@ -12,6 +12,7 @@ export default function RegisterForm() {
     dob: Date,
   });
 
+  const [redirect, setRedirect] = useState(false);
   //Handling Name
   function handleName(event) {
     setUserInput((prevState) => ({
@@ -55,17 +56,26 @@ export default function RegisterForm() {
     }));
   }
   //Handling onSubmit
-  function handleOnSubmit(event) {
-    axios.get("/register", userInput);
+  async function handleOnSubmit(event) {
     event.preventDefault();
-    setUserInput({
-      userName: "",
-      mobileNo: null,
-      email: "",
-      password: "",
-      gender: "",
-      dob: Date,
-    });
+    try {
+      await axios.post("/register", userInput);
+      setUserInput({
+        userName: "",
+        mobileNo: null,
+        email: "",
+        password: "",
+        gender: "",
+        dob: Date,
+      });
+      alert("You have successfully registered. You can log in now !!");
+    } catch (e) {
+      alert("Registration Failed!! Try Again Later");
+    }
+    setRedirect(true);
+  }
+  if (redirect === true) {
+    <Navigate to={"/"} />;
   }
   console.log(userInput);
   return (
