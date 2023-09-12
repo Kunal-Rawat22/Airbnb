@@ -9,11 +9,12 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
+const imageDownloader = require("image-downloader");
 const multer = require("multer");
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use('/uploads',express.static(__dirname+ "/uploads"));
 //Cors Connection
 app.use(
   cors({
@@ -139,6 +140,17 @@ app.put("/updateProfile", (req, res) => {
   }
 });
 
+//Upload Photos By Link
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  console.log(link)
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.json(newName);
+});
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
