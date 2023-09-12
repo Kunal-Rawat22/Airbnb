@@ -7,12 +7,13 @@ const User = require("./models/user");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
-const CookieParser = require("cookie-parser");
 const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
+const multer = require("multer");
 
 app.use(express.json());
 app.use(cookieParser());
+
 //Cors Connection
 app.use(
   cors({
@@ -21,7 +22,7 @@ app.use(
   })
 );
 
-//MonogoDb Connection
+//MongoDb Connection
 async function main() {
   const connectionOptions = {
     useNewUrlParser: true,
@@ -89,6 +90,7 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   res.cookie("token", "").status(200).json("Logout Out");
 });
+
 //Refresh Route
 app.get("/profile", (req, res) => {
   const { token } = req.cookies;
@@ -136,6 +138,7 @@ app.put("/updateProfile", (req, res) => {
     res.json(null);
   }
 });
+
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
