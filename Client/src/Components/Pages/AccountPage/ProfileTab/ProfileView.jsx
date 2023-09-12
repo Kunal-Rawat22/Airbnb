@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../UserContext";
 import {  Navigate } from "react-router-dom";
 import axios from "axios";
+
 export default function ProfileTab() {
   const { ready, user } = useContext(UserContext);
   const [flag, setFlag] = useState(false);
@@ -28,7 +29,6 @@ export default function ProfileTab() {
     }
   }, [ready, user]);
 
-  //
   //Handling Name
   function handleName(event) {
     setUserInput((prevState) => ({
@@ -36,6 +36,7 @@ export default function ProfileTab() {
       userName: event.target.value,
     }));
   }
+
   //Handling Mobile No.
   function handleMNo(event) {
     setUserInput((prevState) => ({
@@ -43,6 +44,7 @@ export default function ProfileTab() {
       mobileNo: event.target.value,
     }));
   }
+
   //Handling Email
   function handleEmail(event) {
     setUserInput((prevState) => ({
@@ -58,6 +60,7 @@ export default function ProfileTab() {
       gender: event.target.value,
     }));
   }
+
   //Handling DOB
   function handleDOB(event) {
     setUserInput((prevState) => ({
@@ -65,6 +68,7 @@ export default function ProfileTab() {
       dob: event.target.value,
     }));
   }
+
   //Handling onSubmit
   async function handleOnSubmit(event) {
     event.preventDefault();
@@ -90,9 +94,13 @@ export default function ProfileTab() {
       alert("Logout Failed!! Try Again Later");
     }
   }
+
+  //Cookie 
   if (ready && !user) {
     return <Navigate to={"/login"} />;
   }
+
+  //Handle Edit
   function handleEdit(event) {
     if (flag === false) {
       setFlag(true);
@@ -100,9 +108,11 @@ export default function ProfileTab() {
     event.preventDefault();
   }
 
+  //Redirect
   if (redirect === true) {
     window.location.reload();
   }
+  
   return (
     <form className="px-8 py-4 flex flex-col w-1/3 mx-auto border border-1 mt-10 rounded-2xl pb-8">
       <div className="">
@@ -126,7 +136,6 @@ export default function ProfileTab() {
               value={userInput.userName}
               readOnly={!flag}
               onChange={handleName}
-              //   contentEditable
             />
           </div>
           <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
