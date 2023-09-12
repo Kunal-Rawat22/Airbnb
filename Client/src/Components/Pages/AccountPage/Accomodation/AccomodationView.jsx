@@ -4,6 +4,8 @@ import { UserContext } from "../../../../UserContext";
 import axios from "axios";
 export default function AccommodationTab() {
   const { ready, user } = useContext(UserContext);
+  const [addedPhotos, setAddedPhotos] = useState([]);
+  const [photoLink, setPhotoLink] = useState("");
   const [userInput, setUserInput] = useState({
     title: "",
     address: "",
@@ -96,12 +98,35 @@ export default function AccommodationTab() {
       }));
     }
   }
+  //Handling Photo By Link
+  async function addPhotobyLink(event) {
+    event.preventDefault();
+    const { data: filename } = await axios.post("/upload-by-link", {
+      link: photoLink,
+    });
+    setAddedPhotos((prev) => [...prev, filename]);
+    setPhotoLink("");
+  }
+  //Handling Photo by Upload
+  function uploadPhoto(event) {
+    const files = event.target.files;
+    const data = new FormData();
+    data.set("photos", files);
+    axios
+      .post("/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        const { data: filename } = res;
+        setAddedPhotos((prev) => [...prev, filename]);
+      });
+  }
   //Handling onSubmit
   async function handleOnSubmit(event) {
     event.preventDefault();
     console.log(userInput);
     try {
-      await axios.post("/addPlaces", userInput);
+      await axios.post("/upload", userInput);
       alert("You have added successfully.");
     } catch (e) {
       alert("Couldn't Add!! Try Again Later");
@@ -142,7 +167,7 @@ export default function AccommodationTab() {
                   type="text"
                   id="title"
                   className="focus:outline-none"
-                  required={true}
+                  // required={true}
                   value={userInput.title}
                   onChange={handleTitle}
                 />
@@ -153,7 +178,7 @@ export default function AccommodationTab() {
                   type="text"
                   id="address"
                   className="focus:outline-none"
-                  required={true}
+                  // required={true}
                   value={userInput.address}
                   onChange={handleAddress}
                 />
@@ -165,7 +190,7 @@ export default function AccommodationTab() {
                     type="time"
                     id="checkIn"
                     className="focus:outline-none"
-                    required={true}
+                    // required={true}
                     value={userInput.checkIn}
                     onChange={handleCheckIn}
                   />
@@ -176,7 +201,7 @@ export default function AccommodationTab() {
                     type="time"
                     id="checkOut"
                     className="focus:outline-none"
-                    required={true}
+                    // required={true}
                     value={userInput.checkOut}
                     onChange={handleCheckOut}
                   />
@@ -189,7 +214,7 @@ export default function AccommodationTab() {
                     type="number"
                     id="maxGuest"
                     className="focus:outline-none"
-                    required={true}
+                    // required={true}
                     value={userInput.maxGuests}
                     onChange={handleMaxGuest}
                   />
@@ -200,7 +225,7 @@ export default function AccommodationTab() {
                     type="Text"
                     id="Perks"
                     className="focus:outline-none"
-                    required={true}
+                    // required={true}
                     onChange={handlePerks}
                   >
                     <option value="Wifi">Wifi</option>
@@ -218,7 +243,7 @@ export default function AccommodationTab() {
                   type="text"
                   id="description"
                   className="focus:outline-none"
-                  required={true}
+                  // required={true}
                   value={userInput.description}
                   onChange={handleDescription}
                 />
@@ -231,20 +256,57 @@ export default function AccommodationTab() {
                   className="focus:outline-none"
                   value={userInput.extraInfo}
                   onChange={handleExtraInfo}
-                  required={true}
+                  // required={true}
                 />
               </div>
-              <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500">
+              <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
                 <label htmlFor="email" className="mb-2">
                   Upload Images
                 </label>
-                {/* <input type="text" name="upload-by-link" id=""  value={}/> */}
-                <input
+                <div className="flex space-x-1">
+                  <input
+                    type="text"
+                    name="upload-by-link"
+                    id=""
+                    placeholder="Add Using a Link"
+                    className=" w-4/5 border p-2 rounded-lg"
+                    value={photoLink}
+                    onChange={(event) => setPhotoLink(event.target.value)}
+                  />
+                  <button
+                    className="bg-gray-500 p-2 rounded-lg text-white w-1/5 font-medium"
+                    onClick={addPhotobyLink}
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-1">
+                  {addedPhotos.length > 0 &&
+                    addedPhotos.map((link) => (
+                      <>
+                        <img
+                          src={"http://localhost:4000/uploads/" + link}
+                          alt=""
+                          className="rounded-xl"
+                        />
+                      </>
+                    ))}
+                  <label className="border bg-transparent rounded-2xl p-4 text-base flex items-center justify-center py-6 cursor-pointer">
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={uploadPhoto}
+                    />
+                    <i className="fa-solid fa-cloud-arrow-up"></i>{" "}
+                    <span>&nbsp;Upload</span>
+                  </label>
+                </div>
+                {/* <input
                   className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                   type="file"
                   id="formFileMultiple"
                   multiple
-                />
+                /> */}
               </div>
             </div>
           </div>
