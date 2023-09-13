@@ -1,11 +1,13 @@
+/* eslint-disable react/jsx-key */
 import { Link, Navigate, useParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { UserContext } from "../../../../UserContext";
 import axios from "axios";
+import PhotoUploader from "./PhotoUploader";
 export default function AccommodationTab() {
   const { ready, user } = useContext(UserContext);
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [photoLink, setPhotoLink] = useState("");
+  // const [photoLink, setPhotoLink] = useState("");
   const [userInput, setUserInput] = useState({
     title: "",
     address: "",
@@ -98,29 +100,8 @@ export default function AccommodationTab() {
       }));
     }
   }
-  //Handling Photo By Link
-  async function addPhotobyLink(event) {
-    event.preventDefault();
-    const { data: filename } = await axios.post("/upload-by-link", {
-      link: photoLink,
-    });
-    setAddedPhotos((prev) => [...prev, filename]);
-    setPhotoLink("");
-  }
-  //Handling Photo by Upload
-  function uploadPhoto(event) {
-    const files = event.target.files;
-    const data = new FormData();
-    data.set("photos", files);
-    axios
-      .post("/upload", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        const { data: filename } = res;
-        setAddedPhotos((prev) => [...prev, filename]);
-      });
-  }
+
+  
   //Handling onSubmit
   async function handleOnSubmit(event) {
     event.preventDefault();
@@ -259,7 +240,8 @@ export default function AccommodationTab() {
                   // required={true}
                 />
               </div>
-              <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
+              <PhotoUploader addedPhotos={addedPhotos} setAddedPhotos={setAddedPhotos} />
+              {/* <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
                 <label htmlFor="email" className="mb-2">
                   Upload Images
                 </label>
@@ -283,31 +265,26 @@ export default function AccommodationTab() {
                 <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-1">
                   {addedPhotos.length > 0 &&
                     addedPhotos.map((link) => (
-                      <>
+                      <div className="flex" key={link}>
                         <img
                           src={"http://localhost:4000/uploads/" + link}
                           alt=""
-                          className="rounded-xl"
+                          className="rounded-xl w-full object-cover"
                         />
-                      </>
+                      </div>
                     ))}
                   <label className="border bg-transparent rounded-2xl p-4 text-base flex items-center justify-center py-6 cursor-pointer">
                     <input
                       type="file"
                       className="hidden"
                       onChange={uploadPhoto}
+                      multiple
                     />
                     <i className="fa-solid fa-cloud-arrow-up"></i>{" "}
                     <span>&nbsp;Upload</span>
                   </label>
                 </div>
-                {/* <input
-                  className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                  type="file"
-                  id="formFileMultiple"
-                  multiple
-                /> */}
-              </div>
+              </div> */}
             </div>
           </div>
           <button
