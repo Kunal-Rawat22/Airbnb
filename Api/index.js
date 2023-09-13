@@ -11,10 +11,11 @@ const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
+const fs = require("fs");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads',express.static(__dirname+ "/uploads"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 //Cors Connection
 app.use(
   cors({
@@ -143,13 +144,29 @@ app.put("/updateProfile", (req, res) => {
 //Upload Photos By Link
 app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
-  console.log(link)
+  console.log(link);
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
     url: link,
     dest: __dirname + "/uploads/" + newName,
   });
   res.json(newName);
+});
+
+//Upload by Device
+const photoMiddleware = multer({ dest: "uploads" });
+app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace('uploads/', ''));
+    console.log(req.files)
+  }
+  res.json(uploadedFiles);
 });
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
