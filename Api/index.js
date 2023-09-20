@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
+const Place = require("./models/places");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
@@ -163,11 +164,60 @@ app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
     const ext = parts[parts.length - 1];
     const newPath = path + "." + ext;
     fs.renameSync(path, newPath);
-    uploadedFiles.push(newPath.replace('uploads/', ''));
-    console.log(req.files)
+    uploadedFiles.push(newPath.replace("uploads/", ""));
+    console.log(req.files);
   }
   res.json(uploadedFiles);
 });
+
+//posting data from places form
+app.post("/places", (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+    photos
+  } = req.body;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        const placeDoc = await Place.create({
+          owner: user.id,
+          title,
+          address,
+          description,
+          perks,
+          extraInfo,
+          checkIn,
+          checkOut,
+          maxGuests,
+          photos
+        });
+        console.log("success");
+        res.json(placeDoc);
+      } catch (e) {
+        res.status(422).json(err);
+      }
+    });
+  }
+});
+app.get('/places', (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      const { id } = user;
+      res.json(await Place.find({owner:id}));
+    });
+  }
+})
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
