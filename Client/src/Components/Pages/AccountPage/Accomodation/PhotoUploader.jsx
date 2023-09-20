@@ -33,7 +33,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
   return (
     <>
       <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
-        <label htmlFor="email" className="mb-2">
+        <label  className="mb-2">
           Upload Images
         </label>
         <div className="flex space-x-1">
