@@ -210,6 +210,7 @@ app.post("/places", (req, res) => {
 });
 app.get('/places', (req, res) => {
   const { token } = req.cookies;
+  console.log("first")
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
@@ -217,6 +218,11 @@ app.get('/places', (req, res) => {
       res.json(await Place.find({owner:id}));
     });
   }
+})
+app.get('/places/:id', async (req, res) => {
+  const id = req.params.id;
+  console.log(id)
+  const result = res.json(await Place.find({ _id:id }));
 })
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
