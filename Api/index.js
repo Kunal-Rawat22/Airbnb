@@ -224,6 +224,49 @@ app.get('/places/:id', async (req, res) => {
   console.log(id)
   const result = res.json(await Place.find({ _id:id }));
 })
+
+app.put('/places/:id', async (req, res) => {
+  const { token } = req.cookies;
+  const id = req.params.id;
+  const {
+    title,
+    address,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+    photos,
+  } = req.body;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        const placeDoc = await Place.updateOne(
+          { _id: id },
+          {
+            $set: {
+              title: title,
+              address: address,
+              description: description,
+              perks: perks,
+              extraInfo: extraInfo,
+              checkIn: checkIn,
+              checkOut: checkOut,
+              maxGuests: maxGuests,
+              photos: photos,
+            },
+          }
+        );
+        console.log("success");
+        res.json(placeDoc);
+      } catch (e) {
+        res.status(422).json(err);
+      }
+    });
+  }
+})
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
