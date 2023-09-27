@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import PhotoUploader from "./PhotoUploader";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
-export default function AccommodationForm() {
+export default function AccommodationForm({ type }) {
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [redirect, setRedirect] = useState(false);
-  // const [photoLink, setPhotoLink] = useState("");
+  const { action } = useParams();
   const [userInput, setUserInput] = useState({
     title: "",
     address: "",
@@ -18,6 +18,27 @@ export default function AccommodationForm() {
     checkOut: Date,
     maxGuests: Number,
   });
+
+  // console.log("action",action)
+    useEffect(() => {
+      (type==="image")?axios.get(`/places/${action}`).then(({ data }) => {
+        setUserInput({
+          title: data[0]?.title,
+          address: data[0]?.address,
+          description: data[0]?.description,
+          perks: data[0]?.perks,
+          extraInfo: data[0]?.extraInfo,
+          checkIn: data[0]?.checkIn,
+          checkOut: data[0]?.checkOut,
+          maxGuests: data[0]?.maxGuests,
+        });
+        setAddedPhotos([...data[0].photos])
+      }):"";
+    },[]);
+  
+  console.log(type)
+  // const [photoLink, setPhotoLink] = useState("");
+  
 
   //Handling Title
   function handleTitle(event) {
