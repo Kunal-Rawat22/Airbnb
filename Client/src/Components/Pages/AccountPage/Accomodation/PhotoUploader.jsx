@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import axios from "axios";
-export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
+export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
   const [photoLink, setPhotoLink] = useState("");
   //Handling Photo By Link
   async function addPhotobyLink(event) {
@@ -33,9 +33,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
   return (
     <>
       <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
-        <label  className="mb-2">
-          Upload Images
-        </label>
+        <label className="mb-2">Upload Images</label>
         <div className="flex space-x-1">
           <input
             type="text"
@@ -44,6 +42,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
             placeholder="Add Using a Link"
             className=" w-4/5 border p-2 rounded-lg"
             value={photoLink}
+            readOnly={!flag}
             onChange={(event) => setPhotoLink(event.target.value)}
           />
           <button
@@ -69,6 +68,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
               type="file"
               className="hidden"
               onChange={uploadPhoto}
+              readOnly={!flag}
               multiple
             />
             <i className="fa-solid fa-cloud-arrow-up"></i>{" "}
