@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
@@ -13,10 +14,9 @@ export default function IndexPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 gap-y-8">
         {places.length > 0 &&
           places.map((place, index) => (
-            <div key={index}>
+            <Link key={index} className="" to={`/rooms/${place._id}`}>
               {place.photos.length > 0 && (
                 <div>
-                  <div className="relative">
                     <img
                       className="rounded-xl aspect-square object-cover"
                       src={"http://localhost:4000/uploads/" + place.photos?.[0]}
@@ -27,12 +27,12 @@ export default function IndexPage() {
                         <i className="fa-solid fa-arrow-right"></i>
                       </button>
                     )} */}
-                  </div>
                   <h2 className="mt-2 font-medium">{place.address}</h2>
                   <h3 className="text-sm truncate">{place.description}</h3>
+                  <h1 className=" font-medium text-base">₹{place.price} <span className=" font-light text-sm">night</span></h1>
                 </div>
               )}
-            </div>
+            </Link>
           ))}
       </div>
     </div>

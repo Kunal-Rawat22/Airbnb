@@ -8,9 +8,9 @@ export default function Header() {
   return (
     <div>
       {" "}
-      <header className="flex justify-between p-4 items-center px-10">
+      <header className="flex justify-between p-4 items-center px-40 ">
         <div>
-          <Link to={'/'} className="Logo text-2xl font-bold text-pink-600">
+          <Link to={"/"} className="Logo text-2xl font-bold text-pink-600">
             <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span>
           </Link>
         </div>
@@ -31,20 +31,20 @@ export default function Header() {
           </div>
         </div>
         <Link
-          to={user?"/account/profile":"/login"}
+          to={user ? "/account/profile" : "/login"}
           className="border border-1 flex items-center space-x-4 p-2 rounded-3xl px-4 shadow-md text-lg cursor-pointer"
         >
           <div>
             <i className="fa-solid fa-bars "></i>
           </div>
           {!user ? (
-              <div>
-                <i className="fa-solid fa-user bg-slate-600 text-white p-1.5 rounded-full"></i>
-              </div>
+            <div>
+              <i className="fa-solid fa-user bg-slate-600 text-white p-1.5 rounded-full"></i>
+            </div>
           ) : (
-              <div className=" bg-slate-600 text-white px-2 rounded-full">
-                {user?.userName[0]}
-              </div>
+            <div className=" bg-slate-600 text-white px-2 rounded-full">
+              {user?.userName[0]}
+            </div>
           )}
         </Link>
       </header>

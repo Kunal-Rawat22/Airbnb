@@ -34,7 +34,7 @@ export default function AccommodationTab() {
   }
 
   return (
-    <div>
+    <div className=" px-32">
       {add === "null" && (
         <div className="text-center mt-10 space-y-6">
           <Link

@@ -215,7 +215,7 @@ export default function AccommodationForm({ type }) {
     return <Navigate to={"/account/places"} />;
   }
   return (
-    <form className="px-8 py-4 flex flex-col w-1/3 mx-auto border border-1 mt-10 rounded-2xl pb-8">
+    <form className="px-8 py-4 flex flex-col w-3/6 mx-auto border border-1 mt-10 rounded-2xl pb-8">
       <div className="">
         {" "}
         <h1 className="text-2xl font-medium text-center pb-3">
@@ -301,11 +301,11 @@ export default function AccommodationForm({ type }) {
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
             <label>Perks</label>
-            <div className="grid grid-cols-3 gap-x-2 px-3 pb-2">
+            <div className="grid grid-cols-4 gap-x-2 px-3 pb-2">
               {options.map((option, index) => (
                 <div
                   key={index}
-                  className="border mt-2 p-1 flex rounded-md justify-start"
+                  className="border mt-2 p-2 flex rounded-md justify-start"
                 >
                   <input
                     type="checkbox"
@@ -318,7 +318,7 @@ export default function AccommodationForm({ type }) {
                     disabled={!flag}
                   />
 
-                  <div className=" flex items-center text-xs justify-center w-full">
+                  <div className="flex items-center text-xs justify-center w-full">
                     <i className={option.icon}></i>
                     <span>&nbsp;&nbsp;{option.name}</span>
                   </div>
