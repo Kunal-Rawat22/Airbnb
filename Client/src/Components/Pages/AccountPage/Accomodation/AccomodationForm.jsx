@@ -20,7 +20,18 @@ export default function AccommodationForm({ type }) {
     checkIn: Date,
     checkOut: Date,
     maxGuests: Number,
+    price: Number,
   });
+  // const options = ["Food", "Wifi", "AC", "Swimming Pool", "Free Parking", "TV"];
+
+  const options = [
+    { icon: "fa-solid fa-utensils", name: "Food" },
+    { icon: "fa-solid fa-wifi", name: "Wifi" },
+    { icon: "fa-solid fa-dog", name: "Pets" },
+    { icon: "fa-solid fa-person-swimming", name: "Pool" },
+    { icon: "fa-solid fa-car", name: "Parking" },
+    { icon: "fa-solid fa-tv", name: "TV" },
+  ];
 
   // console.log("action",action)
   useEffect(() => {
@@ -35,6 +46,7 @@ export default function AccommodationForm({ type }) {
             checkIn: data[0]?.checkIn,
             checkOut: data[0]?.checkOut,
             maxGuests: data[0]?.maxGuests,
+            price: data[0]?.price,
           });
           setAddedPhotos([...data[0].photos]);
           setFlag(false);
@@ -85,6 +97,14 @@ export default function AccommodationForm({ type }) {
     }));
   }
 
+  //Handling Price
+  function handlePrice(event) {
+    setUserInput((prevState) => ({
+      ...prevState,
+      price: event.target.value,
+    }));
+  }
+
   //Handling Address
   function handleDescription(event) {
     setUserInput((prevState) => ({
@@ -103,15 +123,32 @@ export default function AccommodationForm({ type }) {
 
   //Handling Perks
   function handlePerks(event) {
-    if (userInput.perks.includes(event.target.value)) {
-      setUserInput((prevState) => ({
-        ...prevState,
-      }));
+    const { checked, value } = event.target;
+    console.log(value, checked);
+    if (checked) {
+      if (userInput.perks.includes(event.target.value)) {
+        setUserInput((prevState) => ({
+          ...prevState,
+        }));
+      } else {
+        setUserInput((prevState) => ({
+          ...prevState,
+          perks: [...prevState.perks, event.target.value],
+        }));
+      }
     } else {
-      setUserInput((prevState) => ({
-        ...prevState,
-        perks: [...prevState.perks, event.target.value],
-      }));
+      if (userInput.perks.includes(event.target.value)) {
+        setUserInput((prevState) => ({
+          ...prevState,
+          perks: [
+            ...prevState.perks.filter((perk) => perk !== event.target.value),
+          ],
+        }));
+      } else {
+        setUserInput((prevState) => ({
+          ...prevState,
+        }));
+      }
     }
   }
 
@@ -250,22 +287,43 @@ export default function AccommodationForm({ type }) {
               />
             </div>
             <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-              <label>Perks</label>
-              <select
-                type="Text"
-                id="Perks"
+              <label>Price</label>
+              <input
+                type="number"
+                id="price"
                 className="focus:outline-none"
                 required={true}
-                onChange={handlePerks}
                 readOnly={!flag}
-              >
-                <option value="Wifi">Wifi</option>
-                <option value="Food">Food</option>
-                <option value="AC">AC</option>
-                <option value="Swimming Pool">Swimming Pool</option>
-                <option value="Free Parking">Free Parking</option>
-                <option value="TV">TV</option>
-              </select>
+                value={userInput.price}
+                onChange={handlePrice}
+              />
+            </div>
+          </div>
+          <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
+            <label>Perks</label>
+            <div className="grid grid-cols-3 gap-x-2 px-3 pb-2">
+              {options.map((option, index) => (
+                <div
+                  key={index}
+                  className="border mt-2 p-1 flex rounded-md justify-start"
+                >
+                  <input
+                    type="checkbox"
+                    name={option.name}
+                    value={option.name}
+                    id=""
+                    className="items-left"
+                    onChange={handlePerks}
+                    checked={userInput.perks.includes(option.name)}
+                    disabled={!flag}
+                  />
+
+                  <div className=" flex items-center text-xs justify-center w-full">
+                    <i className={option.icon}></i>
+                    <span>&nbsp;&nbsp;{option.name}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
