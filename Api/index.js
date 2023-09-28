@@ -182,7 +182,7 @@ app.post("/places", (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
-    photos
+    photos,
   } = req.body;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
@@ -198,7 +198,7 @@ app.post("/places", (req, res) => {
           checkIn,
           checkOut,
           maxGuests,
-          photos
+          photos,
         });
         console.log("success");
         res.json(placeDoc);
@@ -208,24 +208,26 @@ app.post("/places", (req, res) => {
     });
   }
 });
-app.get('/places', (req, res) => {
+
+app.get("/places", (req, res) => {
   const { token } = req.cookies;
-  console.log("first")
+  console.log("first");
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
       const { id } = user;
-      res.json(await Place.find({owner:id}));
+      res.json(await Place.find({ owner: id }));
     });
   }
-})
-app.get('/places/:id', async (req, res) => {
-  const id = req.params.id;
-  console.log(id)
-  const result = res.json(await Place.find({ _id:id }));
-})
+});
 
-app.put('/places/:id', async (req, res) => {
+app.get("/places/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const result = res.json(await Place.find({ _id: id }));
+});
+
+app.put("/places/:id", async (req, res) => {
   const { token } = req.cookies;
   const id = req.params.id;
   const {
@@ -266,7 +268,11 @@ app.put('/places/:id', async (req, res) => {
       }
     });
   }
-})
+});
+
+app.get("/all-places", async (req, res) => {
+  const result = res.json(await Place.find());
+});
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
