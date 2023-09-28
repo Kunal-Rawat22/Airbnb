@@ -13,7 +13,7 @@ const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
-
+const Base_Url = process.env.BASE_URL
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
@@ -273,6 +273,6 @@ app.put("/places/:id", async (req, res) => {
 app.get("/all-places", async (req, res) => {
   const result = res.json(await Place.find());
 });
-app.listen(4000, (req, res) => {
+app.listen(4000 || Base_Url, (req, res) => {
   console.log("Server Running on Port 4000");
 });
