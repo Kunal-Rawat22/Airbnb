@@ -30,6 +30,17 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
         setAddedPhotos((prev) => [...prev, ...filename]);
       });
   }
+  function handleDelete(e,link)
+  {
+    e.preventDefault();
+    setAddedPhotos([...addedPhotos.filter(photo=>photo !==link)])
+    console.log("YO",link)
+  }
+  function selectAsMainPhoto(e,link)
+  {
+    e.preventDefault();
+    setAddedPhotos([link, ...addedPhotos.filter((photo) => photo !== link)]);
+  }
   return (
     <>
       <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 space-y-2">
@@ -52,15 +63,22 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
             Add
           </button>
         </div>
-        <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-1">
+        <div className=" grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-1 ">
           {addedPhotos.length > 0 &&
             addedPhotos.map((link) => (
-              <div className="flex" key={link}>
+              <div className="flex relative" key={link}>
                 <img
                   src={"http://localhost:4000/uploads/" + link}
                   alt=""
-                  className="rounded-xl w-full object-cover"
+                  className="rounded-xl w-full object-cover max-h-20"
                 />
+                <button className="absolute right-1.5 top-1.5" onClick={(e) => selectAsMainPhoto(e,link)} disabled={!flag} >
+                  {link === addedPhotos[0] && <i className="fa-solid fa-star text-white cursor-pointer bg-black bg-opacity-70 p-0.5 rounded-sm"></i>}
+                  {link !== addedPhotos[0] && <i className="fa-regular fa-star  text-white cursor-pointer bg-black bg-opacity-70 p-0.5 rounded-sm"></i>}
+                </button>
+                <button className="absolute left-1.5 top-1.5" onClick={(e)=>handleDelete(e,link)} disabled={!flag} >
+                  <i className="fa-solid fa-trash text-white cursor-pointer"></i>
+                </button>
               </div>
             ))}
           <label className="border bg-transparent rounded-2xl p-4 text-base flex items-center justify-center py-6 cursor-pointer">
@@ -69,6 +87,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
               className="hidden"
               onChange={uploadPhoto}
               readOnly={!flag}
+              disabled={!flag}
               multiple
             />
             <i className="fa-solid fa-cloud-arrow-up"></i>{" "}

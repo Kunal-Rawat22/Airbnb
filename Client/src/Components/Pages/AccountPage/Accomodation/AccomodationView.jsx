@@ -5,6 +5,7 @@ import { UserContext } from "../../../../UserContext";
 import AccommodationForm from "./AccomodationForm";
 import axios from "axios";
 export default function AccommodationTab() {
+  // window.location.reload();
   const { ready, user } = useContext(UserContext);
   let add = false;
   const { action } = useParams();
@@ -42,19 +43,19 @@ export default function AccommodationTab() {
           >
             <i className="fa-solid fa-plus"></i> Add New Place
           </Link>
-          <div className="px-8">
+          <div className="px-8 space-y-4">
             {places.length > 0 &&
               places.map((place) => (
                 <Link
                   to={"/account/places/" + place._id}
-                  className="bg-slate-100 flex rounded-xl p-6 cursor-pointer"
+                  className="bg-slate-100 flex rounded-xl p-6 cursor-pointer hover:shadow-lg hover:bg-slate-200"
                 >
                   <div className="h-48 w-1/4 grow shrink-0">
                     {place.photos.length > 0 && (
                       <img
                         src={"http://localhost:4000/uploads/" + place.photos[0]}
                         alt=""
-                        className="h-full w-full"
+                        className="h-full w-full object-cover rounded-xl shadow-xl"
                       />
                     )}
                   </div>
@@ -69,7 +70,7 @@ export default function AccommodationTab() {
         </div>
       )}
       {add === "image" && <AccommodationForm type={add} />}
-      {add === "new" && <AccommodationForm type={add}/>}
+      {add === "new" && <AccommodationForm type={add} />}
     </div>
   );
 }
