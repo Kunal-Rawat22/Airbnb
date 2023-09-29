@@ -1,6 +1,7 @@
 import axios from "axios";
+import TruncateText from "./TruncatedText";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function RoomPage() {
   const { subpage } = useParams();
@@ -18,6 +19,16 @@ export default function RoomPage() {
     price: Number,
   });
   const [flag, setFlag] = useState(false);
+  const [options, setOptions] = useState([]);
+  // let options = [];
+  const allOptions = [
+    { icon: "fa-solid fa-utensils", name: "Food" },
+    { icon: "fa-solid fa-wifi", name: "Wifi" },
+    { icon: "fa-solid fa-dog", name: "Pets" },
+    { icon: "fa-solid fa-person-swimming", name: "Pool" },
+    { icon: "fa-solid fa-car", name: "Parking" },
+    { icon: "fa-solid fa-tv", name: "TV" },
+  ];
   useEffect(() => {
     axios.get(`/places/${subpage}`).then(({ data }) => {
       setRoom({
@@ -33,10 +44,20 @@ export default function RoomPage() {
         photos: data[0]?.photos,
       });
       setFlag(true);
+      allOptions.map((option) => {
+        if (data[0].perks.includes(option.name)) {
+          if (options.includes(option.name)) {
+            console.log("");
+          } else {
+            setOptions((prev) => [...prev, option.name]);
+          }
+        }
+      });
     });
   }, []);
 
   console.log("first", room);
+  console.log("hhbhb", options);
   return (
     <div className=" px-40 py-6">
       {flag && (
@@ -119,7 +140,7 @@ export default function RoomPage() {
                   </div>
                 </div>
                 <hr />
-                <div className="brief flex flex-col mt-8 px-4 space-y-7 pb-8">
+                <div className="brief flex flex-col mt-8 px-2 space-y-7 pb-8">
                   <div className="flex items-center space-x-10">
                     <div className="text-center">
                       <i className="fa-solid fa-desktop text-2xl"></i>
@@ -154,6 +175,48 @@ export default function RoomPage() {
                       </h4>
                     </div>
                   </div>
+                </div>
+                <hr />
+                <div className="description mt-8 flex flex-col px-2 space-y-6 pb-8">
+                  <div className="space-x-2">
+                    <i className="fa-solid fa-star"></i>
+                    <span className="font-light">
+                      You&apos;ll be taken care of by one of the most successful
+                      Airbnb hosts in the country.{" "}
+                    </span>
+                  </div>
+                  <div className="space-x-2">
+                    <i className="fa-solid fa-star"></i>
+                    <TruncateText text={room?.description} limit={40} />
+                  </div>
+                  <Link className=" space-x-2">
+                    <span className="underline">Show More</span>
+                    <i className="fa-solid fa-chevron-right text-sm"></i>
+                  </Link>
+                </div>
+                <hr />
+                <div className="perks mt-8 pb-10">
+                  <h2 className="text-2xl font-medium">
+                    What this place offers
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4 mt-6 px-1">
+                    {allOptions.map((option, index) => (
+                      <div
+                        key={index}
+                        className="text-lg font-light space-x-10"
+                      >
+                        <i className={option.icon + " text-2xl w-5"}></i>
+                        {options.includes(option.name) ? (
+                          <span>{option.name}</span>
+                        ) : (
+                          <span className=" line-through">{option.name}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <button className="bg-white mt-8 border border-1 p-3 px-6 font-medium hover:bg-gray-100 border-black rounded-xl">
+                    Show All Amenities
+                  </button>
                 </div>
                 <hr />
               </div>
