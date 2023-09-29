@@ -2,6 +2,7 @@ import axios from "axios";
 import TruncateText from "./TruncatedText";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import DatePicker from "./DateRange";
 
 export default function RoomPage() {
   const { subpage } = useParams();
@@ -55,9 +56,19 @@ export default function RoomPage() {
       });
     });
   }, []);
-
-  console.log("first", room);
-  console.log("hhbhb", options);
+  const [selection, setSelection] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  const [startDate, setStartDate] = useState(
+    selection[0].startDate.toDateString()
+  );
+  const [endDate, setEndDate] = useState(selection[0].endDate.toDateString());
+  console.log("first", endDate);
+  console.log("hhbhb", startDate);
   return (
     <div className=" px-40 py-6">
       {flag && (
@@ -219,6 +230,21 @@ export default function RoomPage() {
                   </button>
                 </div>
                 <hr />
+                <div className="mt-8">
+                  <h2 className="text-2xl font-medium mb-2">
+                    30 Nights in {room?.address}
+                  </h2>
+                  <span className="font-light text-sm text-gray-500">{startDate} - {endDate}</span>
+                  <div className=" pb-10">
+                    <DatePicker
+                      selection={selection}
+                      setSelection={setSelection}
+                      setEndDate={setEndDate}
+                      setStartDate={setStartDate}
+                    />
+                    <hr className="relative w-5/6 top-3 left-16"/>
+                  </div>
+                </div>
               </div>
               <div className="Reserve">Hello</div>
             </div>
