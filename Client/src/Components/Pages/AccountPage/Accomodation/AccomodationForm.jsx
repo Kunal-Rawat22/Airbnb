@@ -301,7 +301,7 @@ export default function AccommodationForm({ type }) {
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
             <label>Perks</label>
-            <div className="grid grid-cols-4 gap-x-2 px-3 pb-2">
+            <div className="grid grid-cols-4 gap-x-2 pb-2">
               {options.map((option, index) => (
                 <div
                   key={index}
