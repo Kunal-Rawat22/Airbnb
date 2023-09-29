@@ -8,6 +8,9 @@ import RoomPerks from "../../Components/Pages/Rooms/RoomPerks";
 import RoomDate from "../../Components/Pages/Rooms/RoomDate";
 import RoomOwner from "../../Components/Pages/Rooms/RoomOwner";
 import RoomCover from "../../Components/Pages/Rooms/RoomCover";
+// import ScrollListener from "../../ScrollListener";
+import Navbar from "../../Components/UI/Navbar";
+
 export default function RoomPage() {
   const { subpage } = useParams();
   const url = "http://localhost:4000/uploads/";
@@ -71,37 +74,59 @@ export default function RoomPage() {
     selection[0].startDate.toDateString()
   );
   const [endDate, setEndDate] = useState(selection[0].endDate.toDateString());
+
+  const [showNavbar, setShowNavbar] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 600) {
+        setShowNavbar(true);
+      } else {
+        setShowNavbar(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  console.log("object", showNavbar);
   console.log("first", endDate);
   console.log("hhbhb", startDate);
+
   return (
-    <div className=" px-40 py-6">
+    <div>
       {flag && (
-        <div className="flex flex-col">
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-medium">{room?.title}</h1>
-            <RoomCover address={room?.address}/>
-            <RoomPhotos photos={room?.photos} />
-            <div className="mt-12 flex ">
-              <div className="w-2/3">
-                <RoomOwner/>
-                <hr />
-                <RoomBrief />
-                <hr />
-                <RoomDescription description={room?.description} />
-                <hr />
-                <RoomPerks allOptions={allOptions} options={options} />
-                <hr />
-                <RoomDate
-                  address={room?.address}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selection={selection}
-                  setEndDate={setEndDate}
-                  setSelection={setSelection}
-                  setStartDate={setStartDate}
-                />
+        <div>
+          {showNavbar && <Navbar />}
+          <div className=" px-40 py-6">
+            <div className="flex flex-col">
+              <div className="flex flex-col">
+                <h1 className="text-3xl font-medium">{room?.title}</h1>
+                <RoomCover address={room?.address} />
+                <RoomPhotos photos={room?.photos} />
+                <div className="mt-12 flex ">
+                  <div className="w-2/3">
+                    <RoomOwner />
+                    <hr />
+                    <RoomBrief />
+                    <hr />
+                    <RoomDescription description={room?.description} />
+                    <hr />
+                    <RoomPerks allOptions={allOptions} options={options} />
+                    <hr />
+                    <RoomDate
+                      address={room?.address}
+                      startDate={startDate}
+                      endDate={endDate}
+                      selection={selection}
+                      setEndDate={setEndDate}
+                      setSelection={setSelection}
+                      setStartDate={setStartDate}
+                    />
+                  </div>
+                  <div className="Reserve">Hello</div>
+                </div>
               </div>
-              <div className="Reserve">Hello</div>
             </div>
           </div>
         </div>
