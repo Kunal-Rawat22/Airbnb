@@ -21,7 +21,7 @@ export default function AccountPage() {
     return <Navigate to={"/login"} />;
   }
   return (
-    <div>
+    <div className="pb-16">
       <div className="flex w-2/5 justify-between mx-auto mt-10">
         <Link to={"/account/profile"} className={linkClasses("profile")}>
           <i className="fa-solid fa-user text-center"></i>&nbsp;&nbsp;Profile

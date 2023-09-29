@@ -10,7 +10,7 @@ export default function IndexPage() {
   }, []);
   console.log(places);
   return (
-    <div className="p-4 lg:px-20 md:px-12 sm:px-8">
+    <div className="p-4 lg:px-20 md:px-12 sm:px-8 pb-16">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 gap-y-8">
         {places.length > 0 &&
           places.map((place, index) => (

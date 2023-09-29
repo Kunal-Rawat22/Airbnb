@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+
 
 export default function RoomReserve({
   price,
@@ -43,7 +44,7 @@ export default function RoomReserve({
 
   console.log("endFate", endDate);
   return (
-    <div className="flex flex-col border rounded-xl shadow-lg px-6 pt-6 pb-6">
+    <div className="flex flex-col border rounded-xl shadow-lg px-6 pt-6 pb-6 sticky top-32">
       <div>
         <h2 className="text-xl font-medium">
           ₹ {price} <span className="text-base font-light">night</span>
@@ -53,11 +54,23 @@ export default function RoomReserve({
         <div className="half flex border-b border-gray-400">
           <div className="w-1/2 border-r p-2 flex flex-col border-gray-400">
             <label className="text-xs font-medium">Check In</label>
-            <input type="date" name="" id="" value={sDate} className="text-sm font-light pt-1" />
+            <input
+              type="date"
+              name=""
+              id=""
+              value={sDate}
+              className="text-sm font-light pt-1"
+            />
           </div>
           <div className="w-1/2 p-2 flex flex-col">
             <label className="text-xs font-medium">Check Out</label>
-            <input type="date" name="" id="" value={eDate} className="text-sm font-light pt-1"/>
+            <input
+              type="date"
+              name=""
+              id=""
+              value={eDate}
+              className="text-sm font-light pt-1"
+            />
           </div>
         </div>
         <div className="w-full p-2  flex flex-col">

@@ -105,7 +105,7 @@ export default function RoomPage() {
                 <h1 className="text-3xl font-medium">{room?.title}</h1>
                 <RoomCover address={room?.address} />
                 <RoomPhotos photos={room?.photos} />
-                <div className="mt-12 flex ">
+                <div className="mt-12 flex pb-10">
                   <div className="w-2/3">
                     <RoomOwner />
                     <hr className=" w-11/12" />

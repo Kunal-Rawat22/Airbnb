@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import DatePicker from "./DateRange";
 export default function RoomDate({
   address,
