@@ -1,10 +1,47 @@
 import { useState } from "react";
 
-export default function RoomReserve({ price, noOfDays, flag2 }) {
+export default function RoomReserve({
+  price,
+  noOfDays,
+  flag2,
+  endDate,
+  startDate,
+}) {
   let discount = 0;
   if (noOfDays >= 7) {
     discount = 5000;
   }
+  const endYear = endDate.split(" ")[3];
+  const startYear = startDate.split(" ")[3];
+  const startMonth = startDate.split(" ")[1];
+  const endMonth = endDate.split(" ")[1];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let SI, EI;
+  months.map((month, index) => {
+    if (month === startMonth) SI = index + 1;
+    if (month === endMonth) EI = index + 1;
+  });
+
+  if (SI / 10 < 1) SI = "0" + SI;
+  if (EI / 10 < 1) EI = "0" + EI;
+
+  const sDate = `${startYear}-${SI}-${startDate.split(" ")[2]}`;
+  const eDate = `${endYear}-${EI}-${endDate.split(" ")[2]}`;
+
+  console.log("endFate", endDate);
   return (
     <div className="flex flex-col border rounded-xl shadow-lg px-6 pt-6 pb-6">
       <div>
@@ -16,11 +53,11 @@ export default function RoomReserve({ price, noOfDays, flag2 }) {
         <div className="half flex border-b border-gray-400">
           <div className="w-1/2 border-r p-2 flex flex-col border-gray-400">
             <label className="text-xs font-medium">Check In</label>
-            <input type="date" name="" id="" />
+            <input type="date" name="" id="" value={sDate} className="text-sm font-light pt-1" />
           </div>
           <div className="w-1/2 p-2 flex flex-col">
             <label className="text-xs font-medium">Check Out</label>
-            <input type="date" name="" id="" />
+            <input type="date" name="" id="" value={eDate} className="text-sm font-light pt-1"/>
           </div>
         </div>
         <div className="w-full p-2  flex flex-col">

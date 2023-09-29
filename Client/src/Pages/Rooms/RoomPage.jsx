@@ -133,6 +133,8 @@ export default function RoomPage() {
                       price={room?.price}
                       noOfDays={noOfDays}
                       flag2={flag2}
+                      endDate={endDate}
+                      startDate={startDate}
                     />
                   </div>
                 </div>
