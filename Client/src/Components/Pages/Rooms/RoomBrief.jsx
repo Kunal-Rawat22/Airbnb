@@ -1,7 +1,12 @@
 export default function RoomBrief()
 {
+  const today = new Date(); // Get the current date
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Add one day to the current date
+  const nextDate = tomorrow.toLocaleString().slice(0, 2);
+  const month = tomorrow.toLocaleString('en-US', { month: 'long' });
     return (
-      <div className="brief flex flex-col mt-8 px-2 space-y-7 pb-8">
+      <div className="brief flex flex-col mt-8 px-2 space-y-7 pb-8 pr-16">
         <div className="flex items-center space-x-10">
           <div className="text-center">
             <i className="fa-solid fa-desktop text-2xl"></i>
@@ -31,7 +36,7 @@ export default function RoomBrief()
           </div>
           <div className="flex flex-col">
             <h4 className="font-medium mb-1">
-              Free cancellation before 11 May.
+              Free cancellation before {nextDate} {month}.
             </h4>
           </div>
         </div>

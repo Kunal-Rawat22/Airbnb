@@ -3,7 +3,7 @@ import TruncateText from "./TruncatedText";
 
 export default function RoomDescription({ description }) {
   return (
-    <div className="description mt-8 flex flex-col px-2 space-y-6 pb-8">
+    <div className="description mt-8 flex flex-col px-2 space-y-6 pb-8 pr-16">
       <div className="space-x-2">
         <i className="fa-solid fa-star"></i>
         <span className="font-light">

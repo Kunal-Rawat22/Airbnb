@@ -1,7 +1,7 @@
 export default function RoomPerks({allOptions, options})
 {
     return (
-      <div className="perks mt-8 pb-10">
+      <div className="perks mt-8 pb-10 pr-16">
         <h2 className="text-2xl font-medium">What this place offers</h2>
         <div className="grid grid-cols-2 gap-4 mt-6 px-1">
           {allOptions.map((option, index) => (

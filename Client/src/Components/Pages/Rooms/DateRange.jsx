@@ -15,7 +15,7 @@ export default function DatePicker({ selection, setSelection, setEndDate, setSta
 
   return (
     <DateRangePicker
-      className="relative top-4 border-r right-44"
+      className="relative top-4 border-r right-52"
       onChange={handleSelect}
       showSelectionPreview={true}
       moveRangeOnFirstSelection={false}
