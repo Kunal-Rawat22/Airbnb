@@ -6,7 +6,7 @@ export default function RoomPhotos({ photos }) {
         <img
           src={url + photos[0]}
           alt=""
-          className="w-full object-cover rounded-s-xl max-h-96 h-full"
+          className="w-full object-cover rounded-s-xl max-h-96 h-full darker cursor-pointer"
         />
       </div>
       <div className="grid grid-rows-2 gap-y-2">
@@ -15,14 +15,14 @@ export default function RoomPhotos({ photos }) {
             <img
               src={url + photos[1]}
               alt=""
-              className="w-full object-cover max-h-48"
+              className="w-full object-cover max-h-48 darker cursor-pointer"
             />
           </div>
           <div>
             <img
               src={url + photos[2]}
               alt=""
-              className="w-full object-cover rounded-tr-xl max-h-48"
+              className="w-full object-cover rounded-tr-xl max-h-48 darker cursor-pointer"
             />
           </div>
         </div>
@@ -31,14 +31,14 @@ export default function RoomPhotos({ photos }) {
             <img
               src={url + photos[3]}
               alt=""
-              className="w-full object-cover max-h-48"
+              className="w-full object-cover max-h-48 darker cursor-pointer"
             />
           </div>
           <div>
             <img
               src={url + photos[0]}
               alt=""
-              className="w-full object-cover rounded-br-xl max-h-48"
+              className="w-full object-cover rounded-br-xl max-h-48 darker cursor-pointer"
             />
           </div>
         </div>

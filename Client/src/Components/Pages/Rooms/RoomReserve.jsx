@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 
 import { useEffect, useState } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 export default function RoomReserve({
   price,
   noOfDays,
@@ -53,6 +54,7 @@ export default function RoomReserve({
   }
   useEffect(() => {
     const handleClick = (e) => {
+      console.log(e.target.id);
       if (e.target.id === "Guests") setActive(true);
       else setActive(false);
     };
@@ -70,6 +72,9 @@ export default function RoomReserve({
     else if (name === "II") setInfants((prev) => prev + 1);
     else if (name === "PD") setPets((prev) => prev - 1);
     else if (name === "PI") setPets((prev) => prev + 1);
+  }
+  function handleReserve(e) {
+    e.preventDefault();
   }
   console.log("endFate", endDate);
   console.log("object", adults);
@@ -94,13 +99,17 @@ export default function RoomReserve({
           </div>
           <div className="w-1/2 p-2 flex flex-col border-t rounded-tr-lg border-gray-400">
             <label className="text-xs font-medium">Check Out</label>
-            <input
-              type="date"
-              name=""
-              id=""
-              value={eDate}
-              className="text-sm font-light pt-1 focus:outline-none"
-            />
+            {endDate === "" ? (
+              <span className="text-sm font-light pt-1">Add Date</span>
+            ) : (
+              <input
+                type="date"
+                name=""
+                id=""
+                value={eDate}
+                className="text-sm font-light pt-1 focus:outline-none"
+              />
+            )}
           </div>
         </div>
         <button
@@ -111,14 +120,27 @@ export default function RoomReserve({
           onClick={handleGuests}
           id="Guests"
         >
-          <div className="p-2 text-left">
+          <div className="p-2 text-left w-full pr-6" id="Guests">
             <label className="text-xs font-medium" id="Guests">
               Guest
             </label>
-            <div name="" id="Guests" className=" text-base font-light">
-              {`${adults + children} guests ${
-                infants ? `, ${infants} infants` : ""
-              }${pets ? `, ${pets} pets` : ""}`}
+            <div
+              name=""
+              id="Guests"
+              className="flex justify-between w-full text-base font-light"
+            >
+              <span id="Guests">{`${adults + children} ${
+                adults + children < 2 ? "guest" : "guests"
+              } ${
+                infants
+                  ? `, ${infants} ${infants < 2 ? "infant" : "infants"}`
+                  : ""
+              }${pets ? `, ${pets} ${pets < 2 ? "pet" : "pets"}` : ""}`}</span>
+              {!active ? (
+                <FontAwesomeIcon icon={faChevronDown} />
+              ) : (
+                <FontAwesomeIcon icon={faChevronUp} />
+              )}
             </div>
           </div>
 
@@ -126,7 +148,7 @@ export default function RoomReserve({
             <div className="relative w-full" id="Guests">
               <div
                 id="Guests"
-                className=" cursor-default w-full absolute flex flex-col top-0 bg-white shadow-md border rounded-md pt-5 px-4 main-div space-y-4 pb-8 z-20"
+                className=" cursor-default w-full absolute flex flex-col top-0 bg-white shadow-md border rounded-md pt-5 px-4 main-div space-y-4 pb-4 z-20"
               >
                 <div className="flex justify-between one-div" id="Guests">
                   <div className="flex flex-col" id="Guests">
@@ -303,14 +325,30 @@ export default function RoomReserve({
                     </button>
                   </div>
                 </div>
+                <div className="flex flex-col items-end  one-div" id="Guests">
+                  <div className="flex flex-col justify-end ">
+                    <span
+                      className="text-justify text-xs text-gray-600"
+                      id="Guests"
+                    >
+                      This place has a maximum of 12 guests, not including
+                      infants. If you&apos;re bringing more than 2 pets, please
+                      let your Host know.
+                    </span>
+                  </div>
+                  <button className="mt-4 underline">Close</button>
+                </div>
               </div>
             </div>
           )}
         </button>
       </div>
-      <div className="w-full bg-pink-600 text-white text-center p-3 rounded-lg">
+      <button
+        className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
+        onClick={handleReserve}
+      >
         {flag2 ? "Reserve" : "Check For Availablity"}
-      </div>
+      </button>
       {flag2 && (
         <div className="w-full flex flex-col">
           <span className="text-sm text-gray-600 font-light mt-4 text-center m">

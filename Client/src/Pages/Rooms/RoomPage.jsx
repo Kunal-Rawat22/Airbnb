@@ -76,7 +76,7 @@ export default function RoomPage() {
   const [startDate, setStartDate] = useState(
     selection[0].startDate.toDateString()
   );
-  const [endDate, setEndDate] = useState(selection[0].endDate.toDateString());
+  const [endDate, setEndDate] = useState("");
   const [noOfDays, setNoOfDays] = useState(1);
   //Scrolling Navbar
   const [showNavbar, setShowNavbar] = useState(false);

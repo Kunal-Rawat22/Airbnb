@@ -10,7 +10,7 @@ export default function RoomDate({
   setStartDate,
   setNoOfDays,
   noOfDays,
-  setFlag2
+  setFlag2,
 }) {
   const big = ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"];
   const small = ["Apr", "Jun", "Sep", "Nov"];
@@ -19,26 +19,31 @@ export default function RoomDate({
   const month1 = endDate.split(" ")[1];
   const month2 = startDate.split(" ")[1];
   let days;
-  if (month1 === month2) {
-    days = date1 - date2 + 1;
-    setNoOfDays(days);
+  if (endDate != "") {
+    if (month1 === month2) {
+      days = date1 - date2 + 1;
+      setNoOfDays(days);
+    } else {
+      if (big.includes(month2)) days = 31 - date2 + date1 + 1;
+      else if (small.includes(month2)) days = 30 - date2 + date1 + 1;
+      else days = 28 - date2 + date1 + 1;
+      setNoOfDays(days);
+    }
+    setFlag2(true);
   } else {
-    if (big.includes(month2)) days = 31 - date2 + date1 + 1;
-    else if (small.includes(month2)) days = 30 - date2 + date1 + 1;
-    else days = 28 - date2 + date1 + 1;
-    setNoOfDays(days);
+    setFlag2(false);
   }
-  if (days === 1) setFlag2(false);
-  else setFlag2(true)
-    
+
   console.log(noOfDays);
   return (
     <div className="Date-Picker mt-8 pr-16">
-      <h2 className="text-2xl font-medium mb-2">{noOfDays} Nights in {address}</h2>
+      <h2 className="text-2xl font-medium mb-2">
+        {noOfDays} Nights in {address}
+      </h2>
       <span className="font-light text-sm text-gray-500">
         {startDate} - {endDate}
       </span>
-      <div className=" pb-10">
+      <div className="mt-4">
         <DatePicker
           selection={selection}
           setSelection={setSelection}
@@ -46,7 +51,6 @@ export default function RoomDate({
           setStartDate={setStartDate}
           startDate={startDate}
         />
-        <hr className="relative w-12/12 top-3 left-2" />
       </div>
     </div>
   );

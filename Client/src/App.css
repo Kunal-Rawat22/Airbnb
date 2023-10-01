@@ -2,3 +2,35 @@ input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="date"]::-webkit-inner-spin-button {
     display: none;
 }
+
+.rdrMonth {
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+}
+
+.rdrDefinedRangesWrapper {
+    width: 0;
+    position: absolute;
+    z-index: -10;
+}
+
+.rdrMonthAndYearWrapper {
+    border-left-width: 1px;
+}
+
+.rdrInputRanges {
+    width: 0;
+}
+
+.rdrDateDisplayWrapper {
+    border-left-width: 1px;
+}
+
+img.darker {
+    transition: all 0.2s ease-in-out;
+}
+
+img.darker:hover {
+    filter: brightness(50%);
+}
