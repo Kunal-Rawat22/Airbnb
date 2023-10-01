@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+import { useEffect, useState } from "react";
 
 export default function RoomReserve({
   price,
@@ -41,8 +42,37 @@ export default function RoomReserve({
 
   const sDate = `${startYear}-${SI}-${startDate.split(" ")[2]}`;
   const eDate = `${endYear}-${EI}-${endDate.split(" ")[2]}`;
-
+  const [adults, setAdults] = useState(1);
+  const [children, setChilren] = useState(0);
+  const [infants, setInfants] = useState(0);
+  const [pets, setPets] = useState(0);
+  const [active, setActive] = useState(false);
+  function handleGuests(e) {
+    e.preventDefault();
+    setActive(true);
+  }
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target.id === "Guests") setActive(true);
+      else setActive(false);
+    };
+    window.addEventListener("click", handleClick);
+  });
+  function handleGClick(e) {
+    e.preventDefault();
+    const name = e.target.name;
+    console.log(e.target.name);
+    if (name === "AD") setAdults((prev) => prev - 1);
+    else if (name === "AI") setAdults((prev) => prev + 1);
+    else if (name === "CD") setChilren((prev) => prev - 1);
+    else if (name === "CI") setChilren((prev) => prev + 1);
+    else if (name === "ID") setInfants((prev) => prev - 1);
+    else if (name === "II") setInfants((prev) => prev + 1);
+    else if (name === "PD") setPets((prev) => prev - 1);
+    else if (name === "PI") setPets((prev) => prev + 1);
+  }
   console.log("endFate", endDate);
+  console.log("object", adults);
   return (
     <div className="flex flex-col border rounded-xl shadow-lg px-6 pt-6 pb-6 sticky top-32">
       <div>
@@ -50,33 +80,233 @@ export default function RoomReserve({
           ₹ {price} <span className="text-base font-light">night</span>
         </h2>
       </div>
-      <div className="flex flex-col border rounded-lg border-gray-400 mt-6 mb-4">
-        <div className="half flex border-b border-gray-400">
-          <div className="w-1/2 border-r p-2 flex flex-col border-gray-400">
+      <div className="flex flex-col border-l border-r rounded-lg border-gray-400 mt-6 mb-4">
+        <div className="half flex">
+          <div className="w-1/2 border-t rounded-tl-lg p-2 border-r flex flex-col border-gray-400">
             <label className="text-xs font-medium">Check In</label>
             <input
               type="date"
               name=""
               id=""
               value={sDate}
-              className="text-sm font-light pt-1"
+              className="text-sm font-light pt-1 focus:outline-none"
             />
           </div>
-          <div className="w-1/2 p-2 flex flex-col">
+          <div className="w-1/2 p-2 flex flex-col border-t rounded-tr-lg border-gray-400">
             <label className="text-xs font-medium">Check Out</label>
             <input
               type="date"
               name=""
               id=""
               value={eDate}
-              className="text-sm font-light pt-1"
+              className="text-sm font-light pt-1 focus:outline-none"
             />
           </div>
         </div>
-        <div className="w-full p-2  flex flex-col">
-          <label className="text-xs font-medium">Guest</label>
-          <input type="date" name="" id="" />
-        </div>
+        <button
+          className="w-full  flex flex-col border-b border-t rounded-b-lg border-gray-400 "
+          // focus:border
+          // focus:border-black
+          // focus:rounded-lg
+          onClick={handleGuests}
+          id="Guests"
+        >
+          <div className="p-2 text-left">
+            <label className="text-xs font-medium" id="Guests">
+              Guest
+            </label>
+            <div name="" id="Guests" className=" text-base font-light">
+              {`${adults + children} guests ${
+                infants ? `, ${infants} infants` : ""
+              }${pets ? `, ${pets} pets` : ""}`}
+            </div>
+          </div>
+
+          {active && (
+            <div className="relative w-full" id="Guests">
+              <div
+                id="Guests"
+                className=" cursor-default w-full absolute flex flex-col top-0 bg-white shadow-md border rounded-md pt-5 px-4 main-div space-y-4 pb-8 z-20"
+              >
+                <div className="flex justify-between one-div" id="Guests">
+                  <div className="flex flex-col" id="Guests">
+                    <h3 className="font-medium text-left">Adults</h3>
+                    <span className="font-light text-sm text-left">
+                      Age 13+
+                    </span>
+                  </div>
+                  <div
+                    className="flex w-2/5 justify-between py-1 items-center"
+                    id="Guests"
+                  >
+                    <button
+                      className={`p-1 px-2.5 border rounded-full ${
+                        adults < 2 ? "border-gray-300" : "border-gray-500"
+                      }`}
+                      disabled={adults < 2 ? true : false}
+                      id="Guests"
+                      name="AD"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className={`fa-solid fa-minus ${
+                          adults < 2 ? "text-gray-300" : "text-gray-500"
+                        } text-sm`}
+                        id="Guests"
+                        name="AD"
+                      ></button>
+                    </button>
+                    <span className="">{adults}</span>
+                    <button
+                      className="p-1 px-2.5 border rounded-full border-gray-500"
+                      id="Guests"
+                      name="AI"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className="fa-solid fa-plus text-gray-500 text-sm"
+                        id="Guests"
+                        name="AI"
+                      ></button>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-between one-div" id="Guests">
+                  <div className="flex flex-col" id="Guests">
+                    <h3 className="font-medium text-left">Children</h3>
+                    <span className="font-light text-sm text-left">
+                      Age 2-12
+                    </span>
+                  </div>
+                  <div
+                    className="flex w-2/5 justify-between py-1 items-center"
+                    id="Guests"
+                  >
+                    <button
+                      className={`p-1 px-2.5 border rounded-full ${
+                        children < 1 ? "border-gray-300" : "border-gray-500"
+                      }`}
+                      disabled={children < 1 ? true : false}
+                      id="Guests"
+                      name="CD"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className={`fa-solid fa-minus ${
+                          children < 1 ? "text-gray-300" : "text-gray-500"
+                        } text-sm`}
+                        id="Guests"
+                        name="CD"
+                      ></button>
+                    </button>
+                    <span className="">{children}</span>
+                    <button
+                      className="p-1 px-2.5 border rounded-full border-gray-500"
+                      id="Guests"
+                      name="CI"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className="fa-solid fa-plus text-gray-500 text-sm"
+                        id="Guests"
+                        name="CI"
+                      ></button>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-between one-div" id="Guests">
+                  <div className="flex flex-col" id="Guests">
+                    <h3 className="font-medium text-left">Infants</h3>
+                    <span className="font-light text-sm text-left">
+                      Under 2
+                    </span>
+                  </div>
+                  <div
+                    className="flex w-2/5 justify-between  py-1 items-center"
+                    id="Guests"
+                  >
+                    <button
+                      className={`p-1 px-2.5 border rounded-full ${
+                        infants < 1 ? "border-gray-300" : "border-gray-500"
+                      }`}
+                      disabled={infants < 1 ? true : false}
+                      id="Guests"
+                      name="ID"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className={`fa-solid fa-minus ${
+                          infants < 1 ? "text-gray-300" : "text-gray-500"
+                        } text-sm`}
+                        name="ID"
+                        id="Guests"
+                      ></button>
+                    </button>
+                    <span className="">{infants}</span>
+                    <button
+                      className="p-1 px-2.5 border rounded-full border-gray-500"
+                      id="Guests"
+                      name="II"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className="fa-solid fa-plus text-gray-500 text-sm"
+                        id="Guests"
+                        name="II"
+                      ></button>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex justify-between one-div" id="Guests">
+                  <div className="flex flex-col" id="Guests">
+                    <h3 className="font-medium text-left">Pets</h3>
+                    <span
+                      className="font-medium underline text-sm text-left"
+                      id="Guests"
+                    >
+                      Bringing a Service Dogs
+                    </span>
+                  </div>
+                  <div
+                    className="flex w-2/5 justify-between  py-1 items-center"
+                    id="Guests"
+                  >
+                    <button
+                      className={`p-1 px-2.5 border rounded-full ${
+                        pets < 1 ? "border-gray-300" : "border-gray-500"
+                      }`}
+                      disabled={pets < 1 ? true : false}
+                      id="Guests"
+                      name="PD"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className={`fa-solid fa-minus ${
+                          pets < 1 ? "text-gray-300" : "text-gray-500"
+                        } text-sm`}
+                        id="Guests"
+                        name="PD"
+                      ></button>
+                    </button>
+                    <span className="">{pets}</span>
+                    <button
+                      className="p-1 px-2.5 border rounded-full border-gray-500"
+                      id="Guests"
+                      name="PI"
+                      onClick={handleGClick}
+                    >
+                      <button
+                        className="fa-solid fa-plus text-gray-500 text-sm"
+                        id="Guests"
+                        name="PI"
+                      ></button>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </button>
       </div>
       <div className="w-full bg-pink-600 text-white text-center p-3 rounded-lg">
         {flag2 ? "Reserve" : "Check For Availablity"}

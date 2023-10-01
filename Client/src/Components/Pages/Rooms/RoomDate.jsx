@@ -44,6 +44,7 @@ export default function RoomDate({
           setSelection={setSelection}
           setEndDate={setEndDate}
           setStartDate={setStartDate}
+          startDate={startDate}
         />
         <hr className="relative w-12/12 top-3 left-2" />
       </div>
