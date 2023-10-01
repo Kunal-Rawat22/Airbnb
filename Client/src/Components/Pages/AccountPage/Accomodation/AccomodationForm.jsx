@@ -172,6 +172,7 @@ export default function AccommodationForm({ type }) {
         checkIn: "",
         checkOut: "",
         maxGuests: Number,
+        price: Number,
       });
       alert("You have added successfully.");
       setRedirect(true);
@@ -203,6 +204,7 @@ export default function AccommodationForm({ type }) {
         checkIn: "",
         checkOut: "",
         maxGuests: Number,
+        price:Number
       });
       alert("You have added successfully.");
       setRedirect(true);

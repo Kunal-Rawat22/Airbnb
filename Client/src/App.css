@@ -1,4 +1,4 @@
-input[type="date"]::-webkit-calendar-picker-indicator,
+.reserve-date::-webkit-calendar-picker-indicator,
 input[type="date"]::-webkit-inner-spin-button {
     display: none;
 }
@@ -33,4 +33,9 @@ img.darker {
 
 img.darker:hover {
     filter: brightness(50%);
+}
+
+.grid-item-large {
+    grid-column: span 8;
+    /* This makes the item span 2 columns */
 }

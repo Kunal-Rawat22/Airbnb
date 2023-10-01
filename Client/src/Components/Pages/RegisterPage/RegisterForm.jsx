@@ -9,7 +9,7 @@ export default function RegisterForm() {
     email: "",
     password: "",
     gender: "",
-    dob: Date,
+    dob: "",
   });
 
   const [redirect, setRedirect] = useState(false);
@@ -66,7 +66,7 @@ export default function RegisterForm() {
         email: "",
         password: "",
         gender: "",
-        dob: Date,
+        dob: "",
       });
       alert("You have successfully registered. You can log in now !!");
     } catch (e) {
@@ -76,14 +76,14 @@ export default function RegisterForm() {
         email: "",
         password: "",
         gender: "",
-        dob: Date,
+        dob: "",
       });
       alert("Registration Failed!! Try Again Later");
     }
     setRedirect(true);
   }
   if (redirect === true) {
-    <Navigate to={"/"} />;
+    return(<Navigate to={"/"} />);
   }
   console.log(userInput);
   return (

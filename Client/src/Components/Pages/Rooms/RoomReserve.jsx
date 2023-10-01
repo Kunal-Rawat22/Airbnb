@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import GuestList from "./GuestList/GuestList";
+import { Link } from "react-router-dom";
 export default function RoomReserve({
   price,
   noOfDays,
   flag2,
   endDate,
   startDate,
+  subpage,
 }) {
   let discount = 0;
   if (noOfDays >= 7) {
@@ -53,19 +55,41 @@ export default function RoomReserve({
     e.preventDefault();
     setActive(true);
   }
+  const [link, setLink] = useState("");
   useEffect(() => {
     const handleClick = (e) => {
-      console.log(e.target.id);
+      // console.log(e.target.id);
       if (e.target.id === "Guests") setActive(true);
       else setActive(false);
     };
     window.addEventListener("click", handleClick);
-  });
-  function handleReserve(e) {
+    setLink(
+      `/book/stays/${subpage}?noOfAdults=${adults}&checkin=${startDate}&checkout=${endDate}&noOfDays=${noOfDays}&noOfInfants=${infants}&noOfChildren=${Children}&noOfPets=${pets}`
+    );
+  }, [
+    subpage,
+    adults,
+    infants,
+    Children,
+    startDate,
+    endDate,
+    noOfDays,
+    pets,
+    setLink,
+    setActive,
+  ]);
+  // function handleReserve(e) {
+  //   e.preventDefault();
+  //   console.log("YO");
+  //   link = `/book/stays/${subpage}?noOfAdults=${adults}&checkin=${startDate}&checkout=${endDate}&noOfDays=${noOfDays}&noOfInfants=${infants}&noOfChildren=${Children}&noOfPets=${pets}`;
+
+  // }
+  function handleBlank(e) {
     e.preventDefault();
+    console.log("Bro");
   }
-  console.log("endFate", endDate);
-  console.log("object", adults);
+  // console.log("endFate", endDate);
+  // console.log("object", adults);
   return (
     <div className="flex flex-col border rounded-xl shadow-lg px-6 pt-6 pb-6 sticky top-32">
       <div>
@@ -82,7 +106,7 @@ export default function RoomReserve({
               name=""
               id=""
               value={sDate}
-              className="text-sm font-light pt-1 focus:outline-none"
+              className="text-sm font-light pt-1 focus:outline-none  reserve-date"
             />
           </div>
           <div className="w-1/2 p-2 flex flex-col border-t rounded-tr-lg border-gray-400">
@@ -95,7 +119,7 @@ export default function RoomReserve({
                 name=""
                 id=""
                 value={eDate}
-                className="text-sm font-light pt-1 focus:outline-none"
+                className="text-sm font-light pt-1 focus:outline-none reserve-date"
               />
             )}
           </div>
@@ -142,16 +166,27 @@ export default function RoomReserve({
               setChildren={setChildren}
               setInfants={setInfants}
               setPets={setPets}
+              setLink={setLink}
             />
           )}
         </button>
       </div>
-      <button
-        className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
-        onClick={handleReserve}
-      >
-        {flag2 ? "Reserve" : "Check For Availablity"}
-      </button>
+      {flag2 && (
+        <Link
+          to={link}
+          className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
+        >
+          Reserve
+        </Link>
+      )}
+      {!flag2 && (
+        <button
+          className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
+          onClick={handleBlank}
+        >
+          Check For Availablity
+        </button>
+      )}
       {flag2 && (
         <div className="w-full flex flex-col">
           <span className="text-sm text-gray-600 font-light mt-4 text-center m">

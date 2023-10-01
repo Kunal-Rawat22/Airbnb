@@ -135,6 +135,7 @@ export default function RoomPage() {
                       flag2={flag2}
                       endDate={endDate}
                       startDate={startDate}
+                      subpage={subpage}
                     />
                   </div>
                 </div>

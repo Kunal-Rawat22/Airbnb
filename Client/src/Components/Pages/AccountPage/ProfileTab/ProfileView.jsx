@@ -12,7 +12,7 @@ export default function ProfileTab() {
     mobileNo: "",
     email: "",
     gender: "",
-    dob: Date,
+    dob: "",
   });
 
   useEffect(() => {
