@@ -118,7 +118,9 @@ app.post("/login", async (req, res) => {
 //Logout Route
 app.get("/logout", (req, res) => {
   res.clearCookie("session"); // Clear the session cookie
-  res.cookie("token", "").status(200).json("Logout Out");
+  res.clearCookie("session.sig");
+  res.clearCookie("token");
+  res.status(200).json("Logout Out");
 });
 
 //Refresh Route
@@ -130,9 +132,10 @@ app.get("/profile", async (req, res) => {
       if (err) throw err;
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
-      var year = dob?.getFullYear();
-      var month = dob?.getMonth() + 1; // Adding 1 because months are zero-based
-      var day = dob?.getDate();
+      console.log(dob);
+      var year = dob?.split('-')[0];
+      var month = +dob?.split("-")[1] + 1; // Adding 1 because months are zero-based
+      var day = dob?.split("-")[2];
       let date = `${year}-${month}-${day}`;
       const userDoc = {
         userName,
@@ -146,18 +149,21 @@ app.get("/profile", async (req, res) => {
       res.json(userDoc);
     });
   } else if (passport) {
-    const { user } = passport; 
+    const { user } = passport;
     try {
       const userDoc = await User.findOne({ email: user.email });
       if (userDoc) {
         console.log("bhbhbhbhb", userDoc);
+        const obj = { ...userDoc._doc, ...user };
+        const newDoc = await User.updateOne({ email: user.email }, { ...obj });
+        console.log("uyibhbib", obj);
         jwt.sign(
           { email: userDoc.email, id: userDoc._id },
           jwtSecret,
           {},
           (err, token) => {
             if (err) throw err;
-            res.cookie("token", token).status(200).json(user);
+            res.cookie("token", token).status(200).json(obj);
           }
         );
       } else {
@@ -324,32 +330,7 @@ app.put("/places/:id", async (req, res) => {
     });
   }
 });
-app.get("/login/success", async (req, res) => {
-  const { user } = req.session.passport;
-  console.log(user);
-  if (user) {
-    try {
-      const userDoc = await User.findOne({ email: user.email });
-      if (userDoc) {
-        console.log("bhbhbhbhb", userDoc);
-        jwt.sign(
-          { email: userDoc.email, id: userDoc._id },
-          jwtSecret,
-          {},
-          (err, token) => {
-            if (err) throw err;
-            res.cookie("token", token).status(200).json(user);
-          }
-        );
-      } else {
-        const userDoc = await User.create(user);
-        res.status(200).json(userDoc);
-      }
-    } catch (e) {
-      res.status(422).json(e);
-    }
-  }
-});
+
 app.get("/all-places", async (req, res) => {
   const result = res.json(await Place.find());
 });

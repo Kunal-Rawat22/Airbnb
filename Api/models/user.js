@@ -7,10 +7,11 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, unique: true },
     password: { type: String },
     gender: { type: String },
-    dob: { type: Date },
+    dob: { type: String },
     googleId: { type: String, default: null },
-    facebook: { type: String, default: null },
-    googleId: { type: String, default: null },
+    facebookId: { type: String, default: null },
+    appleId: { type: String, default: null },
+    githubId: { type: String, default: null },
   },
   { timestamp: true }
 );
