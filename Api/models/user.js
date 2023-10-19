@@ -8,6 +8,9 @@ const UserSchema = new mongoose.Schema(
     password: { type: String },
     gender: { type: String },
     dob: { type: Date },
+    googleId: { type: String, default: null },
+    facebook: { type: String, default: null },
+    googleId: { type: String, default: null },
   },
   { timestamp: true }
 );

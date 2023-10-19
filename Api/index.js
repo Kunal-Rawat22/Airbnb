@@ -13,10 +13,28 @@ const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
+const passport = require("passport");
+const cookieSession = require("cookie-session");
+const passportSetup = require("./models/passport");
+const authRoute = require('./routes/auth');
 
 app.use(express.json());
 app.use(cookieParser());
+
+//Cookie Session
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["airbnb"],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use('/auth', authRoute);
 //Cors Connection
 app.use(
   cors({
@@ -244,7 +262,7 @@ app.put("/places/:id", async (req, res) => {
     photos,
     price,
   } = req.body;
-  console.log("price",price);
+  console.log("price", price);
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
