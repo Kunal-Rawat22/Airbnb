@@ -1,13 +1,30 @@
+import { useEffect, useState } from "react";
+
 export default function Footer() {
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  useEffect(() => {
+    function handleResize() {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div>
-      <footer className="bg-gray-50 border-t border-gray-300 ">
-        <div className="upper-half px-36 pt-8 ">
+      <footer className="bg-gray-50 border-t border-gray-300 pb-4">
+        <div className="upper-half lg:px-32 md:px-20 lg:pt-8 px-4 pt-8">
           <h2 className="text-xl font-medium px-4">
             Inspiration for future getaways
           </h2>
           <div className="text-sm font-medium pt-2 px-4 ">
-            <div className="flex space-x-6 w-full h-14">
+            <div className="grid-cols-5 lg:grid-cols-8 lg:space-x-6  md:space-x-6 sm:space-x-8 space-x-3 w-full h-14">
               <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
                 Popular
               </button>
@@ -20,102 +37,132 @@ export default function Footer() {
               <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
                 Mountains
               </button>
-              <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
-                Beach
-              </button>
-              <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
-                Unique stays
-              </button>
-              <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
-                Categories
-              </button>
-              <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
-                Things to do
-              </button>
+              {screenSize.width > 555 && (
+                <>
+                  <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
+                    Beach
+                  </button>
+                  <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
+                    Unique stays
+                  </button>
+                  {screenSize.width > 810 && (
+                    <>
+                      <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
+                        Categories
+                      </button>
+                    </>
+                  )}
+                  {screenSize.width > 930 && (
+                    <>
+                      <button className="py-4 text-slate-500 focus:text-black focus:border-b-2 focus:border-black">
+                        Things to do
+                      </button>
+                    </>
+                  )}
+                </>
+              )}
             </div>
 
             <hr className="w-full text-slate-600 " />
           </div>
         </div>
-        <div className="lower-half px-36 ">
-          <div className="grid grid-cols-6 px-4 pt-8 text-sm gap-8 pb-8">
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-medium">London</span>
-              <span className="text-slate-500 font-light">England</span>
+        {screenSize.width > 555 && (
+          <div
+            className={`${
+              screenSize.width > 1023
+                ? "px-32"
+                : `${screenSize.width > 768 ? "px-20" : "px-4"} `
+            } lower-half`}
+          >
+            <div className="grid grid-cols-6 px-4 pt-8 text-sm gap-8 pb-8">
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">London</span>
+                <span className="text-slate-500 font-light">England</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <hr className="w-screen text-center" />
-        <div className="upper-2-half  px-36 ">
-          <div className="grid grid-cols-3 px-4 pt-8 text-sm gap-8 pb-8">
+        <div className="upper-2-half ">
+          <div
+            className={`${
+              screenSize.width > 555
+                ? `${
+                    screenSize.width > 1023
+                      ? "px-36"
+                      : `${screenSize.width > 768 ? "px-24" : "px-8"}`
+                  } grid grid-cols-3 pt-8 text-sm gap-8 pb-8 `
+                : "pt-8 flex flex-col justify-start px-8 space-y-6"
+            }`}
+          >
             <div className="flex flex-col space-y-2">
               <h5 className="font-medium">Support</h5>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
@@ -137,6 +184,7 @@ export default function Footer() {
                 Report neighbourhood concern
               </div>
             </div>
+            {screenSize.width <= 555 && <hr />}
             <div className="flex flex-col space-y-2">
               <h5 className="font-medium">Hosting</h5>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
@@ -155,6 +203,7 @@ export default function Footer() {
                 Hosting responsibly
               </div>
             </div>
+            {screenSize.width <= 555 && <hr />}
             <div className="flex flex-col space-y-2">
               <h5 className="font-medium">Airbnb</h5>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
@@ -175,7 +224,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="px-4">
-            <hr className="w-full text-slate-600" />
+            {/* <hr className="w-full text-slate-600" /> */}
           </div>
           <div className="lower-2-half"></div>
         </div>

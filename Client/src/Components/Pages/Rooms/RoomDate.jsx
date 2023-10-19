@@ -11,6 +11,7 @@ export default function RoomDate({
   setNoOfDays,
   noOfDays,
   setFlag2,
+  screenSize,
 }) {
   const big = ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"];
   const small = ["Apr", "Jun", "Sep", "Nov"];
@@ -43,13 +44,14 @@ export default function RoomDate({
       <span className="font-light text-sm text-gray-500">
         {startDate} - {endDate}
       </span>
-      <div className="mt-4">
+      <div className={`mt-4`}>
         <DatePicker
           selection={selection}
           setSelection={setSelection}
           setEndDate={setEndDate}
           setStartDate={setStartDate}
           startDate={startDate}
+          screenSize={screenSize}
         />
       </div>
     </div>

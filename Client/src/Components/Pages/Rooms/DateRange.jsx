@@ -4,7 +4,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 // import { useState } from "react";
 // import { addDays } from "date-fns";
-export default function DatePicker({ selection, setSelection, setEndDate, setStartDate, startDate}) {
+export default function DatePicker({ selection, setSelection, setEndDate, setStartDate, startDate,screenSize}) {
 
   const handleSelect = (ranges) => {
       setSelection([ranges.selection]);
@@ -20,7 +20,7 @@ export default function DatePicker({ selection, setSelection, setEndDate, setSta
       showSelectionPreview={true}
       moveRangeOnFirstSelection={false}
       startDate={startDate}
-      months={2}
+      months={screenSize.width<1355?1:2}
       minDate={new Date()}
       ranges={selection}
       direction="horizontal"

@@ -10,6 +10,7 @@ import RoomOwner from "../../Components/Pages/Rooms/RoomOwner";
 import RoomCover from "../../Components/Pages/Rooms/RoomCover";
 import Navbar from "../../Components/UI/Navbar";
 import RoomReserve from "../../Components/Pages/Rooms/RoomReserve";
+import ReserveBar from "../../Components/Pages/Rooms/ReserveBar";
 export default function RoomPage() {
   const { subpage } = useParams();
   const [room, setRoom] = useState({
@@ -94,19 +95,49 @@ export default function RoomPage() {
     };
   }, []);
 
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  useEffect(() => {
+    function handleResize() {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div>
       {flag && (
         <div>
           {showNavbar && <Navbar />}
-          <div className=" px-40 py-6">
+          <div className=" lg:px-40 py-6 md:px-20">
             <div className="flex flex-col">
               <div className="flex flex-col">
-                <h1 className="text-3xl font-medium">{room?.title}</h1>
-                <RoomCover address={room?.address} />
-                <RoomPhotos photos={room?.photos} />
-                <div className="mt-12 flex pb-10">
-                  <div className="w-2/3">
+                {screenSize.width > 768 && (
+                  <>
+                    <h1 className="text-3xl font-medium">{room?.title}</h1>
+                    <RoomCover address={room?.address} />
+                  </>
+                )}
+                <RoomPhotos photos={room?.photos} screenSize={screenSize} />
+                {screenSize.width <= 768 && (
+                  <div className="px-6 pt-6">
+                    <h1 className="text-3xl font-medium">{room?.title}</h1>
+                    <RoomCover address={room?.address} />
+                  </div>
+                )}
+                <div
+                  className={`mt-12 flex pb-10 w-full ${
+                    screenSize.width <= 768 ? "px-6" : ""
+                  }`}
+                >
+                  <div className="lg:w-2/3">
                     <RoomOwner />
                     <hr className=" w-11/12" />
                     <RoomBrief />
@@ -126,22 +157,41 @@ export default function RoomPage() {
                       setNoOfDays={setNoOfDays}
                       noOfDays={noOfDays}
                       setFlag2={setFlag2}
+                      screenSize={screenSize}
                     />
                   </div>
-                  <div className="Reserve w-full">
-                    <RoomReserve
-                      price={room?.price}
-                      noOfDays={noOfDays}
-                      flag2={flag2}
-                      endDate={endDate}
-                      startDate={startDate}
-                      subpage={subpage}
-                    />
-                  </div>
+                  {screenSize.width > 768 && (
+                    <div
+                      className={`Reserve ${
+                        screenSize.width < 1355 && screenSize.width > 1170
+                          ? "w-5/12"
+                          : "w-full"
+                      }`}
+                    >
+                      <RoomReserve
+                        price={room?.price}
+                        noOfDays={noOfDays}
+                        flag2={flag2}
+                        endDate={endDate}
+                        startDate={startDate}
+                        subpage={subpage}
+                        screenSize={screenSize}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
+          {screenSize.width <= 768 && (
+            <ReserveBar
+              price={room?.price}
+              noOfDays={noOfDays}
+              endDate={endDate}
+              startDate={startDate}
+              screenSize={screenSize}
+            />
+          )}
         </div>
       )}
     </div>

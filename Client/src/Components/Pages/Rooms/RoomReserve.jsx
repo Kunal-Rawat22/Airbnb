@@ -12,6 +12,7 @@ export default function RoomReserve({
   endDate,
   startDate,
   subpage,
+  screenSize,
 }) {
   let discount = 0;
   if (noOfDays >= 7) {
@@ -167,6 +168,8 @@ export default function RoomReserve({
               setInfants={setInfants}
               setPets={setPets}
               setLink={setLink}
+              screenSize={screenSize}
+              setActive={setActive}
             />
           )}
         </button>

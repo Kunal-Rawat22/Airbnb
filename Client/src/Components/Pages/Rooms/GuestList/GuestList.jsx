@@ -9,6 +9,8 @@ export default function GuestList({
   setChildren,
   setInfants,
   setPets,
+  screenSize,
+  setActive
 }) {
   function handleGClick(e) {
     e.preventDefault();
@@ -23,14 +25,23 @@ export default function GuestList({
     else if (name === "PD") setPets((prev) => prev - 1);
     else if (name === "PI") setPets((prev) => prev + 1);
   }
+  function handleActive(e) {
+    e.preventDefault();
+    setActive(false);
+  }
   // function handleReserve(e) {
   //   e.preventDefault();
   // }
   return (
-    <div className="relative w-full" id="Guests">
+    <div
+      className={`${screenSize.width <= 768 ? "absolute" : "relative"} w-full`}
+      id="Guests"
+    >
       <div
         id="Guests"
-        className=" cursor-default w-full absolute flex flex-col top-0 bg-white shadow-md border rounded-md pt-5 px-4 main-div space-y-4 pb-4 z-20"
+        className={`${
+          screenSize.width <= 768 ? "bottom-8 right-8" : "top-0"
+        } cursor-default w-full absolute flex flex-col bg-white shadow-md border rounded-md pt-5 px-4 main-div space-y-4 pb-4 z-20`}
       >
         <div className="flex justify-between one-div" id="Guests">
           <div className="flex flex-col" id="Guests">
@@ -158,7 +169,7 @@ export default function GuestList({
               id="Guests"
               name="II"
               onClick={handleGClick}
-              disabled={infants>4? true : false}
+              disabled={infants > 4 ? true : false}
             >
               <button
                 className={`fa-solid fa-plus ${
@@ -228,7 +239,7 @@ export default function GuestList({
               you&apos;re bringing more than 2 pets, please let your Host know.
             </span>
           </div>
-          <button className="mt-4 underline">Close</button>
+          <button className="mt-4 underline" onClick={handleActive}>Close</button>
         </div>
       </div>
     </div>
