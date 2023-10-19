@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <div>
       {" "}
-      <header className="flex justify-between p-4 items-center px-40 ">
+      <header className="flex justify-between p-4 items-center px-40  ">
         <div>
           <Link to={"/"} className="Logo text-2xl font-bold text-pink-600">
             <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span>
