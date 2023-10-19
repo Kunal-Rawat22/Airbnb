@@ -5,7 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 export default function RegisterForm() {
   const [userInput, setUserInput] = useState({
     userName: "",
-    mobileNo: null,
+    mobileNo: "",
     email: "",
     password: "",
     gender: "",
