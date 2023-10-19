@@ -1,4 +1,4 @@
-const GoogleStrategy = require("passport-google-oauth20");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 
 passport.use(
@@ -10,14 +10,20 @@ passport.use(
       scope: ["profile", "email"],
     },
     function (accessToken, refreshToken, profile, callback) {
-      callback(null, profile);
+      console.log(profile);
+      const obj = {
+        userName: profile._json.name,
+        email: profile._json.email,
+        googleId: profile._json.sub,
+      };
+      callback(null, obj);
     }
   )
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user);
-})
+  done(null, user);
+});
 passport.deserializeUser((user, done) => {
   done(null, user);
 });

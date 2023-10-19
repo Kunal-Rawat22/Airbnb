@@ -15,8 +15,9 @@ const multer = require("multer");
 const fs = require("fs");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
-const passportSetup = require("./models/passport");
-const authRoute = require('./routes/auth');
+const passportSetup = require("./models/Passport");
+const authRoute = require("./routes/auth");
+const session = require("express-session");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -30,11 +31,18 @@ app.use(
   })
 );
 
+app.use(
+  session({
+    secret: jwtSecret,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use('/auth', authRoute);
+app.use("/auth", authRoute);
 //Cors Connection
 app.use(
   cors({
@@ -109,20 +117,22 @@ app.post("/login", async (req, res) => {
 
 //Logout Route
 app.get("/logout", (req, res) => {
+  res.clearCookie("session"); // Clear the session cookie
   res.cookie("token", "").status(200).json("Logout Out");
 });
 
 //Refresh Route
-app.get("/profile", (req, res) => {
+app.get("/profile", async (req, res) => {
   const { token } = req.cookies;
+  const { passport } = req.session;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
-      var year = dob.getFullYear();
-      var month = dob.getMonth() + 1; // Adding 1 because months are zero-based
-      var day = dob.getDate();
+      var year = dob?.getFullYear();
+      var month = dob?.getMonth() + 1; // Adding 1 because months are zero-based
+      var day = dob?.getDate();
       let date = `${year}-${month}-${day}`;
       const userDoc = {
         userName,
@@ -135,6 +145,28 @@ app.get("/profile", (req, res) => {
       console.log(userDoc);
       res.json(userDoc);
     });
+  } else if (passport) {
+    const { user } = passport; 
+    try {
+      const userDoc = await User.findOne({ email: user.email });
+      if (userDoc) {
+        console.log("bhbhbhbhb", userDoc);
+        jwt.sign(
+          { email: userDoc.email, id: userDoc._id },
+          jwtSecret,
+          {},
+          (err, token) => {
+            if (err) throw err;
+            res.cookie("token", token).status(200).json(user);
+          }
+        );
+      } else {
+        const userDoc = await User.create(user);
+        res.status(200).json(userDoc);
+      }
+    } catch (e) {
+      res.status(422).json(e);
+    }
   } else {
     res.json(null);
   }
@@ -292,7 +324,32 @@ app.put("/places/:id", async (req, res) => {
     });
   }
 });
-
+app.get("/login/success", async (req, res) => {
+  const { user } = req.session.passport;
+  console.log(user);
+  if (user) {
+    try {
+      const userDoc = await User.findOne({ email: user.email });
+      if (userDoc) {
+        console.log("bhbhbhbhb", userDoc);
+        jwt.sign(
+          { email: userDoc.email, id: userDoc._id },
+          jwtSecret,
+          {},
+          (err, token) => {
+            if (err) throw err;
+            res.cookie("token", token).status(200).json(user);
+          }
+        );
+      } else {
+        const userDoc = await User.create(user);
+        res.status(200).json(userDoc);
+      }
+    } catch (e) {
+      res.status(422).json(e);
+    }
+  }
+});
 app.get("/all-places", async (req, res) => {
   const result = res.json(await Place.find());
 });
