@@ -63,7 +63,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
             Add
           </button>
         </div>
-        <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 ">
+        <div className=" grid grid-cols-4 gap-1 ">
           {addedPhotos.length > 0 &&
             addedPhotos.map((link) => (
               <div className="flex relative" key={link}>

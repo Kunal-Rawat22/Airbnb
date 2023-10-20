@@ -37,14 +37,16 @@ export default function RoomDate({
 
   console.log(noOfDays);
   return (
-    <div className="Date-Picker mt-8 pr-16">
+    <div className="Date-Picker mt-8">
       <h2 className="text-2xl font-medium mb-2">
         {noOfDays} Nights in {address}
       </h2>
       <span className="font-light text-sm text-gray-500">
-        {startDate} - {endDate}
+        {startDate} - {endDate?endDate:startDate}
       </span>
-      <div className={`mt-4`}>
+      <div
+        className={`mt-4 ${screenSize.width <= 768?"flex":""} justify-center`}
+      >
         <DatePicker
           selection={selection}
           setSelection={setSelection}

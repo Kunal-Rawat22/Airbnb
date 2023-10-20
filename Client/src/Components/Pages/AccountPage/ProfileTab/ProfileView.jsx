@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../UserContext";
 import {  Navigate } from "react-router-dom";
 import axios from "axios";
-
 export default function ProfileTab() {
   const { ready, user } = useContext(UserContext);
   const [flag, setFlag] = useState(false);
@@ -112,12 +111,12 @@ export default function ProfileTab() {
   if (redirect === true) {
     window.location.reload();
   }
-  
+
   return (
-    <form className="px-8 py-4 flex flex-col w-1/3 mx-auto border border-1 mt-10 rounded-2xl pb-8">
+    <form className="px-8 py-4 flex flex-col lg:w-1/3 md:w-6/12 sm:w-2/3 w-10/12 mx-auto border border-1 mt-10 rounded-2xl pb-8">
       <div className="">
         {" "}
-        <h1 className="text-2xl font-medium text-center pb-3">
+        <h1 className="lg:text-2xl md:text-2xl sm:text-xl text-base font-medium text-center pb-3">
           User Profile !!
         </h1>
         <hr />
@@ -127,11 +126,16 @@ export default function ProfileTab() {
         {" "}
         <div className=" mt-6  half flex space-x-1">
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-1/2">
-            <label htmlFor="Name">Name</label>
+            <label
+              htmlFor="Name"
+              className="lg:text-base md:text-base sm:text-sm text-xs"
+            >
+              Name
+            </label>
             <input
               type="text"
               id="Name"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.userName}
               readOnly={!flag}
@@ -139,11 +143,16 @@ export default function ProfileTab() {
             />
           </div>
           <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-            <label htmlFor="PhoneNumber">Mobile Number</label>
+            <label
+              htmlFor="PhoneNumber"
+              className="lg:text-base md:text-base sm:text-sm text-xs"
+            >
+              Mobile Number
+            </label>
             <input
               type="number"
               id="PhoneNumber"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.mobileNo}
               readOnly={!flag}
@@ -153,11 +162,16 @@ export default function ProfileTab() {
         </div>
         <div className="half flex space-x-1">
           <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-            <label htmlFor="Name">Gender</label>
+            <label
+              htmlFor="Name"
+              className="lg:text-base md:text-base sm:text-sm text-xs"
+            >
+              Gender
+            </label>
             <select
               name="Gender"
               id=""
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               value={userInput.gender}
               disabled={!flag}
               onChange={handleGender}
@@ -168,11 +182,16 @@ export default function ProfileTab() {
             </select>
           </div>
           <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-            <label htmlFor="Dob">Date of Birth</label>
+            <label
+              htmlFor="Dob"
+              className="lg:text-base md:text-base sm:text-sm text-xs"
+            >
+              Date of Birth
+            </label>
             <input
               type="date"
               id="DOB"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.dob}
               readOnly={!flag}
@@ -181,11 +200,16 @@ export default function ProfileTab() {
           </div>
         </div>
         <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500">
-          <label htmlFor="email">Email</label>
+          <label
+            htmlFor="email"
+            className="lg:text-base md:text-base sm:text-sm text-xs"
+          >
+            Email
+          </label>
           <input
             type="email"
             id="email"
-            className="focus:outline-none"
+            className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
             value={userInput.email}
             onChange={handleEmail}
             readOnly={!flag}
@@ -204,7 +228,7 @@ export default function ProfileTab() {
       <button
         type={!flag ? "button" : "submit"}
         onClick={!flag ? handleEdit : handleOnSubmit}
-        className="bg-pink-600 p-2.5 text-white text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+        className="bg-pink-600 p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
       >
         {!flag ? "Edit Profile" : "Update Profile"}
       </button>
@@ -212,7 +236,7 @@ export default function ProfileTab() {
       <button
         type="button"
         onClick={handleLogout}
-        className="bg-pink-600 p-2.5 text-white text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+        className="bg-pink-600 p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
       >
         Logout
       </button>

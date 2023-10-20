@@ -30,7 +30,13 @@ export default function Header() {
               <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span>
             </Link>
           </div>
-          <div className={`flex border border-1 border-slate-200 shadow-xl p-3 px-5 rounded-full justify-between items-center ${(screenSize.width<1190&&screenSize.width>1020)?"lg:w-1/2":"lg:w-5/12"} md:w-7/12 md:justify-evenly`}>
+          <div
+            className={`flex border border-1 border-slate-200 shadow-xl p-3 px-5 rounded-full justify-between items-center ${
+              screenSize.width < 1190 && screenSize.width > 1020
+                ? "lg:w-1/2"
+                : "lg:w-5/12"
+            } md:w-7/12 md:justify-evenly`}
+          >
             <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5">
               Anywhere
             </div>
@@ -66,26 +72,33 @@ export default function Header() {
         </header>
       )}
       {screenSize.width <= 768 && (
-        <header className="flex px-6 py-4 items-center cursor-pointer justify-between">
-          <div className="flex px-4 py-2 rounded-full shadow-lg w-10/12 border items-center space-x-4">
+        <header className="flex px-6 py-4 items-center cursor-pointer justify-between space-x-5">
+          <Link
+            to={"/"}
+            className="flex items-center text-center text-3xl font-bold text-pink-600"
+          >
+            {/* <i className="fa-solid fa-chevron-left"></i> */}
+            <i className="fa-brands fa-airbnb"></i>
+          </Link>
+          <div className="flex sm:px-4 px-2 py-2 rounded-full shadow-lg w-10/12 border items-center sm:space-x-4 space-x-2">
             <div className="text-center">
-              <i className="fa-solid fa-magnifying-glass text-black p-1 rounded-3xl px-2 hover:text-slate-400 text-2xl text-center"></i>
+              <i className="fa-solid fa-magnifying-glass text-black p-1 rounded-3xl px-2 hover:text-slate-400 sm:text-2xl text-base text-center"></i>
             </div>
             <div className="flex flex-col">
-              <div className="font-semibold">Anywhere</div>
+              <div className="font-semibold sm:text-base text-sm">Anywhere</div>
               <div className="flex space-x-2 items-center">
-                <div className="font-light text-sm text-slate-500">
+                <div className="font-light sm:text-sm text-xs text-slate-500">
                   Any week
                 </div>
                 <hr className="w-1 bg-slate-400 h-1 rounded-3xl" />
-                <div className="font-light text-sm text-slate-500">
+                <div className="font-light sm:text-sm text-xs text-slate-500">
                   Add guests
                 </div>
               </div>
             </div>
           </div>
           <div className="text-center">
-            <i className="fa-solid fa-filter text-black p-1 rounded-3xl px-2 hover:text-slate-400 text-2xl border border-black text-center"></i>
+            <i className="fa-solid fa-filter text-black p-1 rounded-3xl px-2 hover:text-slate-400 sm:text-2xl text-base border border-black text-center"></i>
           </div>
         </header>
       )}

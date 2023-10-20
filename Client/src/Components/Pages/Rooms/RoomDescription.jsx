@@ -14,7 +14,7 @@ export default function RoomDescription({ description }) {
       </div>
       <div className="space-x-2">
         <i className="fa-solid fa-star"></i>
-        <TruncateText text={description} limit={40} />
+        <TruncateText text={description} limit={40} className={" font-light "}/>
       </div>
       <Link className=" space-x-2">
         <span className="underline">Show More</span>

@@ -217,7 +217,7 @@ export default function AccommodationForm({ type }) {
     return <Navigate to={"/account/places"} />;
   }
   return (
-    <form className="px-8 py-4 flex flex-col w-3/6 mx-auto border border-1 mt-10 rounded-2xl pb-8">
+    <form className="px-8 py-4 flex flex-col lg:w-3/6 md:w-8/12 w-10/12 mx-auto border border-1 mt-10 rounded-2xl pb-8">
       <div className="">
         {" "}
         <h1 className="text-2xl font-medium text-center pb-3">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import Menu from "./Menu";
 export default function Footer() {
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
@@ -18,7 +18,8 @@ export default function Footer() {
   }, []);
   return (
     <div>
-      <footer className="bg-gray-50 border-t border-gray-300 pb-4">
+      {screenSize.width <= 768 && <Menu />}
+      <footer className="bg-gray-50 border-t border-gray-300 lg:pb-4 md:pb-4 pb-28">
         <div className="upper-half lg:px-32 md:px-20 lg:pt-8 px-4 pt-8">
           <h2 className="text-xl font-medium px-4">
             Inspiration for future getaways

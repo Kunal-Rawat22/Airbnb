@@ -130,19 +130,20 @@ export default function RoomPage() {
                   <div className="px-6 pt-6">
                     <h1 className="text-3xl font-medium">{room?.title}</h1>
                     <RoomCover address={room?.address} />
+                    <hr className="mt-6"/>
                   </div>
                 )}
                 <div
                   className={`mt-12 flex pb-10 w-full ${
-                    screenSize.width <= 768 ? "px-6" : ""
+                    screenSize.width <= 768 ? "px-6 mt-6" : ""
                   }`}
                 >
-                  <div className="lg:w-2/3">
+                  <div className="lg:w-2/3 md:w-7/12">
                     <RoomOwner />
                     <hr className=" w-11/12" />
                     <RoomBrief />
                     <hr className=" w-11/12" />
-                    <RoomDescription description={room?.description} />
+                    <RoomDescription description={room?.description}  />
                     <hr className=" w-11/12" />
                     <RoomPerks allOptions={allOptions} options={options} />
                     <hr className=" w-11/12" />
@@ -163,9 +164,9 @@ export default function RoomPage() {
                   {screenSize.width > 768 && (
                     <div
                       className={`Reserve ${
-                        screenSize.width < 1355 && screenSize.width > 1170
-                          ? "w-5/12"
-                          : "w-full"
+                        screenSize.width < 1355 
+                          ? "w-6/12 md:w-5/12"
+                          : "w-1/3"
                       }`}
                     >
                       <RoomReserve

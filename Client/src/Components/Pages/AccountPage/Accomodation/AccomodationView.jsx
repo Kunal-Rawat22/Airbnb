@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../UserContext";
 import AccommodationForm from "./AccomodationForm";
 import axios from "axios";
+import TruncateText from "../../Rooms/TruncatedText";
 export default function AccommodationTab() {
   // window.location.reload();
   const { ready, user } = useContext(UserContext);
@@ -34,7 +35,7 @@ export default function AccommodationTab() {
   }
 
   return (
-    <div className=" px-32">
+    <div className=" lg:px-32 md:px-12 px-0">
       {add === "null" && (
         <div className="text-center mt-10 space-y-6">
           <Link
@@ -48,9 +49,9 @@ export default function AccommodationTab() {
               places.map((place) => (
                 <Link
                   to={"/account/places/" + place._id}
-                  className="bg-slate-100 flex rounded-xl p-6 cursor-pointer hover:shadow-lg hover:bg-slate-200"
+                  className="bg-slate-100 flex rounded-xl p-6 cursor-pointer hover:shadow-lg hover:bg-slate-200 items-center"
                 >
-                  <div className="h-48 w-1/4 grow shrink-0">
+                  <div className="h-48 lg:w-1/4 md:w-1/3 w-1/2 grow shrink-0">
                     {place.photos.length > 0 && (
                       <img
                         src={"http://localhost:4000/uploads/" + place.photos[0]}
@@ -60,9 +61,16 @@ export default function AccommodationTab() {
                     )}
                   </div>
 
-                  <div className="text-left pl-8 pr-2 grow shrink py-4">
-                    <h2 className="font-medium text-2xl mb-4">{place.title}</h2>
-                    <p>{place.description}</p>
+                  <div className="text-left pl-8 pr-2 grow shrink lg:py-4">
+                    <h2 className="font-medium lg:text-2xl md:text-xl text-base mb-4">
+                      {place.title}
+                    </h2>
+                    <TruncateText
+                      text={place.description}
+                      limit={30}
+                      className=" text-xs md:text-sm font-normal"
+                    />
+                    <p>{}</p>
                   </div>
                 </Link>
               ))}
