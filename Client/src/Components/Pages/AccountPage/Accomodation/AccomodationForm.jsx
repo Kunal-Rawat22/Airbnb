@@ -217,7 +217,7 @@ export default function AccommodationForm({ type }) {
     return <Navigate to={"/account/places"} />;
   }
   return (
-    <form className="px-8 py-4 flex flex-col lg:w-3/6 md:w-8/12 w-10/12 mx-auto border border-1 mt-10 rounded-2xl pb-8">
+    <form className="lg:px-8 md:px-8 px-4 py-4 flex flex-col lg:w-3/6 md:w-8/12 w-10/12 mx-auto border border-1 mt-10 rounded-2xl pb-8">
       <div className="">
         {" "}
         <h1 className="text-2xl font-medium text-center pb-3">
@@ -226,11 +226,13 @@ export default function AccommodationForm({ type }) {
         <hr />
         <div className="mt-3 space-y-1">
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
-            <label>Title</label>
+            <label className="lg:text-base md:text-base sm:text-sm text-xs">
+              Title
+            </label>
             <input
               type="text"
               id="title"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.title}
               readOnly={!flag}
@@ -238,11 +240,13 @@ export default function AccommodationForm({ type }) {
             />
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
-            <label>Address</label>
+            <label className="lg:text-base md:text-base sm:text-sm text-xs">
+              Address
+            </label>
             <input
               type="text"
               id="address"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.address}
               readOnly={!flag}
@@ -251,11 +255,13 @@ export default function AccommodationForm({ type }) {
           </div>
           <div className=" mt-6  half flex space-x-1">
             <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-1/2">
-              <label>Check In</label>
+              <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                Check In
+              </label>
               <input
                 type="time"
                 id="checkIn"
-                className="focus:outline-none"
+                className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
                 required={true}
                 value={userInput.checkIn}
                 readOnly={!flag}
@@ -263,11 +269,13 @@ export default function AccommodationForm({ type }) {
               />
             </div>
             <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-              <label>Check Out</label>
+              <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                Check Out
+              </label>
               <input
                 type="time"
                 id="checkOut"
-                className="focus:outline-none"
+                className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
                 required={true}
                 value={userInput.checkOut}
                 readOnly={!flag}
@@ -277,11 +285,13 @@ export default function AccommodationForm({ type }) {
           </div>
           <div className="half flex space-x-1">
             <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-              <label>Max Guest</label>
+              <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                Max Guest
+              </label>
               <input
                 type="number"
                 id="maxGuest"
-                className="focus:outline-none"
+                className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
                 required={true}
                 readOnly={!flag}
                 value={userInput.maxGuests}
@@ -289,11 +299,13 @@ export default function AccommodationForm({ type }) {
               />
             </div>
             <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
-              <label>Price</label>
+              <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                Price
+              </label>
               <input
                 type="number"
                 id="price"
-                className="focus:outline-none"
+                className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
                 required={true}
                 readOnly={!flag}
                 value={userInput.price}
@@ -302,8 +314,10 @@ export default function AccommodationForm({ type }) {
             </div>
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
-            <label>Perks</label>
-            <div className="grid grid-cols-4 gap-x-2 pb-2">
+            <label className="lg:text-base md:text-base sm:text-sm text-xs">
+              Perks
+            </label>
+            <div className="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-2 gap-x-2 pb-2">
               {options.map((option, index) => (
                 <div
                   key={index}
@@ -329,11 +343,13 @@ export default function AccommodationForm({ type }) {
             </div>
           </div>
           <div className="p-1 px-2 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg text-sm text-slate-500 w-full">
-            <label>Description</label>
+            <label className="lg:text-base md:text-base sm:text-sm text-xs">
+              Description
+            </label>
             <textarea
               type="text"
               id="description"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               required={true}
               value={userInput.description}
               readOnly={!flag}
@@ -341,11 +357,13 @@ export default function AccommodationForm({ type }) {
             />
           </div>
           <div className="p-1 flex flex-col border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500">
-            <label>Extra Information</label>
+            <label className="lg:text-base md:text-base sm:text-sm text-xs">
+              Extra Information
+            </label>
             <input
               type="text"
               id="extraInfo"
-              className="focus:outline-none"
+              className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
               value={userInput.extraInfo}
               readOnly={!flag}
               onChange={handleExtraInfo}

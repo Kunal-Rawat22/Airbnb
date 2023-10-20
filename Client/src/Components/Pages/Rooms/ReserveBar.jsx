@@ -12,12 +12,12 @@ export default function ReserveBar({ price, endDate, startDate, screenSize }) {
     setActive(true);
   }
   return (
-    <div className="fixed bottom-0 bg-white w-full flex py-4 border items-center px-8 justify-between">
+    <div className="fixed bottom-0 bg-white w-full flex py-4 border items-center px-8 justify-between z-50">
       <div className="flex flex-col pr-8">
         <div className="font-semibold">
           ₹{price} <span className="font-normal text-sm">night</span>
         </div>
-        <div className="underline">
+        <div className="underline text-xs">
           <span>{startDate}</span> -{" "}
           <span>{!endDate ? startDate : endDate}</span>
         </div>
