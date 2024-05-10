@@ -97,7 +97,7 @@ async function uploadToS3(path, originalFilename, mimetype)
 //Backend Routing
 
 //User Register Route
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   main();
   const { userName, mobileNo, email, password, gender, dob } = req.body;
 
@@ -117,7 +117,7 @@ app.post("/register", async (req, res) => {
 });
 
 //Login Route
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   main();
   const { email, password } = req.body;
   try {
@@ -144,7 +144,7 @@ app.post("/login", async (req, res) => {
 });
 
 //Logout Route
-app.get("/logout", (req, res) => {
+app.get("/api/logout", (req, res) => {
   res.clearCookie("session"); // Clear the session cookie
   res.clearCookie("session.sig");
   res.clearCookie("token");
@@ -152,7 +152,7 @@ app.get("/logout", (req, res) => {
 });
 
 //Refresh Route
-app.get("/profile", async (req, res) => {
+app.get("/api/profile", async (req, res) => {
   main();
   const { token } = req.cookies;
   const { passport } = req.session;
@@ -162,7 +162,7 @@ app.get("/profile", async (req, res) => {
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
       console.log(dob);
-      var year = dob?.split('-')[0];
+      var year = dob?.split("-")[0];
       var month = dob?.split("-")[1];
       var day = dob?.split("-")[2];
       let date = `${year}-${month}-${day}`;
@@ -208,7 +208,7 @@ app.get("/profile", async (req, res) => {
 });
 
 //Update User
-app.put("/updateProfile", (req, res) => {
+app.put("/api/updateProfile", (req, res) => {
   main();
   const { token } = req.cookies;
   const updatedData = req.body;
@@ -229,7 +229,7 @@ app.put("/updateProfile", (req, res) => {
 });
 
 //Upload Photos By Link
-app.post("/upload-by-link", async (req, res) => {
+app.post("/api/upload-by-link", async (req, res) => {
   const { link } = req.body;
   console.log(link);
   const newName = "photo" + Date.now() + ".jpg";
@@ -247,18 +247,22 @@ app.post("/upload-by-link", async (req, res) => {
 
 //Upload by Device
 const photoMiddleware = multer({ dest: "tmp" });
-app.post("/upload", photoMiddleware.array("photos", 100), async (req, res) => {
-  const uploadedFiles = [];
-  for (let i = 0; i < req.files.length; i++) {
-    const { path, originalname, mimetype } = req.files[i];
-    const url = await uploadToS3(path, originalname, mimetype)
-    uploadedFiles.push(url)
+app.post(
+  "/api/upload",
+  photoMiddleware.array("photos", 100),
+  async (req, res) => {
+    const uploadedFiles = [];
+    for (let i = 0; i < req.files.length; i++) {
+      const { path, originalname, mimetype } = req.files[i];
+      const url = await uploadToS3(path, originalname, mimetype);
+      uploadedFiles.push(url);
+    }
+    res.json(uploadedFiles);
   }
-  res.json(uploadedFiles);
-});
+);
 
 //posting data from places form
-app.post("/places", (req, res) => {
+app.post("/api/places", (req, res) => {
   main();
   const { token } = req.cookies;
   const {
@@ -299,7 +303,7 @@ app.post("/places", (req, res) => {
   }
 });
 
-app.get("/places", (req, res) => {
+app.get("/api/places", (req, res) => {
   main();
   const { token } = req.cookies;
   console.log("first");
@@ -312,14 +316,14 @@ app.get("/places", (req, res) => {
   }
 });
 
-app.get("/places/:id", async (req, res) => {
+app.get("/api/places/:id", async (req, res) => {
   main();
   const id = req.params.id;
   console.log(id);
   const result = res.json(await Place.find({ _id: id }));
 });
 
-app.put("/places/:id", async (req, res) => {
+app.put("/api/places/:id", async (req, res) => {
   main();
   const { token } = req.cookies;
   const id = req.params.id;
@@ -366,7 +370,7 @@ app.put("/places/:id", async (req, res) => {
   }
 });
 
-app.get("/all-places", async (req, res) => {
+app.get("/api/all-places", async (req, res) => {
   main();
   const result = res.json(await Place.find());
 });
