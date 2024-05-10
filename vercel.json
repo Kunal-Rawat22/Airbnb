@@ -4,8 +4,8 @@
   "framework": "vite",
   "rewrites":[
     {
-        "source": "/api/(.*)",
-        "destination":"/api/index.js"
+        "source": "/Api/(.*)",
+        "destination":"/Api/index.js"
     }
   ]
 }
