@@ -9,7 +9,7 @@ import { UserContextProvider } from "./UserContext";
 import AccountPage from "./Pages/AccountPage/AccountPage";
 import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 function App() {
   return (
