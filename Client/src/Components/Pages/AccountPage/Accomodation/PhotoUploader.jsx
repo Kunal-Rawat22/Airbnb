@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import axios from "axios";
+import Image from './Image';
 export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
   const [photoLink, setPhotoLink] = useState("");
   //Handling Photo By Link
@@ -67,8 +68,8 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
           {addedPhotos.length > 0 &&
             addedPhotos.map((link) => (
               <div className="flex relative" key={link}>
-                <img
-                  src={"http://localhost:4000/uploads/" + link}
+                <Image
+                  src={link}
                   alt=""
                   className="rounded-xl w-full object-cover max-h-20"
                 />
