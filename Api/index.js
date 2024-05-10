@@ -134,7 +134,7 @@ app.get("/profile", async (req, res) => {
         await User.findById(user.id);
       console.log(dob);
       var year = dob?.split('-')[0];
-      var month = +dob?.split("-")[1] + 1; // Adding 1 because months are zero-based
+      var month = dob?.split("-")[1];
       var day = dob?.split("-")[2];
       let date = `${year}-${month}-${day}`;
       const userDoc = {

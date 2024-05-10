@@ -20,7 +20,11 @@ export default function Footer() {
     <div>
       {screenSize.width <= 768 && <Menu />}
       <footer className="bg-gray-50 border-t border-gray-300 lg:pb-4 md:pb-4 pb-28">
-        <div className="upper-half lg:px-32 md:px-20 lg:pt-8 px-4 pt-8">
+        <div
+          className={`upper-half lg:px-32 lg:pt-8 ${
+            screenSize.width <= 768 ? " px-4 " : "px-20 "
+          } pt-8`}
+        >
           <h2 className="text-xl font-medium px-4">
             Inspiration for future getaways
           </h2>
@@ -71,8 +75,8 @@ export default function Footer() {
           <div
             className={`${
               screenSize.width > 1023
-                ? "px-32"
-                : `${screenSize.width > 768 ? "px-20" : "px-4"} `
+                ? " px-32 "
+                : `${screenSize.width > 768 ? " px-20 " : " px-4 "} `
             } lower-half`}
           >
             <div className="grid grid-cols-6 px-4 pt-8 text-sm gap-8 pb-8">

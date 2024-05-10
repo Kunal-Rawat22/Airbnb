@@ -18,7 +18,7 @@ export default function IndexPage() {
               {place.photos.length > 0 && (
                 <div>
                   <img
-                    className="rounded-xl aspect-square object-cover"
+                    className="rounded-xl aspect-square object-cover w-full"
                     src={"http://localhost:4000/uploads/" + place.photos?.[0]}
                     alt=""
                   />
