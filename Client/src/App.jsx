@@ -15,7 +15,7 @@ import MapComponent from "./Map";
 import TravelPromptGenerator from "./Country";
 import LocationSelector from "./Country";
 import PaymentSuccess from "./PaymentSucess";
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "https://airbnb-4xad.onrender.com";
 axios.defaults.withCredentials = true;
 function App() {
   return (
