@@ -12,12 +12,14 @@ const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3"); 
 const fs = require("fs");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const passportSetup = require("./models/passport");
 const authRoute = require("./routes/auth");
 const session = require("express-session");
+const mime = require("mime-types");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -68,10 +70,38 @@ async function main() {
 
 main();
 
+const bucket = "kunal-booking-app";
+
+async function uploadToS3(path, originalFilename, mimetype) {
+  main();
+  const client = new S3Client({
+    region: "eu-north-1",
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+  });
+  const parts = originalFilename.split(".");
+  const ext = parts[parts.length - 1];
+  const newFilename = Date.now() + "." + ext;
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Body: fs.readFileSync(path),
+      Key: newFilename,
+      ContentType: mimetype,
+      ACL: "public-read",
+    })
+  );
+  return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
+  // console.log({path, originalFilename,newFilename, mimetype,ext});
+}
+
 //Backend Routing
 
 //User Register Route
 app.post("/register", async (req, res) => {
+  main();
   const { userName, mobileNo, email, password, gender, dob } = req.body;
 
   try {
@@ -91,6 +121,7 @@ app.post("/register", async (req, res) => {
 
 //Login Route
 app.post("/login", async (req, res) => {
+  main();
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -125,6 +156,7 @@ app.get("/logout", (req, res) => {
 
 //Refresh Route
 app.get("/profile", async (req, res) => {
+  main();
   const { token } = req.cookies;
   const { passport } = req.session;
   if (token) {
@@ -180,6 +212,7 @@ app.get("/profile", async (req, res) => {
 
 //Update User
 app.put("/updateProfile", (req, res) => {
+  main();
   const { token } = req.cookies;
   const updatedData = req.body;
   if (token) {
@@ -205,29 +238,38 @@ app.post("/upload-by-link", async (req, res) => {
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
     url: link,
-    dest: __dirname + "/uploads/" + newName,
+    dest: "/tmp/" + newName,
   });
-  res.json(newName);
+  const url = await uploadToS3(
+    "/tmp/" + newName,
+    newName,
+    mime.lookup("/tmp/" + newName)
+  );
+  res.json(url);
 });
 
 //Upload by Device
-const photoMiddleware = multer({ dest: "uploads" });
-app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
+const photoMiddleware = multer({ dest: "tmp" });
+app.post("/upload", photoMiddleware.array("photos", 100),async (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
-    const { path, originalname } = req.files[i];
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-    uploadedFiles.push(newPath.replace("uploads/", ""));
-    console.log(req.files);
+    // const { path, originalname } = req.files[i];
+    // const parts = originalname.split(".");
+    // const ext = parts[parts.length - 1];
+    // const newPath = path + "." + ext;
+    // fs.renameSync(path, newPath);
+    // uploadedFiles.push(newPath.replace("uploads/", ""));
+    // console.log(req.files);
+    const { path, originalname, mimetype } = req.files[i];
+    const url = await uploadToS3(path, originalname, mimetype);
+    uploadedFiles.push(url);
   }
   res.json(uploadedFiles);
 });
 
 //posting data from places form
 app.post("/places", (req, res) => {
+  main();
   const { token } = req.cookies;
   const {
     title,
@@ -268,6 +310,7 @@ app.post("/places", (req, res) => {
 });
 
 app.get("/places", (req, res) => {
+  main();
   const { token } = req.cookies;
   console.log("first");
   if (token) {
@@ -280,12 +323,14 @@ app.get("/places", (req, res) => {
 });
 
 app.get("/places/:id", async (req, res) => {
+  main();
   const id = req.params.id;
   console.log(id);
   const result = res.json(await Place.find({ _id: id }));
 });
 
 app.put("/places/:id", async (req, res) => {
+  main();
   const { token } = req.cookies;
   const id = req.params.id;
   const {
@@ -332,6 +377,7 @@ app.put("/places/:id", async (req, res) => {
 });
 
 app.get("/all-places", async (req, res) => {
+  main();
   const result = res.json(await Place.find());
 });
 app.listen(process.env.PORT ||4000, (req, res) => {
