@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../UserContext";
-import {  Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 export default function ProfileTab() {
   const { ready, user } = useContext(UserContext);
@@ -94,7 +94,7 @@ export default function ProfileTab() {
     }
   }
 
-  //Cookie 
+  //Cookie
   if (ready && !user) {
     return <Navigate to={"/login"} />;
   }
@@ -228,7 +228,7 @@ export default function ProfileTab() {
       <button
         type={!flag ? "button" : "submit"}
         onClick={!flag ? handleEdit : handleOnSubmit}
-        className="bg-pink-600 p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+        className="bg-primary p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
       >
         {!flag ? "Edit Profile" : "Update Profile"}
       </button>
@@ -236,7 +236,7 @@ export default function ProfileTab() {
       <button
         type="button"
         onClick={handleLogout}
-        className="bg-pink-600 p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+        className="bg-primary p-2.5 text-white lg:text-base md:text-base sm:text-sm text-sm font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
       >
         Logout
       </button>

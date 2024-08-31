@@ -177,14 +177,14 @@ export default function RoomReserve({
       {flag2 && (
         <Link
           to={link}
-          className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
+          className="w-full bg-primary text-white text-center p-3 rounded-lg"
         >
           Reserve
         </Link>
       )}
       {!flag2 && (
         <button
-          className="w-full bg-pink-600 text-white text-center p-3 rounded-lg"
+          className="w-full bg-primary text-white text-center p-3 rounded-lg"
           onClick={handleBlank}
         >
           Check For Availablity

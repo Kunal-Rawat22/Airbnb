@@ -10,7 +10,7 @@ export default function LoginForm() {
   });
   const [redirect, setRedirect] = useState(false);
   const { setUser } = useContext(UserContext);
-  
+
   //Handling Email
   function handleEmail(event) {
     setUserInput((prevState) => ({
@@ -92,7 +92,7 @@ export default function LoginForm() {
         </p>
         <button
           type="submit"
-          className="bg-pink-600 p-2.5 text-white text-base font-semibold rounded-lg mt-1"
+          className="bg-primary p-2.5 text-white text-base font-semibold rounded-lg mt-1"
         >
           Continue
         </button>

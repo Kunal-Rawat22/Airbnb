@@ -8,43 +8,42 @@ import TruncateText from "../../Rooms/TruncatedText";
 export default function AccommodationTab() {
   // window.location.reload();
   const { ready, user } = useContext(UserContext);
-   const [screenSize, setScreenSize] = useState({
-     width: window.innerWidth,
-     height: window.innerHeight,
-   });
-   useEffect(() => {
-     function handleResize() {
-       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-     }
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  useEffect(() => {
+    function handleResize() {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    }
 
-     window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-     return () => {
-       window.removeEventListener("resize", handleResize);
-     };
-   }, []);
-  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   let add = false;
   const { action } = useParams();
-  console.log("action",action)
+  console.log("action", action);
   if (action === "new") {
     add = "new";
-    console.log(add)
-  } else if(action ===undefined) {
+    console.log(add);
+  } else if (action === undefined) {
     add = "null";
     console.log(add);
   } else {
-    add = "image"
+    add = "image";
     console.log(add);
-
   }
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios.get('/places').then(({ data }) => {
+    axios.get("/places").then(({ data }) => {
       setPlaces(data);
-    })
-  },[])
-  console.log("first")
+    });
+  }, []);
+  console.log("first");
   //   Cookie
   if (ready && !user) {
     return <Navigate to={"/login"} />;
@@ -55,7 +54,7 @@ export default function AccommodationTab() {
       {add === "null" && (
         <div className="text-center mt-10 space-y-6">
           <Link
-            className="bg-pink-600 text-white p-3 text-base font-semibold px-5 rounded-full text-center"
+            className="bg-primary text-white p-3 text-base font-semibold px-5 rounded-full text-center"
             to={"/account/places/new"}
           >
             <i className="fa-solid fa-plus"></i> Add New Place
@@ -83,7 +82,7 @@ export default function AccommodationTab() {
                     </h2>
                     <TruncateText
                       text={place.description}
-                      limit={screenSize.width>450?30:20}
+                      limit={screenSize.width > 450 ? 30 : 20}
                       className=" text-xs md:text-sm font-normal"
                     />
                   </div>

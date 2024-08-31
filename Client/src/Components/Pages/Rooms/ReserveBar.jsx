@@ -23,7 +23,7 @@ export default function ReserveBar({ price, endDate, startDate, screenSize }) {
         </div>
       </div>
       <button
-        className="p-4 bg-pink-600 text-white px-6 rounded-lg"
+        className="p-4 bg-primary text-white px-6 rounded-lg"
         onClick={handleReserve}
       >
         Reserve

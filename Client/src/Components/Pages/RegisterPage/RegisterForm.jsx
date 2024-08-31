@@ -83,7 +83,7 @@ export default function RegisterForm() {
     setRedirect(true);
   }
   if (redirect === true) {
-    return(<Navigate to={"/"} />);
+    return <Navigate to={"/"} />;
   }
   console.log(userInput);
   return (
@@ -180,7 +180,7 @@ export default function RegisterForm() {
         </p>
         <button
           type="submit"
-          className="bg-pink-600 p-2.5 text-white text-base font-semibold rounded-lg mt-1"
+          className="bg-primary p-2.5 text-white text-base font-semibold rounded-lg mt-1"
         >
           Continue
         </button>

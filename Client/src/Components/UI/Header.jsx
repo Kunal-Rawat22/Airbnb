@@ -26,8 +26,9 @@ export default function Header() {
       {screenSize.width > 768 && (
         <header className="flex justify-between p-4 items-center lg:px-40 md:px-20">
           <div>
-            <Link to={"/"} className="Logo text-2xl font-bold text-pink-600">
-              <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span>
+            <Link to={"/"} className="Logo text-2xl font-bold text-primary flex items-center gap-2">
+              <img src="/home.png" alt="" width={"30px"} />YatraNest
+              {/* <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span> */}
             </Link>
           </div>
           <div
@@ -37,19 +38,19 @@ export default function Header() {
                 : "lg:w-5/12"
             } md:w-7/12 md:justify-evenly`}
           >
-            <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5">
+            <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base">
               Anywhere
             </div>
             <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-            <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center">
+            <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base">
               Any week
             </div>
             <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-            <div className=" font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm  text-center">
+            <div className=" font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm  text-center xl:text-lg lg:text-base">
               Add Guest
             </div>
             <div className=" cursor-pointer">
-              <i className="fa-solid fa-magnifying-glass text-white bg-pink-600 p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
+              <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
             </div>
           </div>
           <Link
@@ -75,7 +76,7 @@ export default function Header() {
         <header className="flex px-6 py-4 items-center cursor-pointer justify-between space-x-5">
           <Link
             to={"/"}
-            className="flex items-center text-center text-3xl font-bold text-pink-600"
+            className="flex items-center text-center text-3xl font-bold text-primary"
           >
             {/* <i className="fa-solid fa-chevron-left"></i> */}
             <i className="fa-brands fa-airbnb"></i>

@@ -1,11 +1,26 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
+import { Link, Navigate, useParams } from "react-router-dom";
+import RazorpayButton from "../../RazorPayBtn";
+
 export default function BookingPage() {
   const queryParams = new URLSearchParams(location.search);
+  const { subpage } = useParams();
   const checkIn = queryParams.get("checkin");
   const checkOut = queryParams.get("checkout");
+  const infants = queryParams.get("noOfInfants");
+  const noOfChildren = queryParams.get("noOfChildren");
+  const noOfAdults = queryParams.get("noOfAdults");
+  const startDate = checkIn.split(" ")[2];
+  const startMonth = checkIn.split(" ")[1];
+  const endDate = checkOut.split(" ")[2];
+  const endMonth = checkOut.split(" ")[1];
+  const noOfDays = queryParams.get("noOfDays");
+  const noOfGuests =
+    Number(noOfAdults) + Number(noOfChildren) + Number(infants);
+
   const { ready, user } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
@@ -16,35 +31,134 @@ export default function BookingPage() {
 
   //Cookie
   if (ready && !user) {
-    console.log("Not Logged In");
+    return <Navigate to={"/login"} />;
   }
-    console.log("njn", checkIn);
+  console.log("njn", checkIn);
   console.log("njkknn", checkOut);
-    
+
+  const url = "http://localhost:4000/uploads/";
   return (
-    <div>
-      <div className="Heading grid grid-cols-10">
-        <div className="py-16 text-right px-2">
-          <button>
+    <div className="Booking-Page xl:pb-24 lg:pb-24 md:pb-16 sm:pb-12 pb-8">
+      <div className="Heading flex lg:pl-28 md:pl-20 sm:pl-16 pl-12">
+        <div className="py-16 text-right px-1 ">
+          <Link to={`/rooms/${subpage}`}>
             <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
+          </Link>
         </div>
         <div className="grid-item-large flex items-center px-4">
           <h1 className="text-4xl font-medium">Request to book</h1>
         </div>
       </div>
-      <div className="main flex px-36">
+      <div className="main lg:flex-row md:flex-col xl:flex-row  sm:flex-col flex flex-col px-36">
+        {/* Left Part */}
         <div className="left w-1/2 flex flex-col">
-          <div className="details flex flex-col">
-            <h2 className="text-xl font-medium">Your Trip</h2>
-            <div className="flex">
-              <div>Dates</div>
-              <div>Edit</div>
+          {/* Details */}
+          <div className="details flex flex-col gap-y-5">
+            <h2 className="text-2xl font-medium">Your Trip</h2>
+            {/* Dates */}
+            <div className="flex dates justify-between">
+              <div className="Date-block flex flex-col">
+                <div className="text-xl">Dates</div>
+                <div className="text-lg font-light">
+                  {startDate} {startMonth} - {endDate} {endMonth}
+                </div>
+              </div>
+              <Link to={`/rooms/${subpage}`} className="edit">
+                <span className="text-xl font-medium underline">Edit</span>
+              </Link>
             </div>
-            <div></div>
+            {/* Guests */}
+            <div className="flex Guests-block justify-between">
+              <div className="Guests flex flex-col">
+                <div className="text-xl">Guests</div>
+                <div className="text-lg font-light">
+                  {noOfGuests} {noOfGuests == 1 ? "Guest" : "Guests"}
+                </div>
+              </div>
+              <Link to={`/rooms/${subpage}`} className="edit">
+                <span className="text-xl font-medium underline">Edit</span>
+              </Link>
+            </div>
+            <hr />
+            {/* Policy  */}
+            <div className="policy text-sm font-light">
+              By selecting the button below, I agree to the{" "}
+              <span className="underline font-medium">
+                Host&apos;s House Rules
+              </span>
+              ,{" "}
+              <span className="underline font-medium">
+                Ground rules for guests
+              </span>
+              ,{" "}
+              <span className="underline font-medium">
+                Airbnb&apos;s Rebooking and Refund Policy
+              </span>{" "}
+              and that Airbnb can{" "}
+              <span className="underline font-medium">
+                charge my payment method
+              </span>{" "}
+              if I&apos;m responsible for damage. I also agree to the updated
+              Terms of Service, Payments Terms of Service and I acknowledge the
+              Privacy Policy.
+            </div>
+            <hr />
+            {/* Payment */}
+            <div className="payment flex justify-between mt-4 items-center">
+              {" "}
+              <div className="p-2.5 text-2xl font-semibold rounded-lg mt-1 w-1/3 ">
+                Request To Book
+              </div>
+              <RazorpayButton />
+            </div>
           </div>
         </div>
-        <div className="right w-1/2">Right</div>
+        {/* Right Part */}
+        <div className="right w-1/2 ">
+          <div className="border border-1 border-slate-300 rounded-xl w-4/5 h-full mx-auto flex flex-col p-8 gap-y-6">
+            <div className="roomDetail h-2/5 w-full flex gap-6">
+              <img
+                src={url + "photo1695799361931.jpg"}
+                alt=""
+                className="w-1/4 object-cover rounded-xl block darker cursor-pointer"
+                // onClick={openNewTab}
+              />
+              <div className="room-description flex flex-col gap-y-3">
+                <div className="text-xl">
+                  Family Room : Nirvana Homes | Wooden house | Farm stay Room
+                </div>
+                <div className="text-lg">
+                  <FontAwesomeIcon icon={faStar} /> <span>5.00</span>{" "}
+                  <span className="font-light text-base">(1 review)</span>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div className="Price-Details flex flex-col">
+              <h2 className="text-2xl font-medium">Price Details</h2>
+              <div className="flex justify-between font-light mt-4 text-lg">
+                <div className="">
+                  ₹{7999} X {noOfDays} nights
+                </div>
+                <div>₹ {7999 * noOfDays}</div>
+              </div>
+              <div className="flex justify-between font-light mt-4 text-lg">
+                <div className="underline">Taxes</div>
+                <div>₹ {(7999 * noOfDays * 18) / 100}</div>
+              </div>
+              {/* <div>₹ {price * noOfDays - discount}</div> */}
+            </div>
+            <hr />
+            <div className="price">
+              <div className="flex justify-between text-lg font-medium">
+                <div>
+                  Total (<span className="underline">INR</span>)
+                </div>
+                <div>₹ {7999 * noOfDays + (7999 * noOfDays * 18) / 100}</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

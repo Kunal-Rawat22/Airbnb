@@ -204,7 +204,7 @@ export default function AccommodationForm({ type }) {
         checkIn: "",
         checkOut: "",
         maxGuests: Number,
-        price:Number
+        price: Number,
       });
       alert("You have added successfully.");
       setRedirect(true);
@@ -386,7 +386,7 @@ export default function AccommodationForm({ type }) {
               : handleOnSave
             : handleOnSubmit
         }
-        className="bg-pink-600 p-2.5 text-white text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+        className="bg-primary p-2.5 text-white text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
       >
         {type === "image"
           ? editable === false

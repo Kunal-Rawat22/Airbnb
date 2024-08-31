@@ -27,10 +27,10 @@ export default function AccountPage() {
       "lg:font-semibold cursor-pointer rounded-full lg:py-3 lg:px-5 lg:text-lg";
     if (type === subpage)
       classes +=
-        " bg-pink-600  text-white  hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl";
+        " bg-primary  text-white  hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl";
     else
       classes +=
-        " bg-slate-50 rounded-full lg:py-3 lg:px-5 text-slate-500 shadow-md lg:text-lg lg:font-semibold cursor-pointer hover:bg-pink-600 hover:text-white";
+        " bg-slate-50 rounded-full lg:py-3 lg:px-5 text-slate-500 shadow-md lg:text-lg lg:font-semibold cursor-pointer hover:bg-primary hover:text-white";
     return classes;
   }
   if (ready && !user) {
@@ -44,7 +44,8 @@ export default function AccountPage() {
             <i className="fa-solid fa-user text-center"></i>&nbsp;&nbsp;Profile
           </Link>
           <Link to={"/account/places"} className={linkClasses("places")}>
-            <i className="fa-solid fa-building"></i>&nbsp;&nbsp;My Accommodations
+            <i className="fa-solid fa-building"></i>&nbsp;&nbsp;My
+            Accommodations
           </Link>
           <Link to={"/account/booking"} className={linkClasses("booking")}>
             <i className="fa-solid fa-bars"></i>&nbsp;&nbsp;My Bookings
