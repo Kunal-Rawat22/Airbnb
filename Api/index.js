@@ -47,7 +47,7 @@ app.use("/auth", authRoute);
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: "https://yatra-nest.onrender.com",
   })
 );
 
