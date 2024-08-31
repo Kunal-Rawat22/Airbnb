@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.17.1",
+    "axios": "^1.7.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
@@ -19,12 +21,18 @@
     "express-session": "^1.17.3",
     "image-downloader": "^4.3.0",
     "jsonwebtoken": "^9.0.1",
+    "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.6.0",
     "mongoose": "^7.4.5",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",
+    "openai": "^4.56.2",
     "passport": "^0.5.3",
     "passport-facebook": "^3.0.0",
     "passport-github": "^1.1.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "razorpay": "^2.9.4",
+    "react-leaflet": "^4.2.1",
+    "react-map-gl": "^7.1.7"
   }
 }
