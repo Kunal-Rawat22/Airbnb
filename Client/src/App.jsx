@@ -9,6 +9,12 @@ import { UserContextProvider } from "./UserContext";
 import AccountPage from "./Pages/AccountPage/AccountPage";
 import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
+import TripPlanner from "./Trial";
+import GetLocation from "./GeoLocation";
+import MapComponent from "./Map";
+import TravelPromptGenerator from "./Country";
+import LocationSelector from "./Country";
+import PaymentSuccess from "./PaymentSucess";
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 function App() {
@@ -26,6 +32,13 @@ function App() {
         </Route>
       </Routes>
     </UserContextProvider>
+    // <PaymentSuccess/>
+    // <TripPlanner/>
+    // <GetLocation />
+    // <MapComponent />
+    // <PaymentGateway/>
+    // <TravelPromptGenerator/>
+    // <LocationSelector/>
   );
 }
 

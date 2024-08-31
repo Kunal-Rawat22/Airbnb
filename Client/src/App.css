@@ -39,3 +39,25 @@ img.darker:hover {
     grid-column: span 8;
     /* This makes the item span 2 columns */
 }
+
+.map-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+@keyframes print {
+    0% {
+        transform: translateY(-90%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+.animate-print {
+    animation: print 1800ms cubic-bezier(0.68, -0.55, 0.265, 0.9);
+}

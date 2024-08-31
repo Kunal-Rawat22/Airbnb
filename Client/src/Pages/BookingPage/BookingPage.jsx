@@ -120,7 +120,7 @@ export default function BookingPage() {
               <img
                 src={url + "photo1695799361931.jpg"}
                 alt=""
-                className="w-1/4 object-cover rounded-xl block darker cursor-pointer"
+                className="w-16 h-16 md:w-28 md:h-28 object-cover rounded-xl block darker cursor-pointer"
                 // onClick={openNewTab}
               />
               <div className="room-description flex flex-col gap-y-3">

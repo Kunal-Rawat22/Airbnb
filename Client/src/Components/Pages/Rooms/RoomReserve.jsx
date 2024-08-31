@@ -89,6 +89,13 @@ export default function RoomReserve({
     e.preventDefault();
     console.log("Bro");
   }
+  const handleScroll = (event) => {
+    event.preventDefault(); // Prevent default anchor behavior
+    const targetElement = document.getElementById("Date-Picker");
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   // console.log("endFate", endDate);
   // console.log("object", adults);
   return (
@@ -107,13 +114,19 @@ export default function RoomReserve({
               name=""
               id=""
               value={sDate}
-              className="text-sm font-light pt-1 focus:outline-none  reserve-date"
+              className="text-sm font-light pt-1 focus:outline-none cursor-pointer reserve-date"
+              onClick={handleScroll}
             />
           </div>
           <div className="w-1/2 p-2 flex flex-col border-t rounded-tr-lg border-gray-400">
             <label className="text-xs font-medium">Check Out</label>
             {endDate === "" ? (
-              <span className="text-sm font-light pt-1">Add Date</span>
+              <button
+                onClick={handleScroll}
+                className="text-sm font-light pt-1 text-left"
+              >
+                Add Date
+              </button>
             ) : (
               <input
                 type="date"

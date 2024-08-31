@@ -334,7 +334,7 @@ app.put("/places/:id", async (req, res) => {
 app.get("/all-places", async (req, res) => {
   const result = res.json(await Place.find());
 });
-app.listen(4000, (req, res) => {
+app.listen(process.env.PORT ||4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
 // const axios = require("axios");
