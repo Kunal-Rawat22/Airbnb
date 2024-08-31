@@ -5,6 +5,7 @@ import { UserContext } from "../../../../UserContext";
 import AccommodationForm from "./AccomodationForm";
 import axios from "axios";
 import TruncateText from "../../Rooms/TruncatedText";
+import Image from "./Image";
 export default function AccommodationTab() {
   // window.location.reload();
   const { ready, user } = useContext(UserContext);
@@ -68,8 +69,8 @@ export default function AccommodationTab() {
                 >
                   <div className="lg:h-48 md:h-48 sm:h-48 h-32 lg:w-1/4 md:w-1/3 sm:w-1/2 w-5/12 grow shrink-0">
                     {place.photos.length > 0 && (
-                      <img
-                        src={"http://localhost:4000/uploads/" + place.photos[0]}
+                      <Image
+                        src={place.photos[0]}
                         alt=""
                         className="h-full w-full object-cover rounded-xl shadow-xl"
                       />

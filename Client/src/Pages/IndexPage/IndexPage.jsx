@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Image from "../../Components/Pages/AccountPage/Accomodation/Image";
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
@@ -17,9 +18,9 @@ export default function IndexPage() {
             <Link key={index} className="" to={`/rooms/${place._id}`}>
               {place.photos.length > 0 && (
                 <div>
-                  <img
+                  <Image
                     className="rounded-xl aspect-square object-cover w-full"
-                    src={"http://localhost:4000/uploads/" + place.photos?.[0]}
+                    src={place.photos?.[0]}
                     alt=""
                   />
                   {/* {place.photos.length > 1 && (
