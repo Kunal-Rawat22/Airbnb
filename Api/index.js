@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3"); 
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const fs = require("fs");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
@@ -134,7 +134,17 @@ app.post("/login", async (req, res) => {
           {},
           (err, token) => {
             if (err) throw err;
-            res.cookie("token", token).status(200).json(user);
+            res
+              .cookie("token", token, {
+                httpOnly: true, // Helps prevent XSS attacks by making the cookie inaccessible to JavaScript
+                secure: true, // Use secure cookies (over HTTPS) in production
+                maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (1 day in this case)
+                sameSite: "None", // Helps prevent CSRF attacks. Use 'Strict' or 'None' if needed.
+                path: "/", // Ensure the cookie is accessible across the whole site
+              })
+              .status(200)
+              .json(user);
+            // res.cookie("token", token).status(200).json(user);
           }
         );
       } else {
@@ -165,7 +175,7 @@ app.get("/profile", async (req, res) => {
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
       console.log(dob);
-      var year = dob?.split('-')[0];
+      var year = dob?.split("-")[0];
       var month = dob?.split("-")[1];
       var day = dob?.split("-")[2];
       let date = `${year}-${month}-${day}`;
@@ -250,7 +260,7 @@ app.post("/upload-by-link", async (req, res) => {
 
 //Upload by Device
 const photoMiddleware = multer({ dest: "tmp" });
-app.post("/upload", photoMiddleware.array("photos", 100),async (req, res) => {
+app.post("/upload", photoMiddleware.array("photos", 100), async (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
     // const { path, originalname } = req.files[i];
@@ -380,12 +390,11 @@ app.get("/all-places", async (req, res) => {
   main();
   const result = res.json(await Place.find());
 });
-app.listen(process.env.PORT ||4000, (req, res) => {
-  console.log("Server Running on Port 4000");
+app.listen(process.env.PORT || 4000, (req, res) => {
+  console.log(`Server Running`);
 });
 // const axios = require("axios");
 // const OpenAI = require("openai")
-
 
 // const openai = new OpenAI({
 //   organization: "org-3BxyTI7IvbLjYsCFOGDEnVLT",
@@ -424,7 +433,6 @@ const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // const prompt = "Write a story about a magic backpack.";
 
-
 // console.log(result.response.text());
 
 app.post("/api/getTripPlan", async (req, res) => {
@@ -450,7 +458,6 @@ app.post("/api/getTripPlan", async (req, res) => {
   }
 });
 
-
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;
 
@@ -461,11 +468,11 @@ app.post("/api/location", (req, res) => {
   res.json({
     message: "Location received successfully",
     Lat: lat,
-    Long: lon
-   });
+    Long: lon,
+  });
 });
 
-app.get("/payment/success")
+app.get("/payment/success");
 // token.user_id
 // booking.search(userId)
 
