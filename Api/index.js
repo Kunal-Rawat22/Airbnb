@@ -15,7 +15,7 @@ const multer = require("multer");
 const fs = require("fs");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
-const passportSetup = require("./models/Passport");
+const passportSetup = require("./models/passport");
 const authRoute = require("./routes/auth");
 const session = require("express-session");
 
