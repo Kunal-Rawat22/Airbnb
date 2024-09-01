@@ -66,7 +66,10 @@ import { transform } from "ol/proj";
 const MapComponent = () => {
   const [position, setPosition] = useState(null);
   const mapRef = useRef();
-
+  function openGoogleMaps() {
+    const url = `https://www.google.com/maps?q=${position.lat},${position.lon}`;
+    window.open(url, "_blank");
+  }
   const initializeMap = useCallback(() => {
     if (position && mapRef.current) {
       // Convert coordinates to Web Mercator projection
@@ -136,7 +139,11 @@ const MapComponent = () => {
     initializeMap();
   }, [initializeMap]);
 
-  return <div ref={mapRef} style={{ width: "100%", height: "1000px" }} />;
+  return (
+    <div onClick={openGoogleMaps} className="w-full h-full">
+      <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+    </div>
+  );
 };
 
 export default MapComponent;

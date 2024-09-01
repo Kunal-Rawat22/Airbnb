@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import RoomPhotos from "../../Components/Pages/Rooms/RoomPhotos";
 import RoomBrief from "../../Components/Pages/Rooms/RoomBrief";
 import RoomDescription from "../../Components/Pages/Rooms/RoomDescription";
@@ -11,6 +11,7 @@ import RoomCover from "../../Components/Pages/Rooms/RoomCover";
 import Navbar from "../../Components/UI/Navbar";
 import RoomReserve from "../../Components/Pages/Rooms/RoomReserve";
 import ReserveBar from "../../Components/Pages/Rooms/ReserveBar";
+import MapComponent from "../../Map";
 export default function RoomPage() {
   const { subpage } = useParams();
   const [room, setRoom] = useState({
@@ -117,7 +118,7 @@ export default function RoomPage() {
         <div>
           {showNavbar && <Navbar />}
           <div className=" lg:px-40 py-6 md:px-20">
-            <div className="flex flex-col">
+            <div className="flex flex-col Whole-Page">
               <div className="flex flex-col">
                 {screenSize.width > 768 && (
                   <>
@@ -130,20 +131,20 @@ export default function RoomPage() {
                   <div className="px-6 pt-6">
                     <h1 className="text-3xl font-medium">{room?.title}</h1>
                     <RoomCover address={room?.address} />
-                    <hr className="mt-6"/>
+                    <hr className="mt-6" />
                   </div>
                 )}
                 <div
-                  className={`mt-12 flex pb-10 w-full ${
+                  className={`mt-12 Main flex pb-10 w-full ${
                     screenSize.width <= 768 ? "px-6 mt-6" : ""
                   }`}
                 >
-                  <div className="lg:w-2/3 md:w-7/12">
+                  <div className="Left lg:w-2/3 md:w-7/12">
                     <RoomOwner />
                     <hr className=" w-11/12" />
                     <RoomBrief />
                     <hr className=" w-11/12" />
-                    <RoomDescription description={room?.description}  />
+                    <RoomDescription description={room?.description} />
                     <hr className=" w-11/12" />
                     <RoomPerks allOptions={allOptions} options={options} />
                     <hr className=" w-11/12" />
@@ -163,10 +164,8 @@ export default function RoomPage() {
                   </div>
                   {screenSize.width > 768 && (
                     <div
-                      className={`Reserve ${
-                        screenSize.width < 1355 
-                          ? "w-6/12 md:w-5/12"
-                          : "w-1/3"
+                      className={`Right Reserve ${
+                        screenSize.width < 1355 ? "w-6/12 md:w-5/12" : "w-1/3"
                       }`}
                     >
                       <RoomReserve
@@ -180,6 +179,9 @@ export default function RoomPage() {
                       />
                     </div>
                   )}
+                </div>
+                <div className="Map w-full h-[65vh] border">
+                  <MapComponent />
                 </div>
               </div>
             </div>

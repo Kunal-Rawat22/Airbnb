@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Country, State } from "country-state-city";
 import TripPlanner from "./Trial";
 
