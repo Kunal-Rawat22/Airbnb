@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams} from "react-router-dom";
 import RoomPhotos from "../../Components/Pages/Rooms/RoomPhotos";
 import RoomBrief from "../../Components/Pages/Rooms/RoomBrief";
 import RoomDescription from "../../Components/Pages/Rooms/RoomDescription";
@@ -11,7 +11,7 @@ import RoomCover from "../../Components/Pages/Rooms/RoomCover";
 import Navbar from "../../Components/UI/Navbar";
 import RoomReserve from "../../Components/Pages/Rooms/RoomReserve";
 import ReserveBar from "../../Components/Pages/Rooms/ReserveBar";
-import MapComponent from "../../Map";
+import MapComponent from "../../Components/UI/Map";
 export default function RoomPage() {
   const { subpage } = useParams();
   const [room, setRoom] = useState({

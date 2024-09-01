@@ -18,7 +18,7 @@ const RazorpayButton = () => {
   }, []); // Empty dependency array ensures this runs only once
 
   return (
-    <form id="razorpay-form" className="">
+    <form id="razorpay-form">
       {/* Razorpay button will be injected here */}
     </form>
   );

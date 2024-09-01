@@ -1,56 +1,3 @@
-// import { useState, useEffect } from "react";
-
-// const GoogleMapComponent = () => {
-//   const [location, setLocation] = useState({ lat: null, lng: null });
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition(
-//         (position) => {
-//           setLocation({
-//             lat: position.coords.latitude,
-//             lng: position.coords.longitude,
-//           });
-//         },
-//         (err) => {
-//           setError(err.message);
-//         }
-//       );
-//     } else {
-//       setError("Geolocation is not supported by this browser.");
-//     }
-//   }, []);
-
-//   if (error) return <p>Error: {error}</p>;
-
-//   if (!location.lat || !location.lng) return <p>Loading...</p>;
-
-//   const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${location.lat},${location.lng}&zoom=15`;
-
-//   return (
-//     <div className="map-container">
-//       <iframe
-//         width="100%"
-//         height="300"
-//         frameBorder="0"
-//         style={{ border: 0 }}
-//         src={mapUrl}
-//         allowFullScreen
-//         aria-hidden="false"
-//         tabIndex="0"
-//         title="Google Map"
-//       ></iframe>
-//     </div>
-//   );
-// };
-
-// export default GoogleMapComponent;
-
-// src/MapComponent.js
-
-// src/MapComponent.js
-
 import { useEffect, useRef, useState, useCallback } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -140,7 +87,7 @@ const MapComponent = () => {
   }, [initializeMap]);
 
   return (
-    <div onClick={openGoogleMaps} className="w-full h-full">
+    <div onClick={openGoogleMaps} className="w-full h-full cursor-pointer">
       <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

@@ -11,29 +11,30 @@ import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
 import TripPlanner from "./Trial";
 import GetLocation from "./GeoLocation";
-import MapComponent from "./Map";
+import MapComponent from "./Components/UI/Map";
 import TravelPromptGenerator from "./Country";
 import LocationSelector from "./Country";
 import PaymentSuccess from "./PaymentSuccess";
+import Chatbot from "./ChatBot";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <UserContextProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<IndexPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/account/:subpage?" element={<AccountPage />} />
-          <Route path="/account/:subpage/:action" element={<AccountPage />} />
-          <Route path="/rooms/:subpage" element={<RoomPage />} />
-          <Route path="/book/stays/:subpage?" element={<BookingPage />} />
-        </Route>
-      </Routes>
-    </UserContextProvider>
+    // <UserContextProvider>
+    //   <Routes>
+    //     <Route path="/" element={<Layout />}>
+    //       <Route index element={<IndexPage />} />
+    //       <Route path="/login" element={<LoginPage />} />
+    //       <Route path="/register" element={<RegisterPage />} />
+    //       <Route path="/account/:subpage?" element={<AccountPage />} />
+    //       <Route path="/account/:subpage/:action" element={<AccountPage />} />
+    //       <Route path="/rooms/:subpage" element={<RoomPage />} />
+    //       <Route path="/book/stays/:subpage?" element={<BookingPage />} />
+    //     </Route>
+    //   </Routes>
+    // </UserContextProvider>
     // <PaymentSuccess/>
     // <TripPlanner/>
     // <GetLocation />
@@ -41,6 +42,7 @@ function App() {
     // <PaymentGateway/>
     // <TravelPromptGenerator/>
     // <LocationSelector/>
+    <Chatbot/>
   );
 }
 

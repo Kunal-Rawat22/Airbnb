@@ -106,7 +106,7 @@ export default function BookingPage() {
             {/* Payment */}
             <div className="payment flex justify-between mt-4 items-center">
               {" "}
-              <div className="p-2.5 text-2xl font-semibold rounded-lg mt-1 w-1/3 ">
+              <div className="p-2.5 text-2xl lg:text-2xl font-semibold rounded-lg mt-1 w-1/3 ">
                 Request To Book
               </div>
               <RazorpayButton />
@@ -120,7 +120,7 @@ export default function BookingPage() {
               <img
                 src={url + "photo1695799361931.jpg"}
                 alt=""
-                className="w-16 h-16 md:w-28 md:h-28 object-cover rounded-xl block darker cursor-pointer"
+                className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-xl block darker cursor-pointer"
                 // onClick={openNewTab}
               />
               <div className="room-description flex flex-col gap-y-3">
