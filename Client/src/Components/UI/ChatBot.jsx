@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faX } from "@fortawesome/free-solid-svg-icons";
 const countries = {
   USA: ["California", "Texas", "New York"],
   Canada: ["Ontario", "Quebec", "British Columbia"],
@@ -128,25 +129,25 @@ const Chatbot = () => {
         </div>
       )}
       {isChatboxOpen && (
-        <div className="fixed bottom-20 right-5 w-1/4 h-4/5 bg-white rounded-lg shadow-lg flex flex-col z-50">
-          <div className="bg-red-600 text-white p-2 flex justify-between items-center rounded-t-lg">
+        <div className="fixed bottom-20 right-5 w-1/4 h-4/5 bg-white rounded-lg shadow-xl border border-1 flex flex-col z-50">
+          <div className=" bg-[#EB6162] text-white p-2 flex justify-between items-center rounded-t-lg w-full">
             <span>Need help?</span>
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               <button
                 className="bg-transparent text-white text-xl"
                 onClick={() => setChatboxOpen(false)}
               >
-                _
+                <FontAwesomeIcon icon={faMinus} />
               </button>
               <button
                 className="bg-transparent text-white text-xl"
                 onClick={() => setShowCloseConfirmation(true)}
               >
-                X
+                <FontAwesomeIcon icon={faX} />
               </button>
             </div>
           </div>
-          <div className="flex-1 p-3 overflow-y-auto">
+          <div className="flex-1 p-3 overflow-y-auto w-full h-full">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -157,7 +158,7 @@ const Chatbot = () => {
                 <div
                   className={`max-w-3/4 p-2 rounded-lg ${
                     msg.type === "user"
-                      ? "bg-red-600 text-white"
+                      ? "bg-[#EB6162] text-white"
                       : "bg-gray-200 text-black"
                   }`}
                 >
@@ -214,7 +215,7 @@ const Chatbot = () => {
               !showStateDropdown &&
               !showDaysDropdown && (
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
+                  className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-2"
                   onClick={handleClickSuggestPlaces}
                 >
                   Click to suggest some places
@@ -232,7 +233,7 @@ const Chatbot = () => {
               onKeyDown={(e) => e.key === "Enter" && handleUserMessage(e)}
             />
             <button
-              className="bg-red-600 text-white px-4 py-2 ml-2 rounded-lg text-sm"
+              className="bg-[#EB6162] text-white px-4 py-2 ml-2 rounded-lg text-sm"
               onClick={handleUserMessage}
             >
               Send
@@ -246,7 +247,7 @@ const Chatbot = () => {
           <p>Do you want to close the chat? If not, please minimize it.</p>
           <div className="mt-2 flex">
             <button
-              className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2"
+              className="bg-[#EB6162] text-white px-4 py-2 rounded-lg mr-2"
               onClick={handleCloseBot}
             >
               Close
