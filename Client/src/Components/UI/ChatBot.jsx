@@ -115,13 +115,13 @@ const Chatbot = () => {
     setUserMsg("");
     setBotMsg("Click to suggest some places");
   };
-    
+
   return (
     <div className="relative z-10">
       {!isChatboxOpen && (
         <div
           id="chatbox-toggle"
-          className="fixed bottom-5 right-5 w-16 h-16 bg-gradient-to-r from-[#EC6164] to-red-200 text-white rounded-full flex items-center justify-center text-base font-bold cursor-pointer z-50 animate-pulse transition-transform transform hover:scale-110"
+          className="fixed bottom-5 right-5 w-16 h-16 bg-gradient-to-r text-white from-[#4F1787] to-[#EC6164] rounded-full flex items-center justify-center text-base font-bold cursor-pointer z-50 animate-pulseReduced transition-transform transform hover:scale-110"
           onClick={handleChatboxToggle}
         >
           Ask Me
