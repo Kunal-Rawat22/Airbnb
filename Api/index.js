@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(
   cookieSession({
     name: "session",
-    keys: ["airbnb"],
+    keys: ["YatraNest"],
     maxAge: 24 * 60 * 60 * 100,
   })
 );
@@ -133,7 +133,7 @@ app.get("/profile", async (req, res) => {
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
       console.log(dob);
-      var year = dob?.split('-')[0];
+      var year = dob?.split("-")[0];
       var month = dob?.split("-")[1];
       var day = dob?.split("-")[2];
       let date = `${year}-${month}-${day}`;
@@ -340,7 +340,6 @@ app.listen(4000, (req, res) => {
 // const axios = require("axios");
 // const OpenAI = require("openai")
 
-
 // const openai = new OpenAI({
 //   organization: "org-3BxyTI7IvbLjYsCFOGDEnVLT",
 //   project: "proj_zQcyMAhSH9C0zQanNEpgZcuE",
@@ -378,7 +377,6 @@ const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // const prompt = "Write a story about a magic backpack.";
 
-
 // console.log(result.response.text());
 
 app.post("/api/getTripPlan", async (req, res) => {
@@ -404,7 +402,6 @@ app.post("/api/getTripPlan", async (req, res) => {
   }
 });
 
-
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;
 
@@ -415,11 +412,11 @@ app.post("/api/location", (req, res) => {
   res.json({
     message: "Location received successfully",
     Lat: lat,
-    Long: lon
-   });
+    Long: lon,
+  });
 });
 
-app.get("/payment/success")
+app.get("/payment/success");
 // token.user_id
 // booking.search(userId)
 

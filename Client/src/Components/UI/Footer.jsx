@@ -193,7 +193,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-2">
               <h5 className="font-medium">Hosting</h5>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
-                Airbnb your home
+                YatraNest your home
               </div>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
                 AirCover for Hosts
@@ -210,7 +210,7 @@ export default function Footer() {
             </div>
             {screenSize.width <= 555 && <hr />}
             <div className="flex flex-col space-y-2">
-              <h5 className="font-medium">Airbnb</h5>
+              <h5 className="font-medium">YatraNest</h5>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
                 Newsroom
               </div>
@@ -224,7 +224,7 @@ export default function Footer() {
                 Investors
               </div>
               <div className="text-slate-600 font-light hover:underline cursor-pointer">
-                Airbnb.org emergency stays
+                YatraNest.org emergency stays
               </div>
             </div>
           </div>

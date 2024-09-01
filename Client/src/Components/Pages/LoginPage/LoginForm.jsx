@@ -54,7 +54,7 @@ export default function LoginForm() {
       <form onSubmit={handleOnSubmit} className="px-8 py-4 pt-8 flex flex-col">
         <div>
           {" "}
-          <h1 className="text-2xl font-medium">Welcome to Airbnb !!</h1>
+          <h1 className="text-2xl font-medium">Welcome to YatraNest !!</h1>
         </div>
         <div className=" space-y-1">
           {" "}

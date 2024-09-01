@@ -148,28 +148,34 @@ const Chatbot = () => {
             </div>
           </div>
           <div className="flex-1 p-3 overflow-y-auto w-full h-full">
-            {messages.map((msg, index) => (
+            {messages.map((m, index) => (
               <div
                 key={index}
-                className={`flex mb-2 ${
-                  msg.type === "user" ? "justify-end" : ""
+                className={`flex mb-2 w-full ${
+                  m.type === "user" ? "justify-end" : ""
                 }`}
               >
                 <div
-                  className={`max-w-3/4 p-2 rounded-lg ${
-                    msg.type === "user"
-                      ? "bg-[#EB6162] text-white"
-                      : "bg-gray-200 text-black"
+                  className={`w-3/4 flex ${
+                    m.type === "user" ? "justify-end" : ""
                   }`}
                 >
-                  {msg.text}
+                  <div
+                    className={`flex max-w-3/4 p-2 rounded-lg whitespace-normal break-words ${
+                      m.type === "user"
+                        ? "bg-[#EB6162] text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                  >
+                    {m.text}
+                  </div>
                 </div>
               </div>
             ))}
             {showCountryDropdown && (
               <div className="mt-2">
                 <select
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className=" p-2 border border-gray-300 rounded-lg max-w-3/4"
                   onChange={handleSelectCountry}
                 >
                   <option value="">Select a country</option>
@@ -184,7 +190,7 @@ const Chatbot = () => {
             {showStateDropdown && (
               <div className="mt-2">
                 <select
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg"
                   onChange={handleSelectState}
                 >
                   <option value="">Select a state</option>
@@ -199,7 +205,7 @@ const Chatbot = () => {
             {showDaysDropdown && (
               <div className="mt-2">
                 <select
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg"
                   onChange={handleSelectDays}
                 >
                   <option value="">Select number of days</option>

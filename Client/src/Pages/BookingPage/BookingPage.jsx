@@ -92,9 +92,9 @@ export default function BookingPage() {
               </span>
               ,{" "}
               <span className="underline font-medium">
-                Airbnb&apos;s Rebooking and Refund Policy
+                YatraNest&apos;s Rebooking and Refund Policy
               </span>{" "}
-              and that Airbnb can{" "}
+              and that YatraNest can{" "}
               <span className="underline font-medium">
                 charge my payment method
               </span>{" "}

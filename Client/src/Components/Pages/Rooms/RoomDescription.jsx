@@ -8,13 +8,17 @@ export default function RoomDescription({ description }) {
       <div className="space-x-2">
         <i className="fa-solid fa-star"></i>
         <span className="font-light">
-          You&apos;ll be taken care of by one of the most successful Airbnb
+          You&apos;ll be taken care of by one of the most successful YatraNest
           hosts in the country.{" "}
         </span>
       </div>
       <div className="space-x-2">
         <i className="fa-solid fa-star"></i>
-        <TruncateText text={description} limit={40} className={" font-light "}/>
+        <TruncateText
+          text={description}
+          limit={40}
+          className={" font-light "}
+        />
       </div>
       <Link className=" space-x-2">
         <span className="underline">Show More</span>
