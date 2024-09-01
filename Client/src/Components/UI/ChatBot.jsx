@@ -118,7 +118,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="relative z-10">
+    <div className="relative z-50">
       {!isChatboxOpen && (
         <div
           id="chatbox-toggle"
@@ -147,35 +147,38 @@ const Chatbot = () => {
               </button>
             </div>
           </div>
-          <div className="flex-1 p-3 overflow-y-auto w-full h-full">
-            {messages.map((m, index) => (
-              <div
-                key={index}
-                className={`flex mb-2 w-full ${
-                  m.type === "user" ? "justify-end" : ""
-                }`}
-              >
+          <div className="flex-1 p-3 overflow-y-auto w-full h-full relative bg-custom-bg bg-center bg-cover">
+            {/* <div className="absolute inset-0 bg-custom-bg opacity-30 bg-cover bg-repeat-y bg-center pointer-events-none -z-20"></div> */}
+            <div className="relative z-10">
+              {messages.map((m, index) => (
                 <div
-                  className={`w-3/4 flex ${
+                  key={index}
+                  className={`flex mb-2 w-full ${
                     m.type === "user" ? "justify-end" : ""
                   }`}
                 >
                   <div
-                    className={`flex max-w-3/4 p-2 rounded-lg whitespace-normal break-words ${
-                      m.type === "user"
-                        ? "bg-[#EB6162] text-white"
-                        : "bg-gray-200 text-black"
+                    className={`w-3/4 flex ${
+                      m.type === "user" ? "justify-end" : ""
                     }`}
                   >
-                    {m.text}
+                    <div
+                      className={`flex max-w-3/4 p-2 rounded-lg whitespace-normal break-words ${
+                        m.type === "user"
+                          ? "bg-[#EB6162] text-white opacity-100"
+                          : "bg-gray-200 text-black opacity-100"
+                      }`}
+                    >
+                      {m.text}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
             {showCountryDropdown && (
               <div className="mt-2">
                 <select
-                  className=" p-2 border border-gray-300 rounded-lg max-w-3/4"
+                  className=" p-2 border border-gray-300 rounded-lg max-w-3/4 opacity-100"
                   onChange={handleSelectCountry}
                 >
                   <option value="">Select a country</option>
@@ -190,7 +193,7 @@ const Chatbot = () => {
             {showStateDropdown && (
               <div className="mt-2">
                 <select
-                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg"
+                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg opacity-100"
                   onChange={handleSelectState}
                 >
                   <option value="">Select a state</option>
@@ -205,7 +208,7 @@ const Chatbot = () => {
             {showDaysDropdown && (
               <div className="mt-2">
                 <select
-                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg"
+                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg opacity-100"
                   onChange={handleSelectDays}
                 >
                   <option value="">Select number of days</option>
@@ -221,7 +224,7 @@ const Chatbot = () => {
               !showStateDropdown &&
               !showDaysDropdown && (
                 <button
-                  className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-2"
+                  className="bg-gray-200 text-black px-4 py-2 rounded-lg mt-2 opacity-100"
                   onClick={handleClickSuggestPlaces}
                 >
                   Click to suggest some places

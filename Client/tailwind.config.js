@@ -16,7 +16,7 @@ export default {
         primary: "#EB6162", // Replace with your primary color
       },
       backgroundImage: {
-        "custom-bg": "url('/ChatBotBG.png')",
+        "custom-bg": "url('/ChatBotBG2.png')",
       },
     },
   },
