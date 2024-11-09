@@ -1,7 +1,46 @@
 import "./App.css"; // Import custom CSS for animation
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+
 const PaymentSuccess = () => {
+  const queryParams = new URLSearchParams(location.search);
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const payment_id = queryParams.get("payment_id");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  useEffect(() => {
+    // Retrieve booking details from localStorage once when the component mounts
+    const details = JSON.parse(localStorage.getItem("bookingDetails"));
+    if (details) {
+      // Include payment_id in the booking details
+      setBookingDetails({
+        ...details,
+        payment_id: payment_id,
+      });
+    }
+  }, [payment_id]);
+
+  useEffect(() => {
+    // Send booking details to backend if bookingDetails is available
+    if (bookingDetails) {
+      axios
+        .post("/payment/success", bookingDetails)
+        .then(({ data }) => {
+          setTimeout(() => {
+            setBookingSuccess(true);
+          }, 5000);
+        })
+        .catch((error) => {
+          console.error("Error posting payment data", error);
+        });
+    }
+  }, [bookingDetails]);
+  
+  if (bookingSuccess) {
+    return <Navigate to={"/account/booking"} />;
+  }
   return (
     <div className="bg-gray-400 min-h-screen flex items-center justify-center">
       <div className="max-w-[380px] mx-auto overflow-hidden">
@@ -20,13 +59,12 @@ const PaymentSuccess = () => {
                 Payment Complete
               </div>
               <div className="text-center text-sm text-gray-500 mb-6">
-                Your payment for $N in USDT has been received and sent to
-                SHOPNAME.
+                Your payment for ₹1 has been received and sent to YatraNest.
               </div>
               <div className="text-center text-gray-800 font-bold">
                 <div className="text-lg mb-2">Payment id</div>
                 <div className="border-t border-b border-gray-300 py-2 text-lg mb-6">
-                  JPZZ1V-WQRR94-78E1VE
+                  {payment_id}
                 </div>
               </div>
               <div className="text-center text-xl font-bold text-gray-500">

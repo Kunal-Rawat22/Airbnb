@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const Place = require("./models/places");
+const Booking = require("./models/booking");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
@@ -389,7 +390,7 @@ app.post("/api/getTripPlan", async (req, res) => {
     // const tripPlan = await fetchTripPlan(place, days);
     const result = await AImodel.generateContent(prompt);
     const text = result.response.text();
-    console.log(`##################${text}`)
+    console.log(`##################${text}`);
 
     const match = text.match(/const obj = (\[.*\]);/s);
 
@@ -426,7 +427,34 @@ app.post("/api/location", (req, res) => {
   });
 });
 
-app.get("/payment/success");
+app.post("/payment/success", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      const { id, userName, mobileNo, email } = user;
+      const date = new Date();
+      const day = date.getDate();
+      const month = date.toLocaleString("default", { month: "long" });
+      const year = date.getFullYear();
+
+      // const {  } = req.query;
+      const {
+        checkIn,
+        checkOut,
+        startDate,
+        startMonth,
+        endDate,
+        endMonth,
+        noOfDays,
+        noOfGuests,
+        payment_id,
+      } = req.body;
+      console.log(`paymentId ${payment_id} , ${checkIn}, ${noOfGuests} ${day}-${month}-${year}`);
+      res.json("dghjkshb");
+    });
+  }
+});
 // token.user_id
 // booking.search(userId)
 

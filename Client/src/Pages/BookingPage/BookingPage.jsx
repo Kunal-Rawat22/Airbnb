@@ -20,12 +20,22 @@ export default function BookingPage() {
   const noOfDays = queryParams.get("noOfDays");
   const noOfGuests =
     Number(noOfAdults) + Number(noOfChildren) + Number(infants);
-
   const { ready, user } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
     if (ready && user) {
       setLoggedIn(true);
+      const details = {
+        checkIn: checkIn,
+        checkOut: checkOut,
+        startDate: startDate,
+        startMonth: startMonth,
+        endDate: endDate,
+        endMonth: endMonth,
+        noOfDays: noOfDays,
+        noOfGuests: noOfGuests,
+      };
+      localStorage.setItem("bookingDetails", JSON.stringify(details));
     }
   }, [ready, user, loggedIn]);
 

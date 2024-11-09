@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const BookingConfirmation = () => {
   return (
@@ -6,7 +6,9 @@ const BookingConfirmation = () => {
       <h1 className="text-gray-700 text-2xl font-extrabold mb-2">
         Congratulations!
       </h1>
-      <h2 className="text-3xl font-bold mb-8">Your Trip has been Booked!</h2>
+      <h2 className="text-3xl font-bold mb-8">
+        Your Accomodation has been Booked!
+      </h2>
 
       <div className="parent-div flex flex-col md:flex-row items-start md:items-center w-full h-full bg-white rounded-lg relative">
         {/* Image Section */}
