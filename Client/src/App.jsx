@@ -10,6 +10,7 @@ import AccountPage from "./Pages/AccountPage/AccountPage";
 import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
 import PaymentSuccess from "./PaymentSuccess";
+import BookingConfirmation from "./Components/UI/BookingDetail";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -26,6 +27,7 @@ function App() {
           <Route path="/account/:subpage/:action" element={<AccountPage />} />
           <Route path="/rooms/:subpage" element={<RoomPage />} />
           <Route path="/book/stays/:subpage?" element={<BookingPage />} />
+          <Route path="/test" element={<BookingConfirmation/>}/>
         </Route>
       </Routes>
     </UserContextProvider>
