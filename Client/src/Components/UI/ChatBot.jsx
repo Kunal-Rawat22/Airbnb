@@ -1,13 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faX } from "@fortawesome/free-solid-svg-icons";
-const countries = {
-  USA: ["California", "Texas", "New York"],
-  Canada: ["Ontario", "Quebec", "British Columbia"],
-  India: ["Maharashtra", "Karnataka", "Delhi"],
-};
+import { Country, State } from "country-state-city";
+import axios from "axios";
 
-const days = [1, 2, 3, 4, 5, 6, 7];
 
 const Chatbot = () => {
   //Chatbot Active
@@ -30,8 +26,55 @@ const Chatbot = () => {
   const [noOfDays, setNoOfDays] = useState(0);
   //User Msg Var
   const [userMsg, setUserMsg] = useState("");
-  //Bot Msg Var
-  const [botMsg, setBotMsg] = useState("Click to suggest some places");
+  // All countries Var
+  const [countries, setCountries] = useState([]);
+  // All states Var
+  const [states, setStates] = useState([]);
+  // Prompt
+  const [prompt, setPrompt] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Fetch all countries on component mount
+    const allCountries = Country.getAllCountries();
+    setCountries(allCountries);
+  }, []);
+
+  useEffect(() => {
+    if (prompt) {
+      setLoading(true);
+      try {
+        axios.post("/api/getTripPlan", { prompt }).then(({ data }) => {
+          // let plainText = data.text.replace(/## (.+)/g, "$1") // Remove ## headers
+          // .replace(/\*\*(.+?)\*\*/g, "$1") // Remove *bold* formatting
+          // .replace(/\*([^\*]+)\*/g, "$1") // Remove italic formatting
+          // .replace(/\n\n+/g, "\n\n") // Ensure single line breaks
+          // .replace(/\n/g, " ") // Replace remaining newlines with spaces
+          // .trim(); // Trim leading and trailing whitespace
+          handleBotMessage(data, data.text);
+          console.log(data.text);
+        });
+        // setTripPlan(response.data.text);
+        // console.log(response.data.text);
+      } catch (error) {
+        console.error("Error fetching trip plan", error);
+        handleBotMessage(error,"Sorry, there was an error fetching the trip plan.");
+      }
+      setLoading(false);
+    }
+  }, [prompt]);
+
+  // Generate prompt based on selections
+  const generatePrompt = () => {
+    if (selectedCountry && selectedState && noOfDays) {
+      const promptMessage = `Plan a trip to state of ${selectedState} in ${selectedCountry} for ${noOfDays} days. only list places to visit and city along with it no details only places name and city location name comma loaction and no hashes and stars only list using numbers as bullets. write cities only in Day heading and give this in plain text`;
+      //   const promptMessage = `Given the state of ${selectedState} in ${selectedCountry} and a travel duration of ${days} days, provide a concise list of the top travel destinations and activities to explore within that timeframe and within the state only and please list the cities. Focus on a variety of interests including nature, history, culture, and adventure. Highlight unique experiences, must-see landmarks, and local cuisines that showcase the essence of ${selectedState}. Additionally, include practical tips for optimizing travel time between locations to make the most of the journey. The response should be around 150 words, giving a clear overview without excessive detail.`;
+      setPrompt(promptMessage);
+    } else {
+      alert("Please select a country, state, and enter the number of days.");
+    }
+  };
 
   //From close to open
   const handleChatboxToggle = () => {
@@ -39,18 +82,16 @@ const Chatbot = () => {
     setShowCloseConfirmation(false);
   };
 
-  const handleBotMessage = () => {
+  const handleBotMessage = (e, botMsg) => {
     setMessages((prev) => [...prev, { text: botMsg, type: "bot" }]);
-    setBotMsg("");
   };
   //   const handleSendButton = (message, type = "user") => {
   //     setMessages([messages, { text: message, type }]);
   //     e.target.value = "";
   //   };
 
-  const handleClickSuggestPlaces = () => {
-    handleBotMessage();
-    setBotMsg("Please select country you want to visit:");
+  const handleClickSuggestPlaces = (e) => {
+    handleBotMessage(e, "Click to suggest some places");
     setShowCountryDropdown(true);
     setShowStateDropdown(false);
     setShowDaysDropdown(false);
@@ -59,18 +100,23 @@ const Chatbot = () => {
   const handleSelectCountry = (e) => {
     const country = e.target.value;
     setSelectedCountry(country);
-    handleBotMessage();
-    setBotMsg("Please select state you want to visit:");
+    handleBotMessage(e, "Please select country you want to visit:");
     handleUserMessage(e, country);
     setShowStateDropdown(true);
     setShowCountryDropdown(false);
+    const countryName = Country.getAllCountries().find(
+      (c) => c.name === country
+    );
+    if (countryName) {
+      setStates(State.getStatesOfCountry(countryName.isoCode));
+    }
+    setSelectedState("");
   };
 
   const handleSelectState = (e) => {
     const state = e.target.value;
     setSelectedState(state);
-    handleBotMessage();
-    setBotMsg("Please select no. of days you want to live:");
+    handleBotMessage(e, "Please select state you want to visit:");
     handleUserMessage(e, state);
     setShowDaysDropdown(true);
     setShowStateDropdown(false);
@@ -79,11 +125,14 @@ const Chatbot = () => {
   const handleSelectDays = (e) => {
     const days = e.target.value;
     setNoOfDays(days);
-    const text = `You selected ${days} days in ${selectedState}, ${selectedCountry}.`;
-    handleUserMessage(e, text);
+    handleBotMessage(e, "Please enter no. of days you want to spend:");
+    handleUserMessage(e, days);
+    const text = `You have selected ${days} days in ${selectedState}, ${selectedCountry}.`;
+    handleBotMessage(e,text);
     setShowDaysDropdown(false);
     setSelectedCountry("");
     setSelectedState("");
+    generatePrompt();
   };
 
   const handleMessage = (e) => {
@@ -114,7 +163,6 @@ const Chatbot = () => {
     setSelectedState("");
     setNoOfDays(0);
     setUserMsg("");
-    setBotMsg("Click to suggest some places");
   };
 
   return (
@@ -179,12 +227,13 @@ const Chatbot = () => {
               <div className="mt-2">
                 <select
                   className=" p-2 border border-gray-300 rounded-lg max-w-3/4 opacity-100"
+                  value={selectedCountry}
                   onChange={handleSelectCountry}
                 >
                   <option value="">Select a country</option>
-                  {Object.keys(countries).map((country) => (
-                    <option key={country} value={country}>
-                      {country}
+                  {countries.map((country) => (
+                    <option key={country.name} value={country.name}>
+                      {country.name}
                     </option>
                   ))}
                 </select>
@@ -194,12 +243,13 @@ const Chatbot = () => {
               <div className="mt-2">
                 <select
                   className="max-w-3/4 p-2 border border-gray-300 rounded-lg opacity-100"
+                  value={selectedState}
                   onChange={handleSelectState}
                 >
                   <option value="">Select a state</option>
-                  {countries[selectedCountry].map((state) => (
-                    <option key={state} value={state}>
-                      {state}
+                  {states.map((state) => (
+                    <option key={state.name} value={state.name}>
+                      {state.name}
                     </option>
                   ))}
                 </select>
@@ -207,17 +257,16 @@ const Chatbot = () => {
             )}
             {showDaysDropdown && (
               <div className="mt-2">
-                <select
-                  className="max-w-3/4 p-2 border border-gray-300 rounded-lg opacity-100"
-                  onChange={handleSelectDays}
-                >
-                  <option value="">Select number of days</option>
-                  {days.map((day) => (
-                    <option key={day} value={day}>
-                      {day}
-                    </option>
-                  ))}
-                </select>
+                <label className="max-w-3/4 p-2 border bg-gray-200 border-gray-300 rounded-lg opacity-100 h-full">
+                  Please enter no. of days :
+                </label>
+                <input
+                  className=" max-w-12 p-2 border border-gray-300 rounded-lg opacity-100"
+                  onChange={(e) => setNoOfDays(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSelectDays(e)}
+                  value={noOfDays}
+                  type="number"
+                />
               </div>
             )}
             {!showCountryDropdown &&

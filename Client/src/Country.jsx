@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Country, State } from "country-state-city";
-import TripPlanner from "./Trial";
+import TripPlanner from "./Components/UI/TripPlanner";
 
 const LocationSelector = () => {
   const [countries, setCountries] = useState([]);

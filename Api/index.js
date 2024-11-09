@@ -398,7 +398,7 @@ app.post("/api/getTripPlan", async (req, res) => {
     console.log(text);
   } catch (error) {
     console.error("Error communicating with OpenAI:", error);
-    res.status(500).json({ result: "Failed to get a trip plan." });
+    res.status(500).json({ text: "Failed to get a trip plan." });
   }
 });
 

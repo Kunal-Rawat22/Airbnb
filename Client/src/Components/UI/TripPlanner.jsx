@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 const TripPlanner = ({ prompt }) => {
   const [tripPlan, setTripPlan] = useState("");
   const [loading, setLoading] = useState(false);
-
+  console.log("dmhvhmsdbhkdgbhjkghdhjbhjdbjkbn");
   useEffect(() => {
     if (prompt) {
       setLoading(true);
