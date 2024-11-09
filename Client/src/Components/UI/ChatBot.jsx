@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faX } from "@fortawesome/free-solid-svg-icons";
 import { Country, State } from "country-state-city";
 import axios from "axios";
-
-
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw"; // Import rehypeRaw
 const Chatbot = () => {
   //Chatbot Active
   const [isChatboxOpen, setChatboxOpen] = useState(false);
@@ -46,20 +46,41 @@ const Chatbot = () => {
       setLoading(true);
       try {
         axios.post("/api/getTripPlan", { prompt }).then(({ data }) => {
-          // let plainText = data.text.replace(/## (.+)/g, "$1") // Remove ## headers
-          // .replace(/\*\*(.+?)\*\*/g, "$1") // Remove *bold* formatting
-          // .replace(/\*([^\*]+)\*/g, "$1") // Remove italic formatting
-          // .replace(/\n\n+/g, "\n\n") // Ensure single line breaks
-          // .replace(/\n/g, " ") // Replace remaining newlines with spaces
-          // .trim(); // Trim leading and trailing whitespace
-          handleBotMessage(data, data.text);
-          console.log(data.text);
+          // const formattedText = data.map((dayObj) => {
+          //   // Start with the day and location
+          //   let text = `**Day ${dayObj.day} ${dayObj.Location}**<br>`;
+
+          //   // Add each sub-location on a new line with <br> tag, no commas
+          //   text += dayObj.subLocation
+          //     .map((subLoc) => `• ${subLoc}`)
+          //     .join("<br>"); // Join with <br> for HTML output
+
+          //   handleBotMessage(data, text); // Call the function with the formatted text
+          // });
+          
+          let combinedText = ""; // Initialize a variable to hold all the combined text
+
+          const formattedText = data.map((dayObj) => {
+            // Start with the day and location
+            let text = `**Day ${dayObj.day} ${dayObj.Location}**<br>`;
+
+            // Add each sub-location on a new line with <br> tag, no commas
+            text += dayObj.subLocation
+              .map((subLoc) => `• ${subLoc}`)
+              .join("<br>"); // Join with <br> for HTML output
+
+            combinedText += text + "<br><br>"; // Append each day's text to the combinedText
+          });
+
+          // After processing all days, you can call the function with the combined text
+          handleBotMessage(data, combinedText);
         });
-        // setTripPlan(response.data.text);
-        // console.log(response.data.text);
       } catch (error) {
         console.error("Error fetching trip plan", error);
-        handleBotMessage(error,"Sorry, there was an error fetching the trip plan.");
+        handleBotMessage(
+          error,
+          "Sorry, there was an error fetching the trip plan."
+        );
       }
       setLoading(false);
     }
@@ -68,8 +89,10 @@ const Chatbot = () => {
   // Generate prompt based on selections
   const generatePrompt = () => {
     if (selectedCountry && selectedState && noOfDays) {
-      const promptMessage = `Plan a trip to state of ${selectedState} in ${selectedCountry} for ${noOfDays} days. only list places to visit and city along with it no details only places name and city location name comma loaction and no hashes and stars only list using numbers as bullets. write cities only in Day heading and give this in plain text`;
-      //   const promptMessage = `Given the state of ${selectedState} in ${selectedCountry} and a travel duration of ${days} days, provide a concise list of the top travel destinations and activities to explore within that timeframe and within the state only and please list the cities. Focus on a variety of interests including nature, history, culture, and adventure. Highlight unique experiences, must-see landmarks, and local cuisines that showcase the essence of ${selectedState}. Additionally, include practical tips for optimizing travel time between locations to make the most of the journey. The response should be around 150 words, giving a clear overview without excessive detail.`;
+      const promptMessage = `Plan a trip to state of ${selectedState} in ${selectedCountry} for ${noOfDays} days. It must be in inside that that place only, if anyhow the days given are way more than required than only suggest upto the optimal days no need to go beyond the optimal days. only list places name and city location name. const obj = [{ day: Number,Location: Text,subLocation: [Text]}] I want it in this format where day will the denote to number of day in prompt, Location will refer to the corresponding name in the day, and sublocation will be the all the location suggested in nested list Such as const obj = [{ day: 1,Location: Agra,subLocation: ['Taj Mahal, Agra']}]`;
+      // const promptMessage = `Plan a trip to state of ${selectedState} in ${selectedCountry} for ${noOfDays} days. only list places name and city location name. And give data in numbered bullets. use non decimal bullets for days and decimal bullets for places to visit in that day. Highlight the days and show data in new lines.Such as 1. Day 1 Agra :- \n1.1 Taj Mahal, Agra`;
+      // const promptMessage = `Plan a trip to state of ${selectedState} in ${selectedCountry} for ${noOfDays} days. only list places to visit and city along with it no details only places name and city location name. write cities and day only in  heading with bold and give this in plain text`;
+      // const promptMessage = `Given the state of ${selectedState} in ${selectedCountry} and a travel duration of ${days} days, provide a concise list of the top travel destinations and activities to explore within that timeframe and within the state only and please list the cities. Focus on a variety of interests including nature, history, culture, and adventure. Highlight unique experiences, must-see landmarks, and local cuisines that showcase the essence of ${selectedState}. Additionally, include practical tips for optimizing travel time between locations to make the most of the journey. The response should be around 150 words, giving a clear overview without excessive detail.`;
       setPrompt(promptMessage);
     } else {
       alert("Please select a country, state, and enter the number of days.");
@@ -128,7 +151,7 @@ const Chatbot = () => {
     handleBotMessage(e, "Please enter no. of days you want to spend:");
     handleUserMessage(e, days);
     const text = `You have selected ${days} days in ${selectedState}, ${selectedCountry}.`;
-    handleBotMessage(e,text);
+    handleBotMessage(e, text);
     setShowDaysDropdown(false);
     setSelectedCountry("");
     setSelectedState("");
@@ -217,7 +240,9 @@ const Chatbot = () => {
                           : "bg-gray-200 text-black opacity-100"
                       }`}
                     >
-                      {m.text}
+                      <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                        {m.text}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 </div>

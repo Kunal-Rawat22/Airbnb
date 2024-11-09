@@ -375,10 +375,6 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// const prompt = "Write a story about a magic backpack.";
-
-// console.log(result.response.text());
-
 app.post("/api/getTripPlan", async (req, res) => {
   const { prompt } = req.body;
 
@@ -393,11 +389,18 @@ app.post("/api/getTripPlan", async (req, res) => {
     // const tripPlan = await fetchTripPlan(place, days);
     const result = await AImodel.generateContent(prompt);
     const text = result.response.text();
+    const match = text.match(/const obj = (\[.*\]);/s);
 
-    res.json({ text: text });
-    console.log(text);
+    if (match && match[1]) {
+      // Parse the matched JSON-like string into a JavaScript object
+      const objArray = eval(`(${match[1]})`);
+      console.log(objArray);
+      res.json(objArray);
+    } else {
+      console.log("Object not found in text.");
+    }
   } catch (error) {
-    console.error("Error communicating with OpenAI:", error);
+    console.error("Error communicating with AI:", error);
     res.status(500).json({ text: "Failed to get a trip plan." });
   }
 });
