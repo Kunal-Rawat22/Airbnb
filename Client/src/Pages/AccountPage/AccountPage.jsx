@@ -3,6 +3,8 @@ import { UserContext } from "../../UserContext";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ProfileTab from "../../Components/Pages/AccountPage/ProfileTab/ProfileView";
 import AccommodationTab from "../../Components/Pages/AccountPage/Accomodation/AccomodationView";
+import BookingTab from "../../Components/Pages/AccountPage/Booking/BookingTab";
+
 
 export default function AccountPage() {
   const { ready, user } = useContext(UserContext);
@@ -54,6 +56,7 @@ export default function AccountPage() {
       )}
       {subpage === "profile" && <ProfileTab />}
       {subpage === "places" && <AccommodationTab />}
+      {subpage === "booking" && <BookingTab/>}
     </div>
   );
 }

@@ -9,11 +9,6 @@ import { UserContextProvider } from "./UserContext";
 import AccountPage from "./Pages/AccountPage/AccountPage";
 import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
-import TripPlanner from "./Components/UI/TripPlanner";
-import GetLocation from "./GeoLocation";
-import MapComponent from "./Components/UI/Map";
-import TravelPromptGenerator from "./Country";
-import LocationSelector from "./Country";
 import PaymentSuccess from "./PaymentSuccess";
 
 axios.defaults.baseURL = "http://localhost:4000";
@@ -34,14 +29,6 @@ function App() {
         </Route>
       </Routes>
     </UserContextProvider>
-
-    // <PaymentSuccess/>
-    // <TripPlanner/>
-    // <GetLocation />
-    // <MapComponent />
-    // <PaymentGateway/>
-    // <TravelPromptGenerator/>
-    // <LocationSelector/>
   );
 }
 

@@ -389,12 +389,19 @@ app.post("/api/getTripPlan", async (req, res) => {
     // const tripPlan = await fetchTripPlan(place, days);
     const result = await AImodel.generateContent(prompt);
     const text = result.response.text();
+    console.log(`##################${text}`)
+
     const match = text.match(/const obj = (\[.*\]);/s);
 
     if (match && match[1]) {
-      // Parse the matched JSON-like string into a JavaScript object
-      const objArray = eval(`(${match[1]})`);
-      console.log(objArray);
+      // Escape single quotes inside string values
+      const sanitizedText = match[1].replace(
+        /'([^']*?)'/g,
+        (m, p1) => `'${p1.replace(/'/g, "\\'")}'`
+      );
+
+      // Use eval after sanitizing
+      const objArray = eval(`(${sanitizedText})`);
       res.json(objArray);
     } else {
       console.log("Object not found in text.");

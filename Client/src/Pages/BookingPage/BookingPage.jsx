@@ -3,7 +3,7 @@ import { UserContext } from "../../UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link, Navigate, useParams } from "react-router-dom";
-import RazorpayButton from "../../RazorPayBtn";
+import RazorpayButton from "../../Components/UI/RazorPayBtn";
 
 export default function BookingPage() {
   const queryParams = new URLSearchParams(location.search);

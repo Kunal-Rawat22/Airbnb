@@ -11,7 +11,7 @@ export default function IndexPage() {
   console.log(places);
   return (
     <div className="py-4 px-8 lg:px-20 md:px-12 sm:px-8 pb-16">
-      <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 gap-y-8">
+      <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8">
         {places.length > 0 &&
           places.map((place, index) => (
             <Link key={index} className="" to={`/rooms/${place._id}`}>
