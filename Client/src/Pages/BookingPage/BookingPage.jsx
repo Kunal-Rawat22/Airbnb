@@ -34,6 +34,7 @@ export default function BookingPage() {
         endMonth: endMonth,
         noOfDays: noOfDays,
         noOfGuests: noOfGuests,
+        placeId: subpage,
       };
       localStorage.setItem("bookingDetails", JSON.stringify(details));
     }

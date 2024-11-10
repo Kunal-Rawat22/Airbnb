@@ -427,17 +427,18 @@ app.post("/api/location", (req, res) => {
   });
 });
 
-app.post("/payment/success", (req, res) => {
+app.post("/payment/success", async (req, res) => {
   const { token } = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
-      const { id, userName, mobileNo, email } = user;
+      const { email, id } = user;
+      const { userName, mobileNo, _id } = await User.findById(id);
       const date = new Date();
       const day = date.getDate();
       const month = date.toLocaleString("default", { month: "long" });
       const year = date.getFullYear();
-
+      const currDate = `${day} ${month} ${year}`;
       // const {  } = req.query;
       const {
         checkIn,
@@ -449,9 +450,26 @@ app.post("/payment/success", (req, res) => {
         noOfDays,
         noOfGuests,
         payment_id,
+        placeId,
       } = req.body;
-      console.log(`paymentId ${payment_id} , ${checkIn}, ${noOfGuests} ${day}-${month}-${year}`);
-      res.json("dghjkshb");
+      console.log("pyment _id %s", payment_id);
+      try {
+        const bookingDoc = await Booking.create({
+          userId: _id,
+          mobileNo,
+          email: email.toLowerCase(),
+          userName,
+          paymentId: payment_id,
+          bookedDate: currDate,
+          noOfGuests,
+          checkIn,
+          checkOut,
+          placeId,
+        });
+        res.status(200).json(bookingDoc);
+      } catch (err) {
+        res.status(422).json(err);
+      }
     });
   }
 });
