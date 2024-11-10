@@ -1,15 +1,17 @@
-import "./App.css"; // Import custom CSS for animation
+import "../../App.css"; // Import custom CSS for animation
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const PaymentSuccess = () => {
   const queryParams = new URLSearchParams(location.search);
   const [bookingDetails, setBookingDetails] = useState(null);
   const payment_id = queryParams.get("payment_id");
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   useEffect(() => {
     // Retrieve booking details from localStorage once when the component mounts
     const details = JSON.parse(localStorage.getItem("bookingDetails"));
@@ -28,21 +30,20 @@ const PaymentSuccess = () => {
       axios
         .post("/payment/success", bookingDetails)
         .then(({ data }) => {
-          setTimeout(() => {
-            setBookingSuccess(true);
-          }, 5000);
+          setBookingSuccess(true);
         })
         .catch((error) => {
+          setBookingSuccess(true);
           console.error("Error posting payment data", error);
         });
     }
   }, [bookingDetails]);
-  
-  if (bookingSuccess) {
+
+  if (redirect) {
     return <Navigate to={"/account/booking"} />;
   }
   return (
-    <div className="bg-gray-400 min-h-screen flex items-center justify-center">
+    <div className="bg-gray-200 min-h-screen flex items-center justify-center pt-12 pb-12">
       <div className="max-w-[380px] mx-auto overflow-hidden">
         <div className="bg-gray-800 h-[6px] border border-gray-600 border-b-0 rounded-t-lg" />
 
@@ -62,16 +63,39 @@ const PaymentSuccess = () => {
                 Your payment for ₹1 has been received and sent to YatraNest.
               </div>
               <div className="text-center text-gray-800 font-bold">
-                <div className="text-lg mb-2">Payment id</div>
+                <div className="text-lg mb-2">Payment ID</div>
                 <div className="border-t border-b border-gray-300 py-2 text-lg mb-6">
-                  {payment_id}
+                  {/* {payment_id} */}
+                  pay_PJVbtn4i2xA08G
                 </div>
               </div>
               <div className="text-center text-xl font-bold text-gray-500">
-                You can close this page!
+                Redirecting to my bookings!
               </div>
+              {bookingSuccess && (
+                <div className=" flex mt-2 justify-center">
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={10}
+                    colors={["#16A34A", "#16A34A", "#16A34A", "#16A34A"]}
+                    colorsTime={[7, 5, 2, 0]}
+                    size={80}
+                    strokeWidth={6}
+                    onComplete={() => {
+                      setRedirect(true); // Set redirect to true after countdown completes
+                      return [false, 0]; // Stop timer
+                    }}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                </div>
+              )}
             </div>
-            <div className="relative h-5 w-full mt-[-1px]">
+            <div
+              className={`relative h-5 w-full -mt-${
+                bookingSuccess ? "6" : "1"
+              }`}
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white opacity-75" />
             </div>

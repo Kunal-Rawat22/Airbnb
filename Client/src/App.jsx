@@ -9,7 +9,7 @@ import { UserContextProvider } from "./UserContext";
 import AccountPage from "./Pages/AccountPage/AccountPage";
 import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
-import PaymentSuccess from "./PaymentSuccess";
+import PaymentSuccess from "./Components/UI/PaymentSuccess";
 import BookingConfirmation from "./Components/UI/BookingDetail";
 
 axios.defaults.baseURL = "http://localhost:4000";
@@ -27,7 +27,8 @@ function App() {
           <Route path="/account/:subpage/:action" element={<AccountPage />} />
           <Route path="/rooms/:subpage" element={<RoomPage />} />
           <Route path="/book/stays/:subpage?" element={<BookingPage />} />
-          <Route path="/payment/success?" element={<PaymentSuccess/>}/>
+          <Route path="/payment/success?" element={<PaymentSuccess />} />
+          <Route path="/payment/test" element={<PaymentSuccess />} />
         </Route>
       </Routes>
     </UserContextProvider>
