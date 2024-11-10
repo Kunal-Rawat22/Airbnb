@@ -7,11 +7,17 @@ const BookingSchema = new mongoose.Schema(
     userName: { type: String },
     mobileNo: { type: Number },
     email: { type: String },
-    paymentId: { type: String, unique: true, required: true},
+    paymentId: { type: String, unique: true, required: true },
     checkIn: { type: String },
     checkOut: { type: String },
     bookedDate: { type: String },
     noOfGuests: { type: Number },
+    noOfDays: { type: Number },
+    amount: { type: Number },
+    price: { type: Number },
+    placeName: { type: String },
+    photos: [String],
+    description: { type: String },
   },
   { timestamp: true }
 );

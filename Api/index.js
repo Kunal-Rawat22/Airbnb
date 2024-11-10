@@ -433,7 +433,6 @@ app.post("/payment/success", async (req, res) => {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
       const { email, id } = user;
-      const { userName, mobileNo, _id } = await User.findById(id);
       const date = new Date();
       const day = date.getDate();
       const month = date.toLocaleString("default", { month: "long" });
@@ -451,9 +450,16 @@ app.post("/payment/success", async (req, res) => {
         noOfGuests,
         payment_id,
         placeId,
+        amount,
+        address,
+        title,
+        photos,
+        price,
+        description,
       } = req.body;
       console.log("pyment _id %s", payment_id);
       try {
+        const { userName, mobileNo, _id } = await User.findById(id);
         const bookingDoc = await Booking.create({
           userId: _id,
           mobileNo,
@@ -465,6 +471,12 @@ app.post("/payment/success", async (req, res) => {
           checkIn,
           checkOut,
           placeId,
+          noOfDays,
+          placeName: title,
+          price,
+          photos,
+          amount,
+          description,
         });
         res.status(200).json(bookingDoc);
       } catch (err) {
@@ -476,6 +488,25 @@ app.post("/payment/success", async (req, res) => {
 // token.user_id
 // booking.search(userId)
 
+app.get("/bookings", async (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      const { email, id } = user;
+      const { userName, mobileNo, _id } = await User.findById(id);
+      try {
+        const result = await Booking.find({ userId: _id });
+        // console.log(_id);
+        // console.log(result);
+        const result2 = await Place.find({});
+        res.json(result);
+      } catch (err) {
+        res.status(422).json(err);
+      }
+    });
+  }
+});
 // booking =[]
 // app.post("/booking/:id")
 // booking.add({user})

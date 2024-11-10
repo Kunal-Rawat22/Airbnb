@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link, Navigate, useParams } from "react-router-dom";
 import RazorpayButton from "../../Components/UI/RazorPayBtn";
+import axios from "axios";
 
 export default function BookingPage() {
   const queryParams = new URLSearchParams(location.search);
@@ -22,10 +23,28 @@ export default function BookingPage() {
     Number(noOfAdults) + Number(noOfChildren) + Number(infants);
   const { ready, user } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [placeInfo, setPlaceInfo] = useState(null);
   useEffect(() => {
     if (ready && user) {
-      setLoggedIn(true);
+      axios.get(`/places/${subpage}`).then(({ data }) => {
+        setLoggedIn(true);
+        setPlaceInfo({
+          title: data[0]?.title,
+          address: data[0]?.address,
+          description: data[0]?.description,
+          price: data[0]?.price,
+          photos: data[0]?.photos,
+        });
+      });
+    }
+  }, [ready, user, loggedIn]);
+
+  useEffect(() => {
+    if (placeInfo) {
+      const amount =
+        placeInfo.price * noOfDays + (placeInfo.price * noOfDays * 18) / 100;
       const details = {
+        ...placeInfo,
         checkIn: checkIn,
         checkOut: checkOut,
         startDate: startDate,
@@ -35,10 +54,22 @@ export default function BookingPage() {
         noOfDays: noOfDays,
         noOfGuests: noOfGuests,
         placeId: subpage,
+        amount: amount,
       };
       localStorage.setItem("bookingDetails", JSON.stringify(details));
     }
-  }, [ready, user, loggedIn]);
+  }, [
+    placeInfo,
+    checkIn,
+    checkOut,
+    endDate,
+    endMonth,
+    noOfDays,
+    noOfGuests,
+    startDate,
+    startMonth,
+    subpage,
+  ]);
 
   //Cookie
   if (ready && !user) {
@@ -129,18 +160,19 @@ export default function BookingPage() {
           <div className="border border-1 border-slate-300 rounded-xl w-4/5 h-full mx-auto flex flex-col p-8 gap-y-6">
             <div className="roomDetail h-2/5 w-full flex gap-6">
               <img
-                src={url + "photo1695799361931.jpg"}
+                src={url + placeInfo?.photos[0]}
                 alt=""
                 className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-xl block darker cursor-pointer"
                 // onClick={openNewTab}
               />
-              <div className="room-description flex flex-col gap-y-3">
-                <div className="text-xl">
-                  Family Room : Nirvana Homes | Wooden house | Farm stay Room
-                </div>
+              <div className="room-description flex flex-col gap-y-3 h-full w-full relative">
+                <div className="text-xl">{placeInfo?.title}</div>
                 <div className="text-lg">
                   <FontAwesomeIcon icon={faStar} /> <span>5.00</span>{" "}
                   <span className="font-light text-base">(1 review)</span>
+                </div>
+                <div className="text-base w-full line-clamp-2">
+                  {placeInfo?.description}
                 </div>
               </div>
             </div>
@@ -149,13 +181,13 @@ export default function BookingPage() {
               <h2 className="text-2xl font-medium">Price Details</h2>
               <div className="flex justify-between font-light mt-4 text-lg">
                 <div className="">
-                  ₹{7999} X {noOfDays} nights
+                  ₹{placeInfo?.price} X {noOfDays} nights
                 </div>
-                <div>₹ {7999 * noOfDays}</div>
+                <div>₹ {placeInfo?.price * noOfDays}</div>
               </div>
               <div className="flex justify-between font-light mt-4 text-lg">
                 <div className="underline">Taxes</div>
-                <div>₹ {(7999 * noOfDays * 18) / 100}</div>
+                <div>₹ {(placeInfo?.price * noOfDays * 18) / 100}</div>
               </div>
               {/* <div>₹ {price * noOfDays - discount}</div> */}
             </div>
@@ -165,7 +197,11 @@ export default function BookingPage() {
                 <div>
                   Total (<span className="underline">INR</span>)
                 </div>
-                <div>₹ {7999 * noOfDays + (7999 * noOfDays * 18) / 100}</div>
+                <div>
+                  ₹{" "}
+                  {placeInfo?.price * noOfDays +
+                    (placeInfo?.price * noOfDays * 18) / 100}
+                </div>
               </div>
             </div>
           </div>
