@@ -28,7 +28,7 @@ function App() {
           <Route path="/rooms/:subpage" element={<RoomPage />} />
           <Route path="/book/stays/:subpage?" element={<BookingPage />} />
           <Route path="/payment/success?" element={<PaymentSuccess />} />
-          <Route path="/payment/test" element={<PaymentSuccess />} />
+          <Route path="/booking/:subpage" element={<BookingConfirmation />} />
         </Route>
       </Routes>
     </UserContextProvider>
