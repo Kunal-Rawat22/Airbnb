@@ -50,8 +50,8 @@ const BookingConfirmation = () => {
 
           <div className="flex justify-between text-gray-600">
             <div className="text-sm">
-              <p className="font-semibold">Dates</p>
-              <p>August 15 - 20, 2023</p>
+              <p className="font-semibold">Booking Date</p>
+              <p>{booking?.bookedDate}</p>
             </div>
             <div className="text-sm">
               <p className="font-semibold text-right">Traveler</p>
@@ -88,7 +88,10 @@ const BookingConfirmation = () => {
             </div>
           </div>
 
-          <Link to={"/"} className="mt-6 text-center  text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-500 bg-primary  transition">
+          <Link
+            to={"/"}
+            className="mt-6 text-center  text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-500 bg-primary  transition"
+          >
             Back to Home
           </Link>
         </div>

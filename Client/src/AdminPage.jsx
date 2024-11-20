@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const PropertyBookings = ({ propertyId }) => {
+import { useParams } from 'react-router-dom';
+const PropertyBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const { propertyId } = useParams();
     useEffect(() => {
         const fetchBookings = async () => {
             try {

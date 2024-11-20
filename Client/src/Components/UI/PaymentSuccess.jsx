@@ -43,7 +43,7 @@ const PaymentSuccess = () => {
     return <Navigate to={"/account/booking"} />;
   }
   return (
-    <div className="bg-gray-200 min-h-screen flex items-center justify-center pt-12 pb-12">
+    <div className="bg-gray-200 min-h-screen flex items-center justify-center pt-8 pb-8">
       <div className="max-w-[380px] mx-auto overflow-hidden">
         <div className="bg-gray-800 h-[6px] border border-gray-600 border-b-0 rounded-t-lg" />
 
