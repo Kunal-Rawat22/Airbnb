@@ -21,12 +21,6 @@ export default function RoomPage() {
   const { ready, user } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    if (ready && user) {
-      setLoggedIn(true);
-    }
-  }, [ready, user, loggedIn]);
-
   const { subpage } = useParams();
   const [room, setRoom] = useState({
     title: "",
@@ -52,6 +46,19 @@ export default function RoomPage() {
     { icon: "fa-solid fa-car", name: "Parking" },
     { icon: "fa-solid fa-tv", name: "TV" },
   ];
+
+  useEffect(() => {
+    if (ready && user) {
+      setLoggedIn(true);
+      axios
+        .get(`/places/wishlist/${subpage}`)
+        .then(({ data }) => {
+          console.log(data);
+          // alert("Login Successful");
+          setWishlist(data);
+        });
+    }
+  }, [ready, user, loggedIn, subpage]);
 
   //Fetching Details of place
   useEffect(() => {
