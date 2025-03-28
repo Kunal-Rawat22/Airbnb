@@ -372,9 +372,10 @@ app.listen(4000, (req, res) => {
 //   }
 // };
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { parse } = require("path");
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 app.post("/api/getTripPlan", async (req, res) => {
   const { prompt } = req.body;
@@ -391,22 +392,23 @@ app.post("/api/getTripPlan", async (req, res) => {
     const result = await AImodel.generateContent(prompt);
     const text = result.response.text();
     console.log(`##################${text}`);
+    res.json(JSON.parse(text.replace(/```json|```/g, "").trim()));
+    // const match = text.match(/const obj = (\[.*\]);/s);
 
-    const match = text.match(/const obj = (\[.*\]);/s);
+    // if (match && match[1]) {
+    //   // Escape single quotes inside string values
+    //   const sanitizedText = match[1].replace(
+    //     /'([^']*?)'/g,
+    //     (m, p1) => `'${p1.replace(/'/g, "\\'")}'`
+    //   );
 
-    if (match && match[1]) {
-      // Escape single quotes inside string values
-      const sanitizedText = match[1].replace(
-        /'([^']*?)'/g,
-        (m, p1) => `'${p1.replace(/'/g, "\\'")}'`
-      );
-
-      // Use eval after sanitizing
-      const objArray = eval(`(${sanitizedText})`);
-      res.json(objArray);
-    } else {
-      console.log("Object not found in text.");
-    }
+    //   // Use eval after sanitizing
+    //   const objArray = eval(`(${sanitizedText})`);
+    //   res.json(objArray);
+    // } else {
+    //   res.json("Sorry Gemini AI is down as of now")
+    //   console.log("Object not found in text.");
+    // }
   } catch (error) {
     console.error("Error communicating with AI:", error);
     res.status(500).json({ text: "Failed to get a trip plan." });
