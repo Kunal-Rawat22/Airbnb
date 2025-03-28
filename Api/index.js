@@ -22,6 +22,7 @@ const authRoute = require("./routes/auth");
 const session = require("express-session");
 
 const connectDB = require("./config/db");
+
 const {
   userLogin,
   userRegister,
@@ -29,6 +30,7 @@ const {
   checkProfile,
   updateUser,
 } = require("./controllers/userController");
+
 const {
   createPlace,
   getAllPlaces,
@@ -39,6 +41,16 @@ const {
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { parse } = require("path");
+
+const {
+  getWishlistPlace,
+  updateWishlist,
+} = require("./controllers/wishlistController");
+
+const {
+  getBookingById,
+  getAllBookings,
+} = require("./controllers/bookingController");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -284,103 +296,13 @@ app.post("/payment/success", async (req, res) => {
 // token.user_id
 // booking.search(userId)
 
-app.get("/bookings", async (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      const { email, id } = user;
-      try {
-        const { userName, mobileNo, _id } = await User.findById(id);
-        const result = await Booking.find({ userId: _id });
-        // console.log(_id);
-        // console.log(result);
-        const result2 = await Place.find({});
-        res.json(result);
-      } catch (err) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.get("/bookings", getAllBookings);
 
-app.get("/booking/:id", (req, res) => {
-  const { token } = req.cookies;
-  const id = req.params.id;
-  // console.log("object");
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      // console.log("shjvs");
-      try {
-        // console.log("Id%s",id);
-        const result = await Booking.findById(id);
-        console.log(result);
-        res.json(result);
-      } catch (err) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.get("/booking/:id", getBookingById);
 
-app.put("/places/wishlist/:id", async (req, res) => {
-  const { token } = req.cookies;
-  const placeId = req.params.id;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        const { id } = user;
-        const { _id } = await User.findById(id);
-        // console.log("##################");
-        const result = await Wishlist.findOne({
-          userId: _id,
-          placeId: placeId,
-        });
-        // console.log("behjbfejhbkefbe###################fbjkebfhbef");
-        console.log(result);
-        if (result == null) {
-          // console.log("behjbfejhbkefbefbjkebfhbef");
-          const result = await Wishlist.create({
-            userId: _id,
-            placeId: placeId,
-          });
-          res.status(201).json(true);
-        } else {
-          // console.log("behjbfejhbkefbefbjkwnflfnlnf3jnf3nkn3fnebfhbef");
-          const result2 = await Wishlist.findByIdAndDelete(result._id);
-          res.status(200).json(false);
-        }
-      } catch (err) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.put("/places/wishlist/:id", updateWishlist);
 
-app.get("/places/wishlist/:id", async (req, res) => {
-  const { token } = req.cookies;
-  const placeId = req.params.id;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        const { id } = user;
-        const { _id } = await User.findById(id);
-        const result = await Wishlist.findOne({
-          userId: _id,
-          placeId: placeId,
-        });
-        console.log(result);
-        if (result == null) res.status(201).json(false);
-        else res.status(200).json(true);
-      } catch (err) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.get("/places/wishlist/:id", getWishlistPlace);
 // booking =[]
 // app.post("/booking/:id")
 // booking.add({user})
