@@ -1,5 +1,7 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 /* eslint-disable react/prop-types */
-export default function RoomPhotos({ photos, screenSize }) {
+export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlist }) {
   const url = "http://localhost:4000/uploads/";
   const openNewTab = (e) => {
     console.log(e);
@@ -24,6 +26,20 @@ export default function RoomPhotos({ photos, screenSize }) {
               className="w-full object-cover rounded-s-xl block h-full darker cursor-pointer"
               onClick={openNewTab}
             />
+            <button
+              className="absolute bottom-2 left-2  p-2 px-3 rounded-full shadow-md bg-white transition"
+              onClick={toggleWishlist}
+            >
+              {wishlist && (
+                <FontAwesomeIcon icon={faHeart} style={{ color: "#d2746a" }} />
+              )}
+              {!wishlist && (
+                <i
+                  className="fa-regular fa-heart"
+                  style={{ color: "#D2746A" }}
+                ></i>
+              )}
+            </button>
           </div>
           <div className="grid gap-y-2 h-96">
             <div className="grid grid-cols-2 gap-x-2 pt-2">

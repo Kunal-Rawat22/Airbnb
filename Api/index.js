@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const User = require("./models/user");
 const Place = require("./models/places");
 const Booking = require("./models/booking");
+const Wishlist = require("./models/wishlist");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
@@ -523,6 +524,38 @@ app.get("/booking/:id", (req, res) => {
         const result = await Booking.findById(id);
         console.log(result);
         res.json(result);
+      } catch (err) {
+        res.status(422).json(err);
+      }
+    });
+  }
+});
+
+app.put("/places/wishlist/:id", async (req, res) => {
+  const { token } = req.cookies;
+  const placeId = req.params.id;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        const { id } = user;
+        const { _id } = await User.findById(id);
+        console.log("##################");
+        const result = await Wishlist.findOne({ userId: _id, placeId: placeId });
+        console.log("behjbfejhbkefbe###################fbjkebfhbef");
+        console.log(result);
+        if (result==null) {
+          console.log("behjbfejhbkefbefbjkebfhbef");
+          const result = await Wishlist.create({
+            userId: _id,
+            placeId: placeId,
+          });
+          res.status(201).json(true);
+        } else {
+          console.log("behjbfejhbkefbefbjkwnflfnlnf3jnf3nkn3fnebfhbef");
+          const result2 = await Wishlist.findByIdAndDelete(result._id)
+          res.status(200).json(false);
+        }
       } catch (err) {
         res.status(422).json(err);
       }

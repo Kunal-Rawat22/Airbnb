@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams} from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import RoomPhotos from "../../Components/Pages/Rooms/RoomPhotos";
 import RoomBrief from "../../Components/Pages/Rooms/RoomBrief";
 import RoomDescription from "../../Components/Pages/Rooms/RoomDescription";
@@ -12,7 +12,21 @@ import Navbar from "../../Components/UI/Navbar";
 import RoomReserve from "../../Components/Pages/Rooms/RoomReserve";
 import ReserveBar from "../../Components/Pages/Rooms/ReserveBar";
 import MapComponent from "../../Components/UI/Map";
+import { UserContext } from "../../UserContext";
+import { Navigate } from "react-router-dom";
+
 export default function RoomPage() {
+  const [wishlist, setWishlist] = useState(false);
+  const [isWishlistClicked, setIsWishlistClicked] = useState(false);
+  const { ready, user } = useContext(UserContext);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (ready && user) {
+      setLoggedIn(true);
+    }
+  }, [ready, user, loggedIn]);
+
   const { subpage } = useParams();
   const [room, setRoom] = useState({
     title: "",
@@ -112,6 +126,22 @@ export default function RoomPage() {
     };
   }, []);
 
+  async function toggleWishlist(e) {
+    setIsWishlistClicked(true);
+    e.preventDefault();
+    if (ready && user && loggedIn) {
+      const response = await axios.put(`/places/wishlist/${subpage}`);
+      console.log(response);
+      // alert("Login Successful");
+      setWishlist(response.data);
+    }
+  }
+
+  if (ready && !user && isWishlistClicked) {
+    // console.log("efbheb");
+    return <Navigate to={"/login"} />;
+  }
+
   return (
     <div>
       {flag && (
@@ -126,7 +156,12 @@ export default function RoomPage() {
                     <RoomCover address={room?.address} />
                   </>
                 )}
-                <RoomPhotos photos={room?.photos} screenSize={screenSize} />
+                <RoomPhotos
+                  photos={room?.photos}
+                  screenSize={screenSize}
+                  wishlist={wishlist}
+                  toggleWishlist={toggleWishlist}
+                />
                 {screenSize.width <= 768 && (
                   <div className="px-6 pt-6">
                     <h1 className="text-3xl font-medium">{room?.title}</h1>

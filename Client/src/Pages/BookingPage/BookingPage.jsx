@@ -37,7 +37,7 @@ export default function BookingPage() {
         });
       });
     }
-  }, [ready, user, loggedIn]);
+  }, [ready, user, loggedIn, subpage]);
 
   useEffect(() => {
     if (placeInfo) {
