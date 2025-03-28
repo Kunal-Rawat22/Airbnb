@@ -334,8 +334,40 @@ app.put("/places/:id", async (req, res) => {
 });
 
 app.get("/all-places", async (req, res) => {
-  const result = res.json(await Place.find());
+  const result = await Place.find();
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        const { id } = user;
+        const { _id } = await User.findById(id);
+        // console.log(_id);
+        // console.log(result);
+        const result2 = await Promise.all(
+          result.map(async (element) => {
+            const wishlistItem = await Wishlist.findOne({
+              userId: _id,
+              placeId: element._id,
+            });
+            // console.log(`###########${wishlistItem}`);
+            return {
+              ...element.toObject(),
+              isWishlist: wishlistItem ? true : false,
+            };
+          })
+        );
+        // console.log("result");
+        res.status(200).json(result2);
+      } catch {
+        res.status(422).json(err);
+      }
+    });
+  } else {
+    res.json(result);
+  }
 });
+
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
