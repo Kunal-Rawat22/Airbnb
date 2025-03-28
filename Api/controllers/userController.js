@@ -30,7 +30,6 @@ exports.userLogin = async (req, res) => {
   } catch {}
 };
 
-
 exports.userRegister = async (req, res) => {
   const { userName, mobileNo, email, password, gender, dob } = req.body;
 
@@ -49,14 +48,12 @@ exports.userRegister = async (req, res) => {
   }
 };
 
-
 exports.userLogout = (req, res) => {
   res.clearCookie("session"); // Clear the session cookie
   res.clearCookie("session.sig");
   res.clearCookie("token");
   res.status(200).json("Logout Out");
 };
-
 
 exports.checkProfile = async (req, res) => {
   const { token } = req.cookies;
@@ -66,7 +63,7 @@ exports.checkProfile = async (req, res) => {
       if (err) throw err;
       const { userName, mobileNo, email, gender, dob, _id } =
         await User.findById(user.id);
-    //   console.log(dob);
+      //   console.log(dob);
       var year = dob?.split("-")[0];
       var month = dob?.split("-")[1];
       var day = dob?.split("-")[2];
@@ -79,7 +76,7 @@ exports.checkProfile = async (req, res) => {
         dob: date,
         _id,
       };
-    //   console.log(userDoc);
+      //   console.log(userDoc);
       res.json(userDoc);
     });
   } else if (passport) {
@@ -107,6 +104,25 @@ exports.checkProfile = async (req, res) => {
     } catch (e) {
       res.status(422).json(e);
     }
+  } else {
+    res.json(null);
+  }
+};
+
+exports.updateUser = (req, res) => {
+  const { token } = req.cookies;
+  const updatedData = req.body;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        User.findByIdAndUpdate(user.id, updatedData).then((updatedUser) => {
+          if (updatedUser) res.status(200).json(updatedUser);
+        });
+      } catch (e) {
+        res.status(422).json(err);
+      }
+    });
   } else {
     res.json(null);
   }

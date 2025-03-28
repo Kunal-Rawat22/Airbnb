@@ -21,8 +21,25 @@ const passportSetup = require("./models/Passport");
 const authRoute = require("./routes/auth");
 const session = require("express-session");
 
-const connectDB =require("./config/db")
-const {userLogin, userRegister, userLogout, checkProfile} = require("./controllers/userController")
+const connectDB = require("./config/db");
+const {
+  userLogin,
+  userRegister,
+  userLogout,
+  checkProfile,
+  updateUser,
+} = require("./controllers/userController");
+const {
+  createPlace,
+  getAllPlaces,
+  getPlaceById,
+  getAllPlacesByOwnerId,
+  updatePlace,
+} = require("./controllers/placesController");
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { parse } = require("path");
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -61,7 +78,7 @@ connectDB();
 //Backend Routing
 
 //User Register Route
-app.post("/register",userRegister);
+app.post("/register", userRegister);
 
 //Login Route
 app.post("/login", userLogin);
@@ -73,24 +90,7 @@ app.get("/logout", userLogout);
 app.get("/profile", checkProfile);
 
 //Update User
-app.put("/updateProfile", (req, res) => {
-  const { token } = req.cookies;
-  const updatedData = req.body;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        User.findByIdAndUpdate(user.id, updatedData).then((updatedUser) => {
-          if (updatedUser) res.status(200).json(updatedUser);
-        });
-      } catch (e) {
-        res.status(422).json(err);
-      }
-    });
-  } else {
-    res.json(null);
-  }
-});
+app.put("/updateProfile", updateUser);
 
 //Upload Photos By Link
 app.post("/upload-by-link", async (req, res) => {
@@ -121,144 +121,15 @@ app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
 });
 
 //posting data from places form
-app.post("/places", (req, res) => {
-  const { token } = req.cookies;
-  const {
-    title,
-    address,
-    description,
-    perks,
-    extraInfo,
-    checkIn,
-    checkOut,
-    maxGuests,
-    photos,
-    price,
-  } = req.body;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        const placeDoc = await Place.create({
-          owner: user.id,
-          title,
-          address,
-          description,
-          perks,
-          extraInfo,
-          checkIn,
-          checkOut,
-          maxGuests,
-          photos,
-          price,
-        });
-        console.log("success");
-        res.json(placeDoc);
-      } catch (e) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.post("/places", createPlace);
 
-app.get("/places", (req, res) => {
-  const { token } = req.cookies;
-  console.log("first");
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      const { id } = user;
-      res.json(await Place.find({ owner: id }));
-    });
-  }
-});
+app.get("/places", getAllPlacesByOwnerId);
 
-app.get("/places/:id", async (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  const result = res.json(await Place.find({ _id: id }));
-});
+app.get("/places/:id", getPlaceById);
 
-app.put("/places/:id", async (req, res) => {
-  const { token } = req.cookies;
-  const id = req.params.id;
-  const {
-    title,
-    address,
-    description,
-    perks,
-    extraInfo,
-    checkIn,
-    checkOut,
-    maxGuests,
-    photos,
-    price,
-  } = req.body;
-  console.log("price", price);
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        const placeDoc = await Place.updateOne(
-          { _id: id },
-          {
-            $set: {
-              title: title,
-              address: address,
-              description: description,
-              perks: perks,
-              extraInfo: extraInfo,
-              checkIn: checkIn,
-              checkOut: checkOut,
-              maxGuests: maxGuests,
-              photos: photos,
-              price: price,
-            },
-          }
-        );
-        console.log("success");
-        res.json(placeDoc);
-      } catch (e) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.put("/places/:id", updatePlace);
 
-app.get("/all-places", async (req, res) => {
-  const result = await Place.find();
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      try {
-        const { id } = user;
-        const { _id } = await User.findById(id);
-        // console.log(_id);
-        // console.log(result);
-        const result2 = await Promise.all(
-          result.map(async (element) => {
-            const wishlistItem = await Wishlist.findOne({
-              userId: _id,
-              placeId: element._id,
-            });
-            // console.log(`###########${wishlistItem}`);
-            return {
-              ...element.toObject(),
-              isWishlist: wishlistItem ? true : false,
-            };
-          })
-        );
-        // console.log("result");
-        res.status(200).json(result2);
-      } catch {
-        res.status(422).json(err);
-      }
-    });
-  } else {
-    res.json(result);
-  }
-});
+app.get("/all-places", getAllPlaces);
 
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
@@ -296,8 +167,6 @@ app.listen(4000, (req, res) => {
 //     throw error;
 //   }
 // };
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { parse } = require("path");
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
