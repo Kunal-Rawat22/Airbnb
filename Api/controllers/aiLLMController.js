@@ -18,7 +18,8 @@ exports.getGenerativeModel = async (req, res) => {
     // const tripPlan = await fetchTripPlan(place, days);
     const result = await AImodel.generateContent(prompt);
     const text = result.response.text();
-    // console.log(`##################${text}`);
+      // console.log(`##################${text}`);
+      console.log("dnjedndjndjkndjkn");
     res.json(JSON.parse(text.replace(/```json|```/g, "").trim()));
     // const match = text.match(/const obj = (\[.*\]);/s);
 

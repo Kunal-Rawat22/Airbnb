@@ -17,35 +17,6 @@ const session = require("express-session");
 
 const connectDB = require("./config/db");
 
-const {
-  userLogin,
-  userRegister,
-  userLogout,
-  checkProfile,
-  updateUser,
-} = require("./controllers/userController");
-
-const {
-  createPlace,
-  getAllPlaces,
-  getPlaceById,
-  getAllPlacesByOwnerId,
-  updatePlace,
-} = require("./controllers/placesController");
-
-const {
-  getWishlistPlace,
-  updateWishlist,
-} = require("./controllers/wishlistController");
-
-const {
-  getBookingById,
-  getAllBookings,
-} = require("./controllers/bookingController");
-
-const { getGenerativeModel } = require("./controllers/aiLLMController");
-const { createBooking } = require("./controllers/paymentController");
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -68,8 +39,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use("/auth", authRoute);
 //Cors Connection
 app.use(
   cors({
@@ -82,21 +51,17 @@ app.use(
 connectDB();
 
 //Backend Routing
-
-//User Register Route
-app.post("/register", userRegister);
-
-//Login Route
-app.post("/login", userLogin);
-
-//Logout Route
-app.get("/logout", userLogout);
-
-//Refresh Route
-app.get("/profile", checkProfile);
-
-//Update User
-app.put("/updateProfile", updateUser);
+app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use("/auth", authRoute);
+app.use("/", require("./routes/userRoutes"));
+app.use("/", require("./routes/placesRoutes"));
+app.use("/", require("./routes/genAIRoutes"));
+app.use("/", require("./routes/paymentRoutes"));
+app.use("/", require("./routes/wishlistRoutes"));
+app.use("/", require("./routes/bookingRoutes"));
+app.listen(4000, (req, res) => {
+  console.log("Server Running on Port 4000");
+});
 
 //Upload Photos By Link
 app.post("/upload-by-link", async (req, res) => {
@@ -126,21 +91,6 @@ app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
   res.json(uploadedFiles);
 });
 
-//posting data from places form
-app.post("/places", createPlace);
-
-app.get("/places", getAllPlacesByOwnerId);
-
-app.get("/places/:id", getPlaceById);
-
-app.put("/places/:id", updatePlace);
-
-app.get("/all-places", getAllPlaces);
-
-app.listen(4000, (req, res) => {
-  console.log("Server Running on Port 4000");
-});
-app.post("/api/getTripPlan", getGenerativeModel);
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;
 
@@ -155,17 +105,8 @@ app.post("/api/location", (req, res) => {
   });
 });
 
-app.post("/payment/success", createBooking);
 // token.user_id
 // booking.search(userId)
-
-app.get("/bookings", getAllBookings);
-
-app.get("/booking/:id", getBookingById);
-
-app.put("/places/wishlist/:id", updateWishlist);
-
-app.get("/places/wishlist/:id", getWishlistPlace);
 // booking =[]
 // app.post("/booking/:id")
 // booking.add({user})
