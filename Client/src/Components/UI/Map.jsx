@@ -10,7 +10,7 @@ import VectorLayer from "ol/layer/Vector";
 import { Icon, Style } from "ol/style";
 import { transform } from "ol/proj";
 
-const MapComponent = () => {
+const MapComponent = ({ lat, long }) => {
   const [position, setPosition] = useState(null);
   const mapRef = useRef();
   function openGoogleMaps() {
@@ -70,17 +70,20 @@ const MapComponent = () => {
   }, [position]);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setPosition({ lat: latitude, lon: longitude });
-        // setPosition({ lat: 28.575859, lon: 77.0797641 });
-        console.log("Current Position:", { lat: latitude, lon: longitude }); // Log location data
-      });
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
+    setPosition({ lat: lat, lon: long });
+  },[lat, long]);
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       setPosition({ lat: latitude, lon: longitude });
+  //       // setPosition({ lat: 28.575859, lon: 77.0797641 });
+  //       console.log("Current Position:", { lat: latitude, lon: longitude }); // Log location data
+  //     });
+  //   } else {
+  //     console.error("Geolocation is not supported by this browser.");
+  //   }
+  // }, []);
 
   useEffect(() => {
     initializeMap();

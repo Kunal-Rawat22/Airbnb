@@ -14,7 +14,6 @@ const cookieSession = require("cookie-session");
 const passportSetup = require("./models/Passport");
 const authRoute = require("./routes/auth");
 const session = require("express-session");
-
 const connectDB = require("./config/db");
 
 app.use(express.json());

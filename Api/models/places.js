@@ -12,6 +12,8 @@ const PlaceSchema = new mongoose.Schema({
   checkOut: String,
   maxGuests: Number,
   price: Number,
+  lat: Number,
+  long: Number
 });
 const PlaceModel = mongoose.model("Place", PlaceSchema);
 module.exports = PlaceModel;

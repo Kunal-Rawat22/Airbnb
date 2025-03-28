@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import PhotoUploader from "./PhotoUploader";
 import axios from "axios";
 import { Navigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccommodationForm({ type }) {
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -21,6 +23,8 @@ export default function AccommodationForm({ type }) {
     checkOut: Date,
     maxGuests: Number,
     price: Number,
+    lat: Number,
+    long: Number,
   });
   // const options = ["Food", "Wifi", "AC", "Swimming Pool", "Free Parking", "TV"];
 
@@ -47,6 +51,8 @@ export default function AccommodationForm({ type }) {
             checkOut: data[0]?.checkOut,
             maxGuests: data[0]?.maxGuests,
             price: data[0]?.price,
+            lat: data[0]?.lat,
+            long: data[0]?.long,
           });
           setAddedPhotos([...data[0].photos]);
           setFlag(false);
@@ -54,9 +60,28 @@ export default function AccommodationForm({ type }) {
       : "";
   }, []);
 
+  useEffect(() => {
+    handleLocation();
+  }, []);
   console.log(flag);
   // const [photoLink, setPhotoLink] = useState("");
-
+  function handleLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setUserInput((prevState) => ({
+          ...prevState,
+          lat: latitude,
+          long: longitude,
+        }));
+        // setPosition({ lat: latitude, lon: longitude });
+        // setPosition({ lat: 28.575859, lon: 77.0797641 });
+        console.log("Current Position:", { lat: latitude, lon: longitude }); // Log location data
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }
   //Handling Title
   function handleTitle(event) {
     setUserInput((prevState) => ({
@@ -118,6 +143,20 @@ export default function AccommodationForm({ type }) {
     setUserInput((prevState) => ({
       ...prevState,
       extraInfo: event.target.value,
+    }));
+  }
+  //Handling ExtraInfo
+  function handleLat(event) {
+    setUserInput((prevState) => ({
+      ...prevState,
+      lat: event.target.value,
+    }));
+  }
+  //Handling ExtraInfo
+  function handleLong(event) {
+    setUserInput((prevState) => ({
+      ...prevState,
+      long: event.target.value,
     }));
   }
 
@@ -310,6 +349,50 @@ export default function AccommodationForm({ type }) {
                 readOnly={!flag}
                 value={userInput.price}
                 onChange={handlePrice}
+              />
+            </div>
+          </div>
+          <div className="half flex space-x-1">
+            <div className="p-1 flex align-middle items-center border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
+              <div className="w-11/12 flex flex-col">
+                <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                  Latitude
+                </label>
+                <input
+                  type="number"
+                  id="lat"
+                  className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
+                  required={true}
+                  readOnly={!flag}
+                  value={userInput.lat}
+                  onChange={handleLat}
+                />
+              </div>
+              <FontAwesomeIcon
+                icon={faLocationDot}
+                size="lg"
+                onClick={handleLocation}
+              />
+            </div>
+            <div className="p-1 flex align-middle items-center border border-1 border-gray-200 focus:outline-1 rounded-lg px-2 text-sm text-slate-500 w-1/2">
+              <div className="w-11/12 flex flex-col">
+                <label className="lg:text-base md:text-base sm:text-sm text-xs">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  id="long"
+                  className="focus:outline-none lg:text-base md:text-base sm:text-sm text-xs font-medium"
+                  required={true}
+                  readOnly={!flag}
+                  value={userInput.long}
+                  onChange={handleLong}
+                />
+              </div>
+              <FontAwesomeIcon
+                icon={faLocationDot}
+                size="lg"
+                onClick={handleLocation}
               />
             </div>
           </div>

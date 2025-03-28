@@ -20,6 +20,8 @@ exports.createPlace = (req, res) => {
     maxGuests,
     photos,
     price,
+    lat,
+    long,
   } = req.body;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
@@ -37,6 +39,8 @@ exports.createPlace = (req, res) => {
           maxGuests,
           photos,
           price,
+          lat,
+          long,
         });
         // console.log("success");
         res.json(placeDoc);
@@ -79,6 +83,8 @@ exports.updatePlace = async (req, res) => {
     maxGuests,
     photos,
     price,
+    lat,
+    long,
   } = req.body;
   // console.log("price", price);
   if (token) {
@@ -99,6 +105,8 @@ exports.updatePlace = async (req, res) => {
               maxGuests: maxGuests,
               photos: photos,
               price: price,
+              lat: lat,
+              long: long,
             },
           }
         );

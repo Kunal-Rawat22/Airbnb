@@ -74,6 +74,8 @@ export default function RoomPage() {
         maxGuests: data[0]?.maxGuests,
         price: data[0]?.price,
         photos: data[0]?.photos,
+        lat: data[0]?.lat,
+        long: data[0]?.long
       });
       setFlag(true);
       allOptions.map((option) => {
@@ -223,7 +225,7 @@ export default function RoomPage() {
                   )}
                 </div>
                 <div className="Map w-full h-[65vh] border">
-                  <MapComponent />
+                  <MapComponent lat={room?.lat} long={room?.long} />
                 </div>
               </div>
             </div>
