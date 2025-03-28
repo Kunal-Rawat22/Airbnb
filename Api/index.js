@@ -2,14 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const mongoose = require("mongoose");
-const User = require("./models/user");
-const Place = require("./models/places");
-const Booking = require("./models/booking");
-const Wishlist = require("./models/wishlist");
 const bcrypt = require("bcryptjs");
 const bcryptSalt = bcrypt.genSaltSync(10);
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
@@ -39,9 +33,6 @@ const {
   updatePlace,
 } = require("./controllers/placesController");
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { parse } = require("path");
-
 const {
   getWishlistPlace,
   updateWishlist,
@@ -51,6 +42,9 @@ const {
   getBookingById,
   getAllBookings,
 } = require("./controllers/bookingController");
+
+const { getGenerativeModel } = require("./controllers/aiLLMController");
+const { createBooking } = require("./controllers/paymentController");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -146,81 +140,7 @@ app.get("/all-places", getAllPlaces);
 app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
-// const axios = require("axios");
-// const OpenAI = require("openai")
-
-// const openai = new OpenAI({
-//   organization: "org-3BxyTI7IvbLjYsCFOGDEnVLT",
-//   project: "proj_zQcyMAhSH9C0zQanNEpgZcuE",
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// // Example function to fetch a trip plan
-// const fetchTripPlan = async (place, days) => {
-//   try {
-//     const response = await openai.chat.completions.create({
-//       model: "gpt-3.5-turbo",
-//       messages: [
-//         { role: "user", content: `Plan a trip to ${place} for ${days} days.` },
-//       ],
-//       headers: {
-//         "OpenAI-Organization": process.env.OPENAI_ORGANIZATION_ID, // Add organization ID here if needed
-//       },
-//     });
-
-//     const tripPlan = response.choices[0].message.content;
-//     return tripPlan;
-//   } catch (error) {
-//     console.error("Error fetching trip plan:", {
-//       message: error.message,
-//       stack: error.stack,
-//       response: error.response ? error.response.data : null,
-//     });
-//     throw error;
-//   }
-// };
-
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const AImodel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
-app.post("/api/getTripPlan", async (req, res) => {
-  const { prompt } = req.body;
-
-  if (!prompt) {
-    return res
-      .status(400)
-      .json({ tripPlan: "Place and number of days are required." });
-  }
-
-  try {
-    // const result = await AImodel.generateContent(`Plan a trip to ${place} for ${days} days. only list places to visit and city along with it no details only places name and city location name comma loaction and no hashes and stars only list using numbers as bullets`);
-    // const tripPlan = await fetchTripPlan(place, days);
-    const result = await AImodel.generateContent(prompt);
-    const text = result.response.text();
-    console.log(`##################${text}`);
-    res.json(JSON.parse(text.replace(/```json|```/g, "").trim()));
-    // const match = text.match(/const obj = (\[.*\]);/s);
-
-    // if (match && match[1]) {
-    //   // Escape single quotes inside string values
-    //   const sanitizedText = match[1].replace(
-    //     /'([^']*?)'/g,
-    //     (m, p1) => `'${p1.replace(/'/g, "\\'")}'`
-    //   );
-
-    //   // Use eval after sanitizing
-    //   const objArray = eval(`(${sanitizedText})`);
-    //   res.json(objArray);
-    // } else {
-    //   res.json("Sorry Gemini AI is down as of now")
-    //   console.log("Object not found in text.");
-    // }
-  } catch (error) {
-    console.error("Error communicating with AI:", error);
-    res.status(500).json({ text: "Failed to get a trip plan." });
-  }
-});
-
+app.post("/api/getTripPlan", getGenerativeModel);
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;
 
@@ -235,64 +155,7 @@ app.post("/api/location", (req, res) => {
   });
 });
 
-app.post("/payment/success", async (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      const { email, id } = user;
-      const date = new Date();
-      const day = date.getDate();
-      const month = date.toLocaleString("default", { month: "long" });
-      const year = date.getFullYear();
-      const currDate = `${day} ${month} ${year}`;
-      // const {  } = req.query;
-      const {
-        checkIn,
-        checkOut,
-        startDate,
-        startMonth,
-        endDate,
-        endMonth,
-        noOfDays,
-        noOfGuests,
-        payment_id,
-        placeId,
-        amount,
-        address,
-        title,
-        photos,
-        price,
-        description,
-      } = req.body;
-      console.log("pyment _id %s", payment_id);
-      try {
-        const { userName, mobileNo, _id } = await User.findById(id);
-        const bookingDoc = await Booking.create({
-          userId: _id,
-          mobileNo,
-          email: email.toLowerCase(),
-          userName,
-          paymentId: payment_id,
-          bookedDate: currDate,
-          noOfGuests,
-          checkIn,
-          checkOut,
-          placeId,
-          noOfDays,
-          placeName: title,
-          price,
-          photos,
-          amount,
-          description,
-        });
-        res.status(200).json(bookingDoc);
-      } catch (err) {
-        res.status(422).json(err);
-      }
-    });
-  }
-});
+app.post("/payment/success", createBooking);
 // token.user_id
 // booking.search(userId)
 
