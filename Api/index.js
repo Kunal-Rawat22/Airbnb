@@ -21,6 +21,8 @@ const passportSetup = require("./models/Passport");
 const authRoute = require("./routes/auth");
 const session = require("express-session");
 
+const connectDB =require("./config/db")
+const {userLogin, userRegister, userLogout, checkProfile} = require("./controllers/userController")
 app.use(express.json());
 app.use(cookieParser());
 
@@ -54,131 +56,21 @@ app.use(
 );
 
 //MongoDb Connection
-async function main() {
-  const connectionOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
-
-  try {
-    await mongoose.connect(process.env.MONGODB_URL, connectionOptions);
-    console.log(`Connected to MongoDB`);
-  } catch (err) {
-    console.log(`Couldn't connect: ${err}`);
-  }
-}
-
-main();
+connectDB();
 
 //Backend Routing
 
 //User Register Route
-app.post("/register", async (req, res) => {
-  const { userName, mobileNo, email, password, gender, dob } = req.body;
-
-  try {
-    const userDoc = await User.create({
-      userName,
-      mobileNo,
-      email: email.toLowerCase(),
-      password: bcrypt.hashSync(password, bcryptSalt),
-      gender,
-      dob,
-    });
-    res.status(200).json(userDoc);
-  } catch (err) {
-    res.status(422).json(err);
-  }
-});
+app.post("/register",userRegister);
 
 //Login Route
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (user) {
-      const passOk = bcrypt.compareSync(password, user.password);
-      if (passOk) {
-        jwt.sign(
-          { email: user.email, id: user._id },
-          jwtSecret,
-          {},
-          (err, token) => {
-            if (err) throw err;
-            res.cookie("token", token).status(200).json(user);
-          }
-        );
-      } else {
-        res.status(401).json("Pass Failed");
-      }
-    } else {
-      res.status(404).json("User Not Found");
-    }
-  } catch {}
-});
+app.post("/login", userLogin);
 
 //Logout Route
-app.get("/logout", (req, res) => {
-  res.clearCookie("session"); // Clear the session cookie
-  res.clearCookie("session.sig");
-  res.clearCookie("token");
-  res.status(200).json("Logout Out");
-});
+app.get("/logout", userLogout);
 
 //Refresh Route
-app.get("/profile", async (req, res) => {
-  const { token } = req.cookies;
-  const { passport } = req.session;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, user) => {
-      if (err) throw err;
-      const { userName, mobileNo, email, gender, dob, _id } =
-        await User.findById(user.id);
-      console.log(dob);
-      var year = dob?.split("-")[0];
-      var month = dob?.split("-")[1];
-      var day = dob?.split("-")[2];
-      let date = `${year}-${month}-${day}`;
-      const userDoc = {
-        userName,
-        mobileNo,
-        email,
-        gender,
-        dob: date,
-        _id,
-      };
-      console.log(userDoc);
-      res.json(userDoc);
-    });
-  } else if (passport) {
-    const { user } = passport;
-    try {
-      const userDoc = await User.findOne({ email: user.email });
-      if (userDoc) {
-        console.log("bhbhbhbhb", userDoc);
-        const obj = { ...userDoc._doc, ...user };
-        const newDoc = await User.updateOne({ email: user.email }, { ...obj });
-        console.log("uyibhbib", obj);
-        jwt.sign(
-          { email: userDoc.email, id: userDoc._id },
-          jwtSecret,
-          {},
-          (err, token) => {
-            if (err) throw err;
-            res.cookie("token", token).status(200).json(obj);
-          }
-        );
-      } else {
-        const userDoc = await User.create(user);
-        res.status(200).json(userDoc);
-      }
-    } catch (e) {
-      res.status(422).json(e);
-    }
-  } else {
-    res.json(null);
-  }
-});
+app.get("/profile", checkProfile);
 
 //Update User
 app.put("/updateProfile", (req, res) => {
