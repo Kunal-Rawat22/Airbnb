@@ -7,7 +7,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
-  // const [wishlist, setWishlist] = useState(true);
+  const [wishlist, setWishlist] = useState([]);
   const [isWishlistClicked, setIsWishlistClicked] = useState(false);
   const { ready, user } = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,19 +21,22 @@ export default function IndexPage() {
   useEffect(() => {
     axios.get("/all-places").then(({ data }) => {
       setPlaces(data);
-
+      setWishlist(data.map((element) => element.isWishlist));
     });
   }, []);
 
-  function toggleWishlist(e) {
+  async function toggleWishlist(e, placeId, index) {
     setIsWishlistClicked(true);
-    // console.log(`ready ${ready}`);
-    // console.log(`user ${user}`);
-    // console.log(`loggedIn ${loggedIn}`);
     e.preventDefault();
-    // if (ready && user && loggedIn) {
-    //   setWishlist(!wishlist);
-    // }
+    if (ready && user && loggedIn) {
+      const response = await axios.put(`/places/wishlist/${placeId}`);
+      console.log(response);
+      setWishlist((prevWishlist) => {
+        const updatedWishlist = [...prevWishlist];
+        updatedWishlist[index] = response.data; 
+        return updatedWishlist;
+      });
+    }
   }
 
   if (ready && !user && isWishlistClicked) {
@@ -58,15 +61,15 @@ export default function IndexPage() {
                     />
                     <button
                       className="absolute top-2 right-2  p-2 px-3 rounded-full shadow-md bg-white transition"
-                      onClick={toggleWishlist}
+                      onClick={(e) => toggleWishlist(e, place._id, index)}
                     >
-                      {place?.isWishlist && (
+                      {wishlist[index] && (
                         <FontAwesomeIcon
                           icon={faHeart}
                           style={{ color: "#d2746a" }}
                         />
                       )}
-                      {!place?.isWishlist && (
+                      {!wishlist[index] && (
                         <i
                           className="fa-regular fa-heart"
                           style={{ color: "#D2746A" }}
