@@ -52,6 +52,13 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+app.use(
+  cors({
+    origin: "https://yatra-nest.vercel.app", // Update this to your Vercel frontend URL
+    credentials: true, // Allows cookies & authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  })
+);
 
 //MongoDb Connection
 connectDB();
