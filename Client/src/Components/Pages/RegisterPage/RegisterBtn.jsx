@@ -1,12 +1,15 @@
 export default function RegisterBtn() {
   function googleAuth() {
-    window.open(`http://localhost:4000/auth/google/callback`, "_self");
+    window.open(`https://yatranest.onrender.com/auth/google/callback`, "_self");
   }
   function fbAuth() {
-    window.open(`http://localhost:4000/auth/facebook/callback`, "_self");
+    window.open(
+      `https://yatranest.onrender.com/auth/facebook/callback`,
+      "_self"
+    );
   }
   function gbAuth() {
-    window.open(`http://localhost:4000/auth/github/callback`, "_self");
+    window.open(`https://yatranest.onrender.com/auth/github/callback`, "_self");
   }
   return (
     <div className="px-8 py-4 flex flex-col space-y-1">
@@ -37,7 +40,10 @@ export default function RegisterBtn() {
         />
         <span className="text-sm font-medium mx-auto">Continue with Apple</span>
       </div>
-      <button className="border border-1 flex p-3 px-6 rounded-lg items-center border-black cursor-pointer" onClick={gbAuth}>
+      <button
+        className="border border-1 flex p-3 px-6 rounded-lg items-center border-black cursor-pointer"
+        onClick={gbAuth}
+      >
         <img src="/github.png" alt="" width={"20px"} className="text-left" />
         <span className="text-sm font-medium mx-auto">
           Continue with Github

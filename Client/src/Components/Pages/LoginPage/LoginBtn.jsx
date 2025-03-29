@@ -1,12 +1,18 @@
 export default function LoginBtn() {
   function googleAuth() {
-    window.open(`http://localhost:4000/auth/google/callback`, "_self");
+    window.open(`https://yatranest.onrender.com/auth/google/callback`, "_self");
   }
   function fbAuth() {
-    window.open(`http://localhost:4000/auth/facebook/callback`, "_self");
+    window.open(
+      `https://yatranest.onrender.com/auth/facebook/callback`,
+      "_self"
+    );
   }
   function gbAuth() {
-    window.open(`http://localhost:4000/auth/github/callback`, "_self");
+    window.open(
+      `https://yatranest.onrender.com//auth/github/callback`,
+      "_self"
+    );
   }
   return (
     <div className="px-8 py-4 flex flex-col space-y-1">
