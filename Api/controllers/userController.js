@@ -23,7 +23,7 @@ exports.userLogin = async (req, res) => {
                 httpOnly: true,
                 secure: true, // Ensures cookie is only sent over HTTPS
                 sameSite: "None", // Required for cross-origin cookies
-                domain: "https://yatranest.netlify.app", // Optional but can help
+                // domain: "https://yatranest.netlify.app", // Optional but can help
               })
               .status(200)
               .json(user);
