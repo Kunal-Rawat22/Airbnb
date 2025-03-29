@@ -46,15 +46,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Cors Connection
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "http://localhost:5173",
+//   })
+// );
 app.use(
   cors({
-    credentials: true,
-    origin: "http://localhost:5173",
-  })
-);
-app.use(
-  cors({
-    origin: "https://yatranest-git-deploymentfinal-kunalrawat22.vercel.app", // Update this to your Vercel frontend URL
+    origin: "https://yatranest.netlify.app", // Update this to your Vercel frontend URL
     credentials: true, // Allows cookies & authentication headers
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   })
