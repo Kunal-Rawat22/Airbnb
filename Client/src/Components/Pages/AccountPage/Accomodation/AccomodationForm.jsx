@@ -224,6 +224,13 @@ export default function AccommodationForm({ type }) {
     setEditable(true);
     setFlag(true);
   }
+  function handleDeleteAccommodation(event) {
+    event.preventDefault();
+    axios.delete(`/places/${action}`).then(({ data }) => {
+      console.log(data);
+      setRedirect(true);
+    });
+  }
   async function handleOnSave(event) {
     console.log("Hello");
     event.preventDefault();
@@ -477,6 +484,25 @@ export default function AccommodationForm({ type }) {
             : "Save Changes"
           : "Add Accomodation"}
       </button>
+      {type === "image" ? (
+        editable === false ? (
+          <button
+            className="bg-gray-200 p-2.5 text-black text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+            onClick={handleDeleteAccommodation}
+          >
+            Delete Accommodation
+          </button>
+        ) : (
+          <button
+            className=" bg-gray-200 p-2.5 text-black text-base font-semibold rounded-lg mt-1 border border-black hover:bg-slate-200 hover:text-slate-500 hover:shadow-xl"
+            onClick={handleDeleteAccommodation}
+          >
+            Delete Accommodation
+          </button>
+        )
+      ) : (
+        <></>
+      )}
     </form>
   );
 }

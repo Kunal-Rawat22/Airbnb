@@ -153,3 +153,24 @@ exports.getAllPlaces = async (req, res) => {
     res.json(result);
   }
 };
+
+exports.deletePlace = async (req, res) => {
+  console.log("vjvjhvjhvb");
+  const id = req.params.id;
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      try {
+        const result = await Place.findByIdAndDelete(id);
+        res.status(204).json(result);
+        console.log("hgchgcgvjvjv");
+      } catch {
+        res.status(422).json(err);
+      }
+    });
+  } else {
+    console.log("bkjn,nlnmnnl");
+    res.status(403).json("Not Authorized");
+  }
+};

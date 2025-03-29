@@ -5,6 +5,7 @@ const {
   getPlaceById,
   getAllPlacesByOwnerId,
   updatePlace,
+  deletePlace,
 } = require("../controllers/placesController");
 
 const router = express.Router();
@@ -13,6 +14,8 @@ const router = express.Router();
 router.post("/places", createPlace);
 
 router.get("/places", getAllPlacesByOwnerId);
+
+router.delete("/places/:id", deletePlace);
 
 router.get("/places/:id", getPlaceById);
 
