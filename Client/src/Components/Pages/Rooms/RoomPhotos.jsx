@@ -1,7 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import Image from "../AccountPage/Accomodation/Image";
+
 /* eslint-disable react/prop-types */
-export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlist }) {
+export default function RoomPhotos({
+  photos,
+  screenSize,
+  toggleWishlist,
+  wishlist,
+}) {
   const url = "http://localhost:4000/uploads/";
   const openNewTab = (e) => {
     console.log(e);
@@ -20,8 +27,10 @@ export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlis
       {screenSize.width > 768 && (
         <div className="grid grid-cols-2 gap-2 mt-8 photos">
           <div className="w-full h-96 relative pt-2">
-            <img
-              src={url + photos[0]}
+            <Image
+              src={photos[0]}
+              /* <img
+              src={url + photos[0]} */
               alt=""
               className="w-full object-cover rounded-s-xl block h-full darker cursor-pointer"
               onClick={openNewTab}
@@ -44,16 +53,20 @@ export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlis
           <div className="grid gap-y-2 h-96">
             <div className="grid grid-cols-2 gap-x-2 pt-2">
               <div>
-                <img
-                  src={url + photos[1]}
+                <Image
+                  src={photos[1]}
+                  /* <img
+                  src={url + photos[1]} */
                   alt=""
                   className="w-full object-cover h-48 darker cursor-pointer"
                   onClick={openNewTab}
                 />
               </div>
               <div>
-                <img
-                  src={url + photos[2]}
+                <Image
+                  src={photos[2]}
+                  /* <img
+                  src={url + photos[2]} */
                   alt=""
                   className="w-full object-cover rounded-tr-xl h-48 darker cursor-pointer"
                   onClick={openNewTab}
@@ -62,16 +75,20 @@ export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlis
             </div>
             <div className="grid grid-cols-2 gap-x-2 pb-2">
               <div className="relative h-44">
-                <img
-                  src={url + photos[3]}
+                <Image
+                  src={photos[3]}
+                  /* <img
+                  src={url + photos[3]} */
                   alt=""
                   className="w-full object-cover h-full darker cursor-pointer block"
                   onClick={openNewTab}
                 />
               </div>
               <div className="relative h-44">
-                <img
-                  src={url + photos[0]}
+                <Image
+                  src={photos[4]?photos[4]:photos[0]}
+                  /* <img
+                  src={url + photos[0]} */
                   alt=""
                   className="w-full object-cover rounded-br-xl h-full darker cursor-pointer"
                   onClick={openNewTab}
@@ -84,8 +101,10 @@ export default function RoomPhotos({ photos, screenSize, toggleWishlist, wishlis
       {screenSize.width <= 768 && (
         <div>
           <div className="w-full h-96 relative pt-2">
-            <img
-              src={url + photos[0]}
+            <Image
+              src={photos[0]}
+              /* <img
+              src={url + photos[0]} */
               alt=""
               className="w-full object-cover block h-full darker cursor-pointer"
               onClick={openNewTab}

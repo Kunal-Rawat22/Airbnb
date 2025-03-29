@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import Image from "../../Components/Pages/AccountPage/Accomodation/Image";
 
 export default function IndexPage() {
   const [places, setPlaces] = useState([]);
@@ -54,9 +55,10 @@ export default function IndexPage() {
               {place.photos.length > 0 && (
                 <div>
                   <div className="relative">
-                    <img
+                    <Image
                       className="rounded-xl aspect-square object-cover w-full"
-                      src={"http://localhost:4000/uploads/" + place.photos?.[0]}
+                      src={place.photos?.[0]}
+                      // src={"http://localhost:4000/uploads/" + place.photos?.[0]}
                       alt=""
                     />
                     <button
