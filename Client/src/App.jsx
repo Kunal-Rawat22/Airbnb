@@ -11,8 +11,7 @@ import RoomPage from "./Pages/Rooms/RoomPage";
 import BookingPage from "./Pages/BookingPage/BookingPage";
 import PaymentSuccess from "./Components/UI/PaymentSuccess";
 import BookingConfirmation from "./Components/Pages/AccountPage/Booking/BookingDetail";
-
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
