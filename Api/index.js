@@ -9,6 +9,9 @@ const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const axios = require("axios");
+// const mime = require("mime");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const passportSetup = require("./models/Passport");
@@ -62,33 +65,108 @@ app.listen(4000, (req, res) => {
   console.log("Server Running on Port 4000");
 });
 
+// //Upload Photos By Link
+// app.post("/upload-by-link", async (req, res) => {
+//   const { link } = req.body;
+//   console.log(link);
+//   const newName = "photo" + Date.now() + ".jpg";
+//   await imageDownloader.image({
+//     url: link,
+//     dest: __dirname + "/uploads/" + newName,
+//   });
+//   res.json(newName);
+// });
+
+// //Upload by Device
+// const photoMiddleware = multer({ dest: "uploads" });
+// app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
+//   const uploadedFiles = [];
+//   for (let i = 0; i < req.files.length; i++) {
+//     const { path, originalname } = req.files[i];
+//     const parts = originalname.split(".");
+//     const ext = parts[parts.length - 1];
+//     const newPath = path + "." + ext;
+//     fs.renameSync(path, newPath);
+//     uploadedFiles.push(newPath.replace("uploads/", ""));
+//     console.log(req.files);
+//   }
+//   res.json(uploadedFiles);
+// });
+
 //Upload Photos By Link
 app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
+
   console.log(link);
+  
+  const response = await axios.head(link);
+  const contentType = response.headers["content-type"] || "image/jpeg";
+
   const newName = "photo" + Date.now() + ".jpg";
+  const tmpPath = `/tmp/${newName}`;
+
   await imageDownloader.image({
     url: link,
-    dest: __dirname + "/uploads/" + newName,
+    dest: tmpPath,
   });
-  res.json(newName);
+  const url = await uploadToS3(tmpPath, newName, contentType);
+  res.json(url);
 });
 
 //Upload by Device
-const photoMiddleware = multer({ dest: "uploads" });
-app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
+const photoMiddleware = multer({ dest: "tmp" });
+app.post("/upload", photoMiddleware.array("photos", 100), async (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
-    const { path, originalname } = req.files[i];
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-    uploadedFiles.push(newPath.replace("uploads/", ""));
-    console.log(req.files);
+    // const { path, originalname } = req.files[i];
+    // const parts = originalname.split(".");
+    // const ext = parts[parts.length - 1];
+    // const newPath = path + "." + ext;
+    // fs.renameSync(path, newPath);
+    // uploadedFiles.push(newPath.replace("uploads/", ""));
+    // console.log(req.files);
+    const { path, originalname, mimetype } = req.files[i];
+    const url = await uploadToS3(path, originalname, mimetype);
+    uploadedFiles.push(url);
   }
   res.json(uploadedFiles);
 });
+
+const bucket = "yatranest-bucket";
+
+async function uploadToS3(path, originalFilename, mimetype) {
+  try {
+    const client = new S3Client({
+      region: "ap-south-1",
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_2,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY_2,
+      },
+    });
+
+    const ext = originalFilename.split(".").pop();
+    const newFilename = `${Date.now()}.${ext}`;
+    const fileBuffer = await fs.promises.readFile(path);
+    await client.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Body: fileBuffer,
+        Key: newFilename,
+        ContentType: mimetype,
+      })
+    );
+
+    fs.unlink(path, (err) => {
+      if (err) console.error(`Failed to delete temp file: ${err}`);
+    });
+    // console.log("gbehjkbj");
+    return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
+  } catch (error) {
+    console.error("S3 Upload Error:", error);
+    throw new Error("Upload failed");
+  }
+  // console.log({path, originalFilename,newFilename, mimetype,ext});
+}
 
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;
