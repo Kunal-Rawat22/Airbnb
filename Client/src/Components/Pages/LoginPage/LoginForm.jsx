@@ -23,14 +23,14 @@ export default function LoginForm() {
   async function handleOnSubmit(event) {
     event.preventDefault();
     try {
-      const response = await axios.fetch("/login", {
-        method: "POST",
-        credentials: "include",
+      console.log("bshjbhjsbhb");
+      const response = await axios.post("/login", userInput, {
+        withCredentials: true, 
         headers: {
           "Content-Type": "application/json",
         },
-        body: userInput,
       });
+      console.log("object");
       setUser(response.data);
       setUserInput({
         email: "",
@@ -39,6 +39,7 @@ export default function LoginForm() {
       alert("Login Successful");
       setRedirect(true);
     } catch (e) {
+      console.log("bnbknwjknnwnb");
       setUserInput({
         email: "",
         password: "",
