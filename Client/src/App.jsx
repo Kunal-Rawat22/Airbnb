@@ -14,6 +14,7 @@ import BookingConfirmation from "./Components/Pages/AccountPage/Booking/BookingD
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
+
 function App() {
   return (
     <UserContextProvider>
