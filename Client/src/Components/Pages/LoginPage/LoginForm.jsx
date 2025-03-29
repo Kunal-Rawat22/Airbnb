@@ -23,7 +23,14 @@ export default function LoginForm() {
   async function handleOnSubmit(event) {
     event.preventDefault();
     try {
-      const response = await axios.post("/login", userInput);
+      const response = await axios.fetch("/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: userInput,
+      });
       setUser(response.data);
       setUserInput({
         email: "",
