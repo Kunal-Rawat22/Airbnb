@@ -9,7 +9,11 @@ const jwtSecret = "srvfbi298y8240u1$&&@X!H@!@!(";
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 const axios = require("axios");
 // const mime = require("mime");
 const passport = require("passport");
@@ -51,6 +55,15 @@ app.use(
 
 //MongoDb Connection
 connectDB();
+
+//AWS S3 Connection
+const client = new S3Client({
+  region: "ap-south-1",
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_2,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY_2,
+  },
+});
 
 //Backend Routing
 app.use("/uploads", express.static(__dirname + "/uploads"));
@@ -98,7 +111,6 @@ app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
 
   console.log(link);
-  
   const response = await axios.head(link);
   const contentType = response.headers["content-type"] || "image/jpeg";
 
@@ -136,14 +148,6 @@ const bucket = "yatranest-bucket";
 
 async function uploadToS3(path, originalFilename, mimetype) {
   try {
-    const client = new S3Client({
-      region: "ap-south-1",
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_2,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY_2,
-      },
-    });
-
     const ext = originalFilename.split(".").pop();
     const newFilename = `${Date.now()}.${ext}`;
     const fileBuffer = await fs.promises.readFile(path);
@@ -167,6 +171,23 @@ async function uploadToS3(path, originalFilename, mimetype) {
   }
   // console.log({path, originalFilename,newFilename, mimetype,ext});
 }
+
+app.delete("/photo/:id", async (req, res) => {
+  try {
+    const key = req.params.id; // Key is the file name in S3
+    if (!key) return res.status(400).json({ error: "File key is required" });
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      })
+    );
+    res.json({ success: true, message: "Photo deleted successfully" });
+  } catch (error) {
+    console.error("S3 Delete Error:", error);
+    res.status(500).json({ error: "Failed to delete photo" });
+  }
+});
 
 app.post("/api/location", (req, res) => {
   const { lat, lon } = req.body;

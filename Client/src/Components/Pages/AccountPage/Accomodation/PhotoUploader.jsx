@@ -32,14 +32,31 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos, flag }) {
         setAddedPhotos((prev) => [...prev, ...filename]);
       });
   }
-  function handleDelete(e, link) {
+  async function handleDelete(e, link) {
     e.preventDefault();
     setAddedPhotos([...addedPhotos.filter((photo) => photo !== link)]);
+    await deletePhoto(link);
     console.log("YO", link);
   }
+  
   function selectAsMainPhoto(e, link) {
     e.preventDefault();
     setAddedPhotos([link, ...addedPhotos.filter((photo) => photo !== link)]);
+  }
+
+  async function deletePhoto(photoUrl) {
+    try {
+      const key = photoUrl.split("/").pop(); // Extract the file name from URL
+
+      const { data } = await axios.delete(`/photo/${key}`);
+      if (data.success) {
+        console.log("Photo deleted successfully");
+      } else {
+        console.error("Failed to delete photo:", data.error);
+      }
+    } catch (error) {
+      console.error("Error deleting photo:", error);
+    }
   }
   return (
     <>
