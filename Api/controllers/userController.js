@@ -18,7 +18,15 @@ exports.userLogin = async (req, res) => {
           {},
           (err, token) => {
             if (err) throw err;
-            res.cookie("token", token).status(200).json(user);
+            res
+              .cookie("token", token, {
+                httpOnly: true,
+                secure: true, // Ensures cookie is only sent over HTTPS
+                sameSite: "None", // Required for cross-origin cookies
+                domain: "https://yatranest.netlify.app", // Optional but can help
+              })
+              .status(200)
+              .json(user);
           }
         );
       } else {
