@@ -54,7 +54,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "https://yatra-nest.vercel.app", // Update this to your Vercel frontend URL
+    origin: "https://yatranest-git-deploymentfinal-kunalrawat22.vercel.app", // Update this to your Vercel frontend URL
     credentials: true, // Allows cookies & authentication headers
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   })
