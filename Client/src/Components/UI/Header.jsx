@@ -63,62 +63,46 @@ export default function Header() {
                 : "lg:w-5/12"
             } md:w-7/12 md:justify-evenly`}
           >
-            <div
-              className={`${
-                !showInput ? "" : "opacity-0 w-0"
-              }font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base`}
-            >
-              Anywhere
-            </div>
-            <div
-              className={`${
-                !showInput ? "" : "opacity-0 w-0"
-              }border-1 border-l border-gray-400 h-7 shadow-lg`}
-            ></div>
-            <div
-              className={`${
-                !showInput ? "" : "opacity-0 w-0"
-              }font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base`}
-            >
-              Any week
-            </div>
-            <div
-              className={`border-1 border-l border-gray-400 h-7 shadow-lg ${
-                !showInput ? "" : "opacity-0 w-0"
-              }`}
-            ></div>
-            <div
-              className={`font-light text-slate-600  hover:text-black hover:font-normal cursor-pointer text-sm  text-center xl:text-lg lg:text-base ${
-                !showInput ? "" : "opacity-0 w-0"
-              }`}
-            >
-              Add Guest
-            </div>
-            <div className=" cursor-pointer">
-              <div className="relative flex items-center space-x-2">
+            {showInput ? (
+              // 🔍 Only search input and icon
+              <div className="flex items-center w-full space-x-3">
                 <button
                   onClick={handleSearchClick}
                   className="text-gray-600 hover:text-gray-800 focus:outline-none"
                 >
                   <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
                 </button>
-
-                <div
-                  className={`transition-all duration-300 ease-in-out ${
-                    showInput ? "opacity-100 w-48" : "opacity-0 w-0"
-                  } overflow-hidden`}
-                >
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={query}
-                    onChange={handleInputChange}
-                    placeholder="Search..."
-                    className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 w-full"
-                  />
-                </div>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={handleInputChange}
+                  placeholder="Search..."
+                  className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-primary w-full transition-all duration-300 ease-in-out"
+                />
               </div>
-            </div>
+            ) : (
+              // 🌍 Default search summary UI
+              <>
+                <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base">
+                  Anywhere
+                </div>
+                <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
+                <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base">
+                  Any week
+                </div>
+                <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
+                <div className="font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm text-center xl:text-lg lg:text-base">
+                  Add Guest
+                </div>
+                <button
+                  onClick={handleSearchClick}
+                  className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                >
+                  <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
+                </button>
+              </>
+            )}
           </div>
           <Link
             to={user ? "/account/profile" : "/login"}
