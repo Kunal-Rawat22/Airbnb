@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import { UserContext } from "../../../../UserContext";
+import Image from "../Accomodation/Image";
 
 export default function BookingTab() {
   const { ready, user } = useContext(UserContext);
@@ -33,7 +34,6 @@ export default function BookingTab() {
     return <Navigate to={"/login"} />;
   }
 
-  const url = "http://localhost:4000/uploads/";
   return (
     <div className="lg:px-32 md:px-12 px-0 mt-10">
       <div className={`grid ${gridColsClass} gap-8 mt-8 `}>
@@ -48,8 +48,8 @@ export default function BookingTab() {
               className="bg-slate-100 flex rounded-xl px-4 py-4 lg:p-6 md:p-6 cursor-pointer hover:shadow-lg hover:bg-slate-200 items-center"
             >
               <div className="lg:h-48 md:h-48 sm:h-48 h-32 lg:w-1/3 md:w-1/2 sm:w-1/2 w-1/2 grow shrink-08">
-                <img
-                  src={url + booking?.photos[0]}
+                <Image
+                  src={booking?.photos[0]}
                   alt=""
                   className="h-full w-full object-cover rounded-xl shadow-xl"
                 />

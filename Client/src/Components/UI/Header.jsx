@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { UserContext } from "../../UserContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 
 export default function Header() {
   const { user } = useContext(UserContext);
@@ -20,14 +20,39 @@ export default function Header() {
     };
   }, []);
   console.log(screenSize);
+
+  const [showInput, setShowInput] = useState(false);
+  const [query, setQuery] = useState("");
+  const inputRef = useRef(null);
+
+  const handleSearchClick = () => {
+    setShowInput((prev) => !prev);
+  };
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+    console.log("Search Query:", e.target.value);
+  };
+
+  // Auto focus when input shows
+  useEffect(() => {
+    if (showInput && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showInput]);
+
   return (
     <div>
       {" "}
       {screenSize.width > 768 && (
         <header className="flex justify-between p-4 items-center lg:px-40 md:px-20">
           <div>
-            <Link to={"/"} className="Logo text-2xl font-bold text-primary flex items-center gap-2">
-              <img src="/home.png" alt="" width={"30px"} />YatraNest
+            <Link
+              to={"/"}
+              className="Logo text-2xl font-bold text-primary flex items-center gap-2"
+            >
+              <img src="/home.png" alt="" width={"30px"} />
+              YatraNest
               {/* <i className="fa-brands fa-airbnb"></i> <span>Airbnb</span> */}
             </Link>
           </div>
@@ -38,19 +63,61 @@ export default function Header() {
                 : "lg:w-5/12"
             } md:w-7/12 md:justify-evenly`}
           >
-            <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base">
+            <div
+              className={`${
+                !showInput ? "" : "opacity-0 w-0"
+              }font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base`}
+            >
               Anywhere
             </div>
-            <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-            <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base">
+            <div
+              className={`${
+                !showInput ? "" : "opacity-0 w-0"
+              }border-1 border-l border-gray-400 h-7 shadow-lg`}
+            ></div>
+            <div
+              className={`${
+                !showInput ? "" : "opacity-0 w-0"
+              }font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base`}
+            >
               Any week
             </div>
-            <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-            <div className=" font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm  text-center xl:text-lg lg:text-base">
+            <div
+              className={`border-1 border-l border-gray-400 h-7 shadow-lg ${
+                !showInput ? "" : "opacity-0 w-0"
+              }`}
+            ></div>
+            <div
+              className={`font-light text-slate-600  hover:text-black hover:font-normal cursor-pointer text-sm  text-center xl:text-lg lg:text-base ${
+                !showInput ? "" : "opacity-0 w-0"
+              }`}
+            >
               Add Guest
             </div>
             <div className=" cursor-pointer">
-              <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
+              <div className="relative flex items-center space-x-2">
+                <button
+                  onClick={handleSearchClick}
+                  className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                >
+                  <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
+                </button>
+
+                <div
+                  className={`transition-all duration-300 ease-in-out ${
+                    showInput ? "opacity-100 w-48" : "opacity-0 w-0"
+                  } overflow-hidden`}
+                >
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={query}
+                    onChange={handleInputChange}
+                    placeholder="Search..."
+                    className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 w-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <Link

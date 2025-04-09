@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useState, useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { UserContext } from "../../../../UserContext";
+import Image from "../Accomodation/Image";
 
 const BookingConfirmation = () => {
   const { ready, user } = useContext(UserContext);
@@ -15,13 +16,11 @@ const BookingConfirmation = () => {
         console.log(response.data);
       });
     }
-  }, [ready,user,subpage]);
+  }, [ready, user, subpage]);
 
   if (ready && !user) {
     return <Navigate to={"/login"} />;
   }
-
-  const url = "http://localhost:4000/uploads/";
 
   return (
     <div className="flex flex-col bg-gray-300 items-center p-8 rounded-lg shadow-lg max-w-4xl mx-auto mt-16 mb-16">
@@ -35,8 +34,8 @@ const BookingConfirmation = () => {
       <div className="parent-div flex flex-col md:flex-row items-start md:items-center w-full h-full bg-white rounded-lg relative">
         {/* Image Section */}
         <div className=" w-full lg:w-1/2 h-full relative p-6">
-          <img
-            src={url + booking?.photos[0]}
+          <Image
+            src={booking?.photos[0]}
             alt="Booking Image"
             className="w-full h-full rounded-xl aspect-square"
           />
