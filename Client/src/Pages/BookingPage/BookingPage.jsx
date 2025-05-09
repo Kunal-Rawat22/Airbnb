@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link, Navigate, useParams } from "react-router-dom";
 import RazorpayButton from "../../Components/UI/RazorPayBtn";
+import Image from "../../Components/Pages/AccountPage/Accomodation/Image";
 import axios from "axios";
 
 export default function BookingPage() {
@@ -78,7 +79,6 @@ export default function BookingPage() {
   console.log("njn", checkIn);
   console.log("njkknn", checkOut);
 
-  const url = "http://localhost:4000/uploads/";
   return (
     <div className="Booking-Page xl:pb-24 lg:pb-24 md:pb-16 sm:pb-12 pb-8">
       <div className="Heading flex lg:pl-28 md:pl-20 sm:pl-16 pl-12">
@@ -159,8 +159,8 @@ export default function BookingPage() {
         <div className="right w-1/2 ">
           <div className="border border-1 border-slate-300 rounded-xl w-4/5 h-full mx-auto flex flex-col p-8 gap-y-6">
             <div className="roomDetail h-2/5 w-full flex gap-6">
-              <img
-                src={url + placeInfo?.photos[0]}
+              <Image
+                src={placeInfo?.photos[0]}
                 alt=""
                 className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-xl block darker cursor-pointer"
                 // onClick={openNewTab}

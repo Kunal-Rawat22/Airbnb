@@ -12,6 +12,8 @@ const PaymentSuccess = () => {
   const payment_id = queryParams.get("payment_id");
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [bookedAccommodationDetails, setBookedAccommodationDetails] = useState(null);
+
   useEffect(() => {
     // Retrieve booking details from localStorage once when the component mounts
     const details = JSON.parse(localStorage.getItem("bookingDetails"));
@@ -31,6 +33,7 @@ const PaymentSuccess = () => {
         .post("/payment/success", bookingDetails)
         .then(({ data }) => {
           setBookingSuccess(true);
+          setBookedAccommodationDetails(data);
         })
         .catch((error) => {
           setBookingSuccess(true);
@@ -40,7 +43,8 @@ const PaymentSuccess = () => {
   }, [bookingDetails]);
 
   if (redirect) {
-    return <Navigate to={"/account/booking"} />;
+    console.log(bookedAccommodationDetails);
+    return <Navigate to={`/booking/${bookedAccommodationDetails?._id}`} />;
   }
   return (
     <div className="bg-gray-200 min-h-screen flex items-center justify-center pt-8 pb-8">
@@ -65,8 +69,8 @@ const PaymentSuccess = () => {
               <div className="text-center text-gray-800 font-bold">
                 <div className="text-lg mb-2">Payment ID</div>
                 <div className="border-t border-b border-gray-300 py-2 text-lg mb-6">
-                  {/* {payment_id} */}
-                  pay_PJVbtn4i2xA08G
+                  {payment_id}
+                  {/* pay_PJVbtn4i2xA08G */}
                 </div>
               </div>
               <div className="text-center text-xl font-bold text-gray-500">

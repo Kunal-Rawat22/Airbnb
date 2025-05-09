@@ -3,7 +3,7 @@ export default function RoomBrief()
   const today = new Date(); // Get the current date
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1); // Add one day to the current date
-  const nextDate = tomorrow.toLocaleString().slice(0, 2);
+  const nextDate = tomorrow.toLocaleString().split("/")[0];
   const month = tomorrow.toLocaleString('en-US', { month: 'long' });
     return (
       <div className="brief flex flex-col mt-8 px-2 space-y-7 pb-8 pr-16">

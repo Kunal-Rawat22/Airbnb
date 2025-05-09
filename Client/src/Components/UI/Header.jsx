@@ -63,9 +63,42 @@ export default function Header() {
                 : "lg:w-5/12"
             } md:w-7/12 md:justify-evenly`}
           >
-            {showInput ? (
-              // 🔍 Only search input and icon
-              <div className="flex items-center w-full space-x-3">
+            <div className="px-2 relative w-full flex items-center justify-between">
+              {/* 🌍 Summary View */}
+              <div
+                className={`flex items-center justify-between space-x-4 w-full transition-all duration-300 ease-in-out ${
+                  showInput
+                    ? "opacity-0 scale-95 pointer-events-none"
+                    : "opacity-100 scale-100"
+                }`}
+              >
+                <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base">
+                  Anywhere
+                </div>
+                <div className="border-l border-gray-400 h-7 shadow-lg"></div>
+                <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base">
+                  Any week
+                </div>
+                <div className="border-l border-gray-400 h-7 shadow-lg"></div>
+                <div className="font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm text-center xl:text-lg lg:text-base">
+                  Add Guest
+                </div>
+                <button
+                  onClick={handleSearchClick}
+                  className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                >
+                  <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
+                </button>
+              </div>
+
+              {/* 🔍 Input View */}
+              <div
+                className={`absolute left-0 top-0 w-full flex items-center space-x-3 transition-all duration-300 ease-in-out ${
+                  showInput
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95 pointer-events-none"
+                }`}
+              >
                 <button
                   onClick={handleSearchClick}
                   className="text-gray-600 hover:text-gray-800 focus:outline-none"
@@ -78,31 +111,10 @@ export default function Header() {
                   value={query}
                   onChange={handleInputChange}
                   placeholder="Search..."
-                  className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-primary w-full transition-all duration-300 ease-in-out"
+                  className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-primary w-full"
                 />
               </div>
-            ) : (
-              // 🌍 Default search summary UI
-              <>
-                <div className="font-medium hover:font-bold cursor-pointer text-sm w-1/5 xl:text-lg lg:text-base">
-                  Anywhere
-                </div>
-                <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-                <div className="font-medium hover:font-semibold cursor-pointer text-sm w-1/5 text-center xl:text-lg lg:text-base">
-                  Any week
-                </div>
-                <div className="border-1 border-l border-gray-400 h-7 shadow-lg"></div>
-                <div className="font-light text-slate-600 hover:text-black hover:font-normal cursor-pointer text-sm text-center xl:text-lg lg:text-base">
-                  Add Guest
-                </div>
-                <button
-                  onClick={handleSearchClick}
-                  className="text-gray-600 hover:text-gray-800 focus:outline-none"
-                >
-                  <i className="fa-solid fa-magnifying-glass text-white bg-primary p-1 rounded-3xl px-2 hover:bg-slate-400 text-base"></i>
-                </button>
-              </>
-            )}
+            </div>
           </div>
           <Link
             to={user ? "/account/profile" : "/login"}
